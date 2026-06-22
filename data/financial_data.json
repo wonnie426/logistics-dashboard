@@ -1,0 +1,9 @@
+{
+  "updated_at": "데이터 수집 전",
+  "updated_at_kst": "API 키 등록 후 Actions를 수동 실행해주세요.",
+  "companies": {
+    "롯데글로벌로지스": {"name":"롯데글로벌로지스","short":"롯데","color":"#C8102E","corp_code":"01388369","periods":[]},
+    "CJ대한통운": {"name":"CJ대한통운","short":"CJ","color":"#00A0DC","corp_code":"00113526","periods":[]},
+    "한진": {"name":"한진","short":"한진","color":"#003087","corp_code":"00102027","periods":[]}
+  }
+}
