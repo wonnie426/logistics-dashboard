@@ -1,0 +1,38 @@
+name: DART 재무 데이터 자동 수집
+
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-dart-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 레포지토리 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 라이브러리 설치
+        run: pip install requests
+
+      - name: DART 데이터 수집
+        env:
+          DART_API_KEY: ${{ secrets.DART_API_KEY }}
+        run: python .github/workflows/fetch_dart.py
+
+      - name: 변경사항 커밋 & 푸시
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/financial_data.json
+          git diff --staged --quiet || git commit -m "데이터 자동 업데이트: $(date +'%Y-%m-%d %H:%M')"
+          git push
