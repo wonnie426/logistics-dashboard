@@ -1,0 +1,76 @@
+{
+  "companies": {
+    "LGL": {
+      "segments": ["TLS", "Lastmile", "GBS"],
+      "annual": {
+        "2023": {
+          "source": "2023년 사업보고서",
+          "TLS":      { "revenue": null, "operating_income": null, "note": null },
+          "Lastmile": { "revenue": null, "operating_income": null, "note": null },
+          "GBS":      { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2024": {
+          "source": "2024년 사업보고서",
+          "TLS":      { "revenue": null, "operating_income": null, "note": null },
+          "Lastmile": { "revenue": null, "operating_income": null, "note": null },
+          "GBS":      { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2025": {
+          "source": "2025년 사업보고서",
+          "TLS":      { "revenue": null, "operating_income": null, "note": null },
+          "Lastmile": { "revenue": null, "operating_income": null, "note": null },
+          "GBS":      { "revenue": null, "operating_income": null, "note": null }
+        }
+      }
+    },
+    "CJ": {
+      "segments": ["택배", "CL", "글로벌", "건설"],
+      "annual": {
+        "2023": {
+          "source": "2023년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "CL":   { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "건설": { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2024": {
+          "source": "2024년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "CL":   { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "건설": { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2025": {
+          "source": "2025년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "CL":   { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "건설": { "revenue": null, "operating_income": null, "note": null }
+        }
+      }
+    },
+    "HJ": {
+      "segments": ["택배", "글로벌", "물류"],
+      "annual": {
+        "2023": {
+          "source": "2023년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "물류": { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2024": {
+          "source": "2024년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "물류": { "revenue": null, "operating_income": null, "note": null }
+        },
+        "2025": {
+          "source": "2025년 사업보고서",
+          "택배": { "revenue": null, "operating_income": null, "note": null },
+          "글로벌": { "revenue": null, "operating_income": null, "note": null },
+          "물류": { "revenue": null, "operating_income": null, "note": null }
+        }
+      }
+    }
+  }
+}

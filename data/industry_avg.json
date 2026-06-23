@@ -1,0 +1,13 @@
+{
+  "_source": "한국은행 기업경영분석, 운수 및 창고업 기준",
+  "2024": {
+    "operating_margin":  3.2,
+    "net_margin":        1.8,
+    "roa":               2.1,
+    "roe":               5.4,
+    "debt_ratio":      185.0,
+    "current_ratio":   110.0,
+    "equity_ratio":     35.1,
+    "interest_coverage": 2.1
+  }
+}

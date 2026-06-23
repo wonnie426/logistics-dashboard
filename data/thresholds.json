@@ -1,0 +1,14 @@
+{
+  "operating_margin":      { "green": 5,   "yellow": 0,   "direction": "higher_better" },
+  "net_margin":            { "green": 3,   "yellow": 0,   "direction": "higher_better" },
+  "ebitda_margin":         { "green": 8,   "yellow": 3,   "direction": "higher_better" },
+  "roa":                   { "green": 3,   "yellow": 1,   "direction": "higher_better" },
+  "roe":                   { "green": 10,  "yellow": 5,   "direction": "higher_better" },
+  "debt_ratio":            { "green": 100, "yellow": 200, "direction": "lower_better"  },
+  "debt_ratio_ex_lease":   { "green": 100, "yellow": 200, "direction": "lower_better"  },
+  "current_ratio":         { "green": 150, "yellow": 100, "direction": "higher_better" },
+  "equity_ratio":          { "green": 40,  "yellow": 25,  "direction": "higher_better" },
+  "interest_coverage":     { "green": 3,   "yellow": 1,   "direction": "higher_better" },
+  "borrowing_dependency":  { "green": 30,  "yellow": 50,  "direction": "lower_better"  },
+  "operating_cf_margin":   { "green": 5,   "yellow": 0,   "direction": "higher_better" }
+}
