@@ -1,9 +1,52 @@
 {
-  "updated_at": "데이터 수집 전",
-  "updated_at_kst": "API 키 등록 후 Actions를 수동 실행해주세요.",
+  "last_updated": "2026-06-23T08:00:00+09:00",
+  "latest_report": {
+    "LGL": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "2026-03-31",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331000000"
+    },
+    "CJ": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "2026-03-17",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317001301"
+    },
+    "HJ": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "2026-03-20",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320001550"
+    }
+  },
   "companies": {
-    "롯데글로벌로지스": {"name":"롯데글로벌로지스","short":"롯데","color":"#C8102E","corp_code":"01388369","periods":[]},
-    "CJ대한통운": {"name":"CJ대한통운","short":"CJ","color":"#00A0DC","corp_code":"00113526","periods":[]},
-    "한진": {"name":"한진","short":"한진","color":"#003087","corp_code":"00102027","periods":[]}
+    "LGL": {
+      "name": "롯데글로벌로지스",
+      "color": "#C8102E",
+      "corp_code": "01388369",
+      "listed": false,
+      "annual": {},
+      "quarterly": {}
+    },
+    "CJ": {
+      "name": "CJ대한통운",
+      "color": "#00A0DC",
+      "corp_code": "00113526",
+      "listed": true,
+      "annual": {},
+      "quarterly": {}
+    },
+    "HJ": {
+      "name": "한진",
+      "color": "#003087",
+      "corp_code": "00102027",
+      "listed": true,
+      "annual": {},
+      "quarterly": {}
+    }
   }
 }
