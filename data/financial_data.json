@@ -1,28 +1,6 @@
 {
-  "last_updated": "2026-06-23T08:00:00+09:00",
-  "latest_report": {
-    "LGL": {
-      "year": "2025",
-      "period": "annual",
-      "report_type": "사업보고서",
-      "filing_date": "2026-03-31",
-      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331000000"
-    },
-    "CJ": {
-      "year": "2025",
-      "period": "annual",
-      "report_type": "사업보고서",
-      "filing_date": "2026-03-17",
-      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260317001301"
-    },
-    "HJ": {
-      "year": "2025",
-      "period": "annual",
-      "report_type": "사업보고서",
-      "filing_date": "2026-03-20",
-      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260320001550"
-    }
-  },
+  "last_updated": "2026-06-23T18:53:40.610276+09:00",
+  "latest_report": {},
   "companies": {
     "LGL": {
       "name": "롯데글로벌로지스",
