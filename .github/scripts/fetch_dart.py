@@ -9,6 +9,7 @@ data/financial_data.json을 갱신한다.
 import argparse
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -20,9 +21,23 @@ BASE_URL = "https://opendart.fss.or.kr/api"
 KST = timezone(timedelta(hours=9))
 
 COMPANIES = {
-    "LGL": {"corp_code": "00207676", "name": "롯데글로벌로지스", "color": "#C8102E", "listed": False},
-    "CJ":  {"corp_code": "00113410", "name": "CJ대한통운",       "color": "#00A0DC", "listed": True},
-    "HJ":  {"corp_code": "00163512", "name": "한진",             "color": "#003087", "listed": True},
+    "LGL": {"corp_code": "00207676", "name": "롯데글로벌로지스", "color": "#C8102E", "listed": False,
+            "stock_type": "kotc", "stock_code": "040830"},
+    "CJ":  {"corp_code": "00113410", "name": "CJ대한통운",       "color": "#00A0DC", "listed": True,
+            "stock_type": "krx",  "stock_code": "000120"},
+    "HJ":  {"corp_code": "00163512", "name": "한진",             "color": "#003087", "listed": True,
+            "stock_type": "krx",  "stock_code": "002320"},
+}
+
+# 기간별 종가 기준일 (최근 거래일 기준)
+PERIOD_END_DATES = {
+    "annual": {
+        "2021": "20211230", "2022": "20221229", "2023": "20231228",
+        "2024": "20241230", "2025": "20251230", "2026": "20261231",
+    },
+    "Q1": {"2023": "20230331", "2024": "20240329", "2025": "20250331", "2026": "20260331"},
+    "Q2": {"2023": "20230630", "2024": "20240628", "2025": "20250630", "2026": "20260630"},
+    "Q3": {"2023": "20230929", "2024": "20240930", "2025": "20250930", "2026": "20260930"},
 }
 
 REPORT_CODES = {
@@ -33,6 +48,107 @@ REPORT_CODES = {
 }
 
 COLLECT_YEARS = ["2021", "2022", "2023", "2024", "2025", "2026"]
+
+# ── 주가 수집 ──────────────────────────────────────────────────────────────
+def fetch_naver_prices(symbol: str) -> dict:
+    """네이버 금융에서 KRX 종목 일별 종가 {YYYYMMDD: price} 반환"""
+    url = (f"https://fchart.stock.naver.com/sise.nhn"
+           f"?symbol={symbol}&timeframe=day&count=2000&requestType=0")
+    try:
+        r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+        prices = {}
+        for line in r.text.strip().split('\n'):
+            parts = line.strip().split('|')
+            if len(parts) >= 5 and parts[0] and parts[4] and parts[4] != '0':
+                prices[parts[0]] = int(parts[4])
+        return prices
+    except Exception as e:
+        print(f"  주가 수집 실패 ({symbol}): {e}")
+        return {}
+
+
+def fetch_kotc_prices(code: str) -> dict:
+    """38.co.kr에서 K-OTC 종목 일별 종가 {YYYYMMDD: price} 반환"""
+    url = f"https://www.38.co.kr/html/forum/board/?code={code}&o=kotc_sise"
+    try:
+        r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+        r.encoding = 'euc-kr'
+        prices = {}
+        rows = re.findall(r'<tr[^>]*>(.*?)</tr>', r.text, re.DOTALL | re.IGNORECASE)
+        for row in rows:
+            cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
+            if len(cells) >= 5:
+                date_text = re.sub(r'<[^>]+>', '', cells[0]).strip()
+                price_text = re.sub(r'<[^>]+>', '', cells[4]).strip().replace(',', '')
+                if re.match(r'\d{4}\.\d{2}\.\d{2}', date_text):
+                    date_key = date_text.replace('.', '')
+                    try:
+                        prices[date_key] = int(price_text)
+                    except ValueError:
+                        pass
+        return prices
+    except Exception as e:
+        print(f"  K-OTC 주가 수집 실패 ({code}): {e}")
+        return {}
+
+
+def get_period_end_price(prices: dict, target_date: str):
+    """기준일 이전 가장 가까운 거래일 종가 반환"""
+    if not prices:
+        return None
+    candidates = sorted([d for d in prices if d <= target_date], reverse=True)
+    return prices[candidates[0]] if candidates else None
+
+
+def collect_stock_prices(info: dict) -> dict:
+    """회사의 모든 기간말 주가 수집 {annual_2023: price, 2023Q1: price, ...}"""
+    stype = info.get("stock_type")
+    code  = info.get("stock_code")
+    if not code:
+        return {}
+
+    print(f"  주가 수집 중 ({stype}: {code})")
+    if stype == "krx":
+        prices = fetch_naver_prices(code)
+    else:
+        prices = fetch_kotc_prices(code)
+
+    if not prices:
+        return {}
+
+    result = {}
+    for year, date in PERIOD_END_DATES["annual"].items():
+        p = get_period_end_price(prices, date)
+        if p:
+            result[f"annual_{year}"] = p
+
+    for q in ["Q1", "Q2", "Q3"]:
+        for year, date in PERIOD_END_DATES[q].items():
+            p = get_period_end_price(prices, date)
+            if p:
+                result[f"{year}{q}"] = p
+
+    return result
+
+
+# ── 기업정보 수집 ────────────────────────────────────────────────────────────
+def fetch_company_info(corp_code: str, api_key: str) -> dict:
+    """DART에서 기업 기본정보 수집"""
+    data = dart_get("company.json", {"corp_code": corp_code}, api_key)
+    if not data:
+        return {}
+    return {
+        "ceo":          data.get("ceo_nm", ""),
+        "established":  data.get("est_dt", ""),
+        "employees":    None,
+        "industry":     data.get("induty_code", ""),
+        "address":      data.get("adres", ""),
+        "homepage":     data.get("hm_url", ""),
+        "phone":        data.get("phn_no", ""),
+        "fiscal_month": data.get("acc_mt", ""),
+        "auditor":      data.get("auditor_nm", ""),
+    }
+
 
 # ── DART API 헬퍼 ──────────────────────────────────────────────────────────
 def dart_get(endpoint: str, params: dict, api_key: str) -> dict | None:
@@ -276,17 +392,27 @@ def main():
         corp_code = info["corp_code"]
         print(f"\n[{code}] {info['name']} 수집 시작")
 
-        if code not in output["companies"]:
-            output["companies"][code] = {
-                "name": info["name"], "color": info["color"],
-                "corp_code": corp_code, "listed": info["listed"],
-                "annual": {}, "quarterly": {}
-            }
+        co_data = output["companies"].setdefault(code, {})
+        co_data.update({
+            "name": info["name"], "color": info["color"],
+            "corp_code": corp_code, "listed": info["listed"],
+            "stock_code": info.get("stock_code"), "stock_type": info.get("stock_type"),
+        })
+        co_data.setdefault("annual", {})
+        co_data.setdefault("quarterly", {})
+
+        # 기업정보 수집
+        print(f"  기업정보 수집 중...")
+        co_data["info"] = fetch_company_info(corp_code, api_key)
+
+        # 주가 수집
+        stock_prices = collect_stock_prices(info)
+        co_data["stock_prices"] = stock_prices
 
         for year in COLLECT_YEARS:
             result = collect_period(corp_code, api_key, year, "annual", REPORT_CODES["annual"])
             if result:
-                output["companies"][code]["annual"][year] = result
+                co_data["annual"][year] = result
                 if code not in latest_report or year > latest_report[code].get("year", ""):
                     ref = result.get("CFS") or result.get("OFS") or {}
                     latest_report[code] = {
@@ -306,7 +432,7 @@ def main():
                 period_key = f"{year}{q_key}"
                 result = collect_period(corp_code, api_key, year, q_key, reprt_code)
                 if result:
-                    output["companies"][code]["quarterly"][period_key] = result
+                    co_data["quarterly"][period_key] = result
 
     output["latest_report"] = latest_report
 

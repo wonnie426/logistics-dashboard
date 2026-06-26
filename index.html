@@ -88,6 +88,34 @@
     .period-btn { padding: 4px 14px; border: 1px solid var(--border); border-radius: 20px;
                   background: none; cursor: pointer; font-size: 12px; color: var(--text-sub); }
     .period-btn.active { background: var(--text); color: var(--card-bg); border-color: var(--text); }
+    /* 네이버 금융 스타일 복합 셀렉터 */
+    .fs-selector { display: flex; align-items: center; gap: 0; margin-bottom: 20px;
+                   border: 1px solid var(--border); border-radius: var(--radius);
+                   overflow: hidden; width: fit-content; }
+    .fs-btn { padding: 6px 18px; border: none; border-right: 1px solid var(--border);
+              background: var(--card-bg); cursor: pointer; font-size: 13px; color: var(--text-sub);
+              transition: all 0.15s; white-space: nowrap; }
+    .fs-btn:last-child { border-right: none; }
+    .fs-btn.active { background: var(--text); color: var(--card-bg); font-weight: 600; }
+    .fs-divider { width: 1px; background: var(--border); height: 32px; }
+    /* 기업개요 카드 */
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .overview-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .overview-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+    .overview-table td:first-child { color: var(--text-sub); width: 40%; font-weight: 500; }
+    .overview-table tr:last-child td { border-bottom: none; }
+    /* 재무요약 테이블 */
+    .fin-table { width: 100%; border-collapse: collapse; font-size: 13px; overflow-x: auto; }
+    .fin-table th { padding: 8px 12px; background: var(--bg); font-weight: 600;
+                    color: var(--text-sub); border-bottom: 2px solid var(--border);
+                    text-align: right; white-space: nowrap; }
+    .fin-table th:first-child { text-align: left; }
+    .fin-table td { padding: 7px 12px; border-bottom: 1px solid var(--border);
+                    text-align: right; font-variant-numeric: tabular-nums; }
+    .fin-table td:first-child { text-align: left; font-weight: 500; }
+    .fin-table tr:last-child td { border-bottom: none; }
+    .fin-table tr:hover td { background: var(--bg); }
+    .fin-table-wrap { overflow-x: auto; }
     .ratio-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .ratio-table th { text-align: left; padding: 8px 12px; background: var(--bg);
                       font-weight: 600; color: var(--text-sub); border-bottom: 1px solid var(--border); }
@@ -171,9 +199,15 @@ function getPeriodData(co, periodKey, fsDiv) {
   const result = {};
   for (const [k, v] of Object.entries(raw)) {
     if (!v) continue;
-    const def = v._default || 'CFS';
-    const chosen = v[fsDiv] || v[def] || v['CFS'] || v['OFS'];
-    if (chosen) result[k] = chosen;
+    // 신형 구조: {CFS:{...}, OFS:{...}, _default:'CFS'}
+    if (v._default || v.CFS || v.OFS) {
+      const def = v._default || 'CFS';
+      const chosen = v[fsDiv] || v[def] || v['CFS'] || v['OFS'];
+      if (chosen) result[k] = chosen;
+    } else {
+      // 구형 구조: 바로 데이터 객체
+      result[k] = v;
+    }
   }
   return result;
 }
@@ -324,34 +358,124 @@ function renderCompanyTab(code) {
   const ld    = dataMap?.[latest] || {};
   const r     = ld.ratios || {};
   const pl    = ld.pl    || {};
-  const bs    = ld.bs    || {};
 
-  const prevKey  = String(parseInt(latest || '0') - 1);
-  const prevData = getPeriodData(co, 'annual', fs);
-  const prevPl   = prevData[prevKey]?.pl || {};
-  const prevR    = prevData[prevKey]?.ratios || {};
+  const annualMap = getPeriodData(co, 'annual', fs);
+  const prevKey   = pMode === 'annual'
+    ? String(parseInt(latest || '0') - 1)
+    : keys[keys.length - 2] || '';
+  const prevLd    = (pMode === 'annual' ? annualMap : dataMap)?.[prevKey] || {};
+  const prevPl    = prevLd.pl    || {};
+  const prevR     = prevLd.ratios || {};
+
+  // 주가 헬퍼
+  const sp = co.stock_prices || {};
+  function stockForPeriod(k) {
+    const v = sp[pMode === 'annual' ? `annual_${k}` : k];
+    return v ? v.toLocaleString('ko-KR') + '원' : null;
+  }
+
+  // 기업개요 섹션
+  const info = co.info || {};
+  function infoRow(label, val) {
+    if (!val) return '';
+    return `<tr><td>${label}</td><td>${val}</td></tr>`;
+  }
+  const overviewHtml = `
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title" style="color:${color}">기업개요</div>
+      <div class="overview-grid">
+        <table class="overview-table">
+          ${infoRow('대표이사', info.ceo)}
+          ${infoRow('설립일', info.established ? info.established.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '')}
+          ${infoRow('업종코드', info.industry)}
+          ${infoRow('결산월', info.fiscal_month ? info.fiscal_month + '월' : '')}
+          ${infoRow('감사인', info.auditor)}
+        </table>
+        <table class="overview-table">
+          ${infoRow('주소', info.address)}
+          ${infoRow('전화', info.phone)}
+          ${info.homepage ? `<tr><td>홈페이지</td><td><a href="${info.homepage.startsWith('http') ? info.homepage : 'http://'+info.homepage}" target="_blank" style="color:${color}">${info.homepage}</a></td></tr>` : ''}
+        </table>
+      </div>
+    </div>`;
+
+  // 재무요약 테이블 (네이버금융 스타일)
+  const periodKeys = keys.slice(-8);
+  function finRow(label, getter, isPct, metric) {
+    const cells = periodKeys.map(k => {
+      const v = getter(dataMap[k]);
+      const rag = metric ? ragDot(metric, v) : '';
+      const txt = v == null ? '<span style="color:var(--text-sub)">—</span>' : (isPct ? fmt.pct(v) : fmt.won(v));
+      return `<td>${txt}${rag}</td>`;
+    }).join('');
+    const stk = stockForPeriod(periodKeys[periodKeys.length-1]);
+    return `<tr><td>${label}</td>${cells}</tr>`;
+  }
+  const finTableHtml = `
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">재무 요약</div>
+      <div class="fin-table-wrap">
+        <table class="fin-table">
+          <thead><tr>
+            <th>항목</th>
+            ${periodKeys.map(k => `<th>${k}</th>`).join('')}
+          </tr></thead>
+          <tbody>
+            ${finRow('매출액(억원)',     d => d?.pl?.revenue,           false)}
+            ${finRow('영업이익(억원)',   d => d?.pl?.operating_income,  false)}
+            ${finRow('당기순이익(억원)', d => d?.pl?.net_income,        false)}
+            ${finRow('영업이익률(%)',    d => d?.ratios?.operating_margin, true, 'operating_margin')}
+            ${finRow('ROE(%)',          d => d?.ratios?.roe,            true, 'roe')}
+            ${finRow('부채비율(%)',      d => d?.ratios?.debt_ratio,     true, 'debt_ratio')}
+            ${finRow('이자보상비율(배)', d => d?.ratios?.interest_coverage != null ? d.ratios.interest_coverage : null, false)}
+          </tbody>
+        </table>
+      </div>
+      <div class="source-label" style="margin-top:8px">
+        기준: ${ld.source || '데이터 없음'}
+        ${ld.report_url ? `<a href="${ld.report_url}" target="_blank" class="report-link">📄 원본 보고서</a>` : ''}
+      </div>
+    </div>`;
+
+  // 주가 카드
+  const stockLatestKey = pMode === 'annual' ? `annual_${latest}` : latest;
+  const stockPrice = sp[stockLatestKey];
+  const stockHtml = stockPrice ? `
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">기간말 종가 (${co.stock_type === 'kotc' ? 'K-OTC' : 'KRX'})</div>
+      <div class="fin-table-wrap">
+        <table class="fin-table">
+          <thead><tr><th>구분</th>${periodKeys.map(k => `<th>${k}</th>`).join('')}</tr></thead>
+          <tbody><tr><td>종가(원)</td>${periodKeys.map(k => {
+            const skey = pMode === 'annual' ? `annual_${k}` : k;
+            const sv = sp[skey];
+            return `<td>${sv ? sv.toLocaleString('ko-KR') : '<span style="color:var(--text-sub)">—</span>'}</td>`;
+          }).join('')}</tr></tbody>
+        </table>
+      </div>
+    </div>` : '';
 
   $(`tab-${code}`).innerHTML = `
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <span style="font-size:13px;color:var(--text-sub)">재무제표 기준:</span>
-      <button class="period-btn ${fs==='CFS'?'active':''}" onclick="setFs('${code}','CFS')">연결</button>
-      <button class="period-btn ${fs==='OFS'?'active':''}" onclick="setFs('${code}','OFS')">별도</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div style="font-size:18px;font-weight:700;color:${color}">${co.name}</div>
+      <div class="fs-selector">
+        <button class="fs-btn ${fs==='CFS'?'active':''}" onclick="setFs('${code}','CFS')">연결</button>
+        <button class="fs-btn ${fs==='OFS'?'active':''}" onclick="setFs('${code}','OFS')">별도</button>
+        <div class="fs-divider"></div>
+        <button class="fs-btn ${pMode==='annual'?'active':''}" onclick="setPeriod('${code}','annual')">연간</button>
+        <button class="fs-btn ${pMode==='quarterly'?'active':''}" onclick="setPeriod('${code}','quarterly')">분기</button>
+      </div>
     </div>
-    <div class="summary-grid">
+    ${overviewHtml}
+    <div class="summary-grid" style="margin-bottom:20px">
       ${sc('매출액', fmt.won(pl.revenue), changeHtml(pl.revenue, prevPl.revenue), null, null)}
       ${sc('영업이익률', fmt.pct(r.operating_margin), changeHtml(r.operating_margin, prevR.operating_margin), 'operating_margin', r.operating_margin)}
       ${sc('ROE(지배)', fmt.pct(r.roe), changeHtml(r.roe, prevR.roe), 'roe', r.roe)}
       ${sc('부채비율', fmt.pct(r.debt_ratio), changeHtml(r.debt_ratio, prevR.debt_ratio), 'debt_ratio', r.debt_ratio)}
       ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage)}
     </div>
-    <div class="source-label" style="margin-bottom:16px">
-      기준: ${ld.source || '데이터 없음'}
-      ${ld.report_url ? `<a href="${ld.report_url}" target="_blank" class="report-link">📄 원본 보고서</a>` : ''}
-    </div>
-    <div class="period-selector">
-      <button class="period-btn ${pMode==='annual'?'active':''}" onclick="setPeriod('${code}','annual')">연간</button>
-      <button class="period-btn ${pMode==='quarterly'?'active':''}" onclick="setPeriod('${code}','quarterly')">분기</button>
-    </div>
+    ${finTableHtml}
+    ${stockHtml}
     <div class="chart-grid">
       <div class="card">
         <div class="chart-title">매출액 · 영업이익 추이 (억원)
