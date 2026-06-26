@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-26T14:54:31.871377+09:00",
+  "last_updated": "2026-06-26T15:54:02.520906+09:00",
   "latest_report": {
     "LGL": {
       "year": "2025",
@@ -27,7 +27,7 @@
     "LGL": {
       "name": "롯데글로벌로지스",
       "color": "#C8102E",
-      "corp_code": "01388369",
+      "corp_code": "00207676",
       "listed": false,
       "annual": {
         "2023": {
@@ -1495,12 +1495,26 @@
           },
           "_default": "CFS"
         }
-      }
+      },
+      "stock_code": "040830",
+      "stock_type": "kotc",
+      "info": {
+        "ceo": "강병구",
+        "established": "19880613",
+        "employees": null,
+        "industry": "5299",
+        "address": "서울특별시 중구 통일로 10 (남대문로5가, 연세세브란스빌딩)",
+        "homepage": "https://www.lotteglogis.com",
+        "phone": "02-2170-3355",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
+      "stock_prices": {}
     },
     "CJ": {
       "name": "CJ대한통운",
       "color": "#00A0DC",
-      "corp_code": "00113526",
+      "corp_code": "00113410",
       "listed": true,
       "annual": {
         "2021": {
@@ -3500,12 +3514,26 @@
           },
           "_default": "CFS"
         }
-      }
+      },
+      "stock_code": "000120",
+      "stock_type": "krx",
+      "info": {
+        "ceo": "신영수, 민영학 (각자 대표)",
+        "established": "19301115",
+        "employees": null,
+        "industry": "493",
+        "address": "서울특별시 종로구 종로5길 7(청진동) Tower 8",
+        "homepage": "www.cjlogistics.com",
+        "phone": "02-3782-0114",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
+      "stock_prices": {}
     },
     "HJ": {
       "name": "한진",
       "color": "#003087",
-      "corp_code": "00102027",
+      "corp_code": "00163512",
       "listed": true,
       "annual": {
         "2021": {
@@ -5505,7 +5533,21 @@
           },
           "_default": "CFS"
         }
-      }
+      },
+      "stock_code": "002320",
+      "stock_type": "krx",
+      "info": {
+        "ceo": "노삼석",
+        "established": "19580310",
+        "employees": null,
+        "industry": "49309",
+        "address": "서울특별시 중구 남대문로 63 한진빌딩",
+        "homepage": "www.hanjin.com",
+        "phone": "02-728-5114",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
+      "stock_prices": {}
     }
   }
 }
