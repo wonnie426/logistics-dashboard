@@ -218,9 +218,21 @@ def fetch_accounts_both(corp_code: str, api_key: str, year: str, reprt_code: str
 
 # ── 계정명 → 값 매핑 ──────────────────────────────────────────────────────
 def find_account(accounts: list, *names: str) -> int | None:
+    # 1차: 정확히 일치
     for name in names:
         for acc in accounts:
             if acc.get("account_nm", "").strip() == name:
+                val = acc.get("thstrm_amount", "").replace(",", "").replace(" ", "")
+                if val and val not in ("", "-", "－"):
+                    try:
+                        return int(val)
+                    except ValueError:
+                        pass
+    # 2차: 포함 일치 (긴 이름 먼저)
+    for name in sorted(names, key=len, reverse=True):
+        for acc in accounts:
+            nm = acc.get("account_nm", "").strip()
+            if name in nm or nm in name:
                 val = acc.get("thstrm_amount", "").replace(",", "").replace(" ", "")
                 if val and val not in ("", "-", "－"):
                     try:
@@ -241,7 +253,9 @@ def parse_bs(accounts: list) -> dict:
         "total_equity":            find_account(accounts, "자본총계"),
         "controlling_equity":      find_account(accounts,
                                                "지배기업의 소유주에게 귀속되는 자본",
-                                               "지배기업 소유주지분", "지배기업소유주지분"),
+                                               "지배기업 소유주지분", "지배기업소유주지분",
+                                               "지배주주지분", "지배기업주주지분",
+                                               "지배기업 소유주에게 귀속되는 자본"),
         "cash_and_equivalents":    find_account(accounts, "현금및현금성자산"),
         "trade_receivables":       find_account(accounts, "매출채권", "매출채권 및 기타채권"),
         "inventory":               find_account(accounts, "재고자산"),
@@ -255,17 +269,33 @@ def parse_bs(accounts: list) -> dict:
 
 def parse_pl(accounts: list) -> dict:
     return {
-        "revenue":                find_account(accounts, "매출액", "영업수익"),
-        "cost_of_revenue":        find_account(accounts, "매출원가"),
-        "gross_profit":           find_account(accounts, "매출총이익"),
-        "sga":                    find_account(accounts, "판매비와관리비", "판매비및관리비"),
-        "operating_income":       find_account(accounts, "영업이익", "영업이익(손실)"),
-        "interest_expense":       find_account(accounts, "이자비용"),
-        "net_income":             find_account(accounts, "당기순이익", "당기순이익(손실)"),
+        "revenue":                find_account(accounts,
+                                               "매출액", "영업수익", "수익(매출액)",
+                                               "매출", "영업수익(매출액)"),
+        "cost_of_revenue":        find_account(accounts, "매출원가", "영업비용"),
+        "gross_profit":           find_account(accounts, "매출총이익", "매출총손익"),
+        "sga":                    find_account(accounts,
+                                               "판매비와관리비", "판매비및관리비",
+                                               "판매비와 관리비"),
+        "operating_income":       find_account(accounts,
+                                               "영업이익", "영업이익(손실)",
+                                               "영업손익"),
+        "interest_expense":       find_account(accounts,
+                                               "이자비용", "금융원가",
+                                               "이자비용(금융원가)"),
+        "net_income":             find_account(accounts,
+                                               "당기순이익", "당기순이익(손실)",
+                                               "당기순손익"),
         "controlling_net_income": find_account(accounts,
                                                "지배기업의 소유주에게 귀속되는 당기순이익",
-                                               "지배기업 소유주지분 당기순이익"),
-        "depreciation":           find_account(accounts, "감가상각비"),
+                                               "지배기업의 소유주에게 귀속되는 당기순이익(손실)",
+                                               "지배기업 소유주지분 당기순이익",
+                                               "지배기업 소유주에게 귀속되는 당기순이익",
+                                               "지배주주귀속 당기순이익",
+                                               "지배기업주주지분 순이익"),
+        "depreciation":           find_account(accounts,
+                                               "감가상각비", "유형자산감가상각비",
+                                               "감가상각 및 상각비"),
     }
 
 
