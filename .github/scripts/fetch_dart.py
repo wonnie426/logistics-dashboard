@@ -282,11 +282,13 @@ def parse_pl(accounts: list) -> dict:
                                                "영업손익"),
         "interest_expense":       find_account(accounts,
                                                "이자비용", "금융원가",
-                                               "이자비용(금융원가)"),
+                                               "이자비용(금융원가)",
+                                               "이자의 지급", "이자지급"),
         "net_income":             find_account(accounts,
                                                "당기순이익", "당기순이익(손실)",
                                                "당기순손익"),
         "controlling_net_income": find_account(accounts,
+                                               "지배기업 소유주 귀속 당기순이익",
                                                "지배기업의 소유주에게 귀속되는 당기순이익",
                                                "지배기업의 소유주에게 귀속되는 당기순이익(손실)",
                                                "지배기업 소유주지분 당기순이익",
@@ -304,6 +306,7 @@ def parse_cf(accounts: list) -> dict:
         "operating_cf":  find_account(accounts, "영업활동현금흐름", "영업활동으로 인한 현금흐름"),
         "investing_cf":  find_account(accounts, "투자활동현금흐름", "투자활동으로 인한 현금흐름"),
         "financing_cf":  find_account(accounts, "재무활동현금흐름", "재무활동으로 인한 현금흐름"),
+        "interest_paid": find_account(accounts, "이자의 지급", "이자지급", "이자비용 지급"),
     }
 
 
@@ -323,7 +326,7 @@ def calc_ratios(bs: dict, pl: dict, cf: dict) -> dict:
     ni  = pl.get("net_income")
     cni = pl.get("controlling_net_income")
     dep = pl.get("depreciation")
-    ie  = pl.get("interest_expense")
+    ie  = pl.get("interest_expense") or (abs(cf.get("interest_paid")) if cf.get("interest_paid") else None)
     ta  = bs.get("total_assets")
     tl  = bs.get("total_liabilities")
     eq  = bs.get("total_equity")
