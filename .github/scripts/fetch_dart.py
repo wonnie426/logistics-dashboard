@@ -339,13 +339,17 @@ def calc_ratios(bs: dict, pl: dict, cf: dict) -> dict:
     total_debt = sum(b for b in borrows if b is not None) if any(b is not None for b in borrows) else None
     total_debt_with_lease = (total_debt + ll) if (total_debt is not None and ll is not None) else total_debt
 
+    # controlling_equity 없으면 total_equity로 대체 (지배주주 100%인 경우 등)
+    roe_equity = ceq if ceq else eq
+    roe_income = cni if cni is not None else ni
+
     return {
         "gross_margin":         safe_div(pl.get("gross_profit"), rev, pct=True),
         "operating_margin":     safe_div(op, rev, pct=True),
         "ebitda_margin":        safe_div(ebitda, rev, pct=True),
         "net_margin":           safe_div(ni, rev, pct=True),
         "roa":                  safe_div(ni, ta, pct=True),
-        "roe":                  safe_div(cni, ceq, pct=True),
+        "roe":                  safe_div(roe_income, roe_equity, pct=True),
         "debt_ratio":           safe_div(tl, eq, pct=True),
         "debt_ratio_ex_lease":  safe_div((tl - ll) if (tl and ll) else tl, eq, pct=True),
         "current_ratio":        safe_div(ca, cl, pct=True),
