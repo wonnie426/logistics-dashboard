@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-26T16:42:22.785848+09:00",
+  "last_updated": "2026-06-26T17:33:50.481134+09:00",
   "latest_report": {
     "LGL": {
       "year": "2025",
@@ -44,7 +44,7 @@
               "current_liabilities": 846851523463,
               "non_current_liabilities": 1231886527902,
               "total_equity": 587337361346,
-              "controlling_equity": null,
+              "controlling_equity": 14792615817,
               "cash_and_equivalents": 108984024830,
               "trade_receivables": 398399327254,
               "inventory": 5024033054,
@@ -60,29 +60,30 @@
               "gross_profit": 269045576340,
               "sga": 205123935183,
               "operating_income": 63921641157,
-              "interest_expense": null,
+              "interest_expense": 63792252697,
               "net_income": 14826314831,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 14826314831,
+              "depreciation": 1042349778545
             },
             "cf": {
               "operating_cf": 219218663374,
               "investing_cf": -35565903159,
-              "financing_cf": -184998702174
+              "financing_cf": -184998702174,
+              "interest_paid": 50018493087
             },
             "ratios": {
               "gross_margin": 7.44,
               "operating_margin": 1.77,
-              "ebitda_margin": null,
+              "ebitda_margin": 30.61,
               "net_margin": 0.41,
               "roa": 0.56,
-              "roe": null,
+              "roe": 100.23,
               "debt_ratio": 353.93,
               "debt_ratio_ex_lease": 326.98,
               "current_ratio": 65.08,
               "equity_ratio": 22.03,
               "borrowing_dependency": 36.8,
-              "interest_coverage": null,
+              "interest_coverage": 1.0,
               "operating_cf_margin": 6.07
             },
             "market": {
@@ -125,20 +126,21 @@
               "gross_profit": 229647845492,
               "sga": 170966448620,
               "operating_income": 58681396872,
-              "interest_expense": null,
+              "interest_expense": 52505444307,
               "net_income": 15178312052,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 15178312052,
+              "depreciation": 1022722437104
             },
             "cf": {
               "operating_cf": 182133112239,
               "investing_cf": -31308718535,
-              "financing_cf": -164596398732
+              "financing_cf": -164596398732,
+              "interest_paid": 45964867806
             },
             "ratios": {
               "gross_margin": 7.14,
               "operating_margin": 1.83,
-              "ebitda_margin": null,
+              "ebitda_margin": 33.64,
               "net_margin": 0.47,
               "roa": 0.61,
               "roe": null,
@@ -147,7 +149,7 @@
               "current_ratio": 57.49,
               "equity_ratio": 22.07,
               "borrowing_dependency": 38.71,
-              "interest_coverage": null,
+              "interest_coverage": 1.12,
               "operating_cf_margin": 5.67
             },
             "market": {
@@ -177,7 +179,7 @@
               "current_liabilities": 804374959976,
               "non_current_liabilities": 1315829809077,
               "total_equity": 622071434467,
-              "controlling_equity": null,
+              "controlling_equity": 40294389009,
               "cash_and_equivalents": 159169225287,
               "trade_receivables": 375025940547,
               "inventory": 0,
@@ -193,29 +195,30 @@
               "gross_profit": 315170595933,
               "sga": 224964802890,
               "operating_income": 90205793043,
-              "interest_expense": null,
+              "interest_expense": 77683086153,
               "net_income": 40521876947,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 40521876947,
+              "depreciation": 1017752294523
             },
             "cf": {
               "operating_cf": 306011928307,
               "investing_cf": -71205217257,
-              "financing_cf": -193390963811
+              "financing_cf": -193390963811,
+              "interest_paid": 59976065511
             },
             "ratios": {
               "gross_margin": 8.82,
               "operating_margin": 2.52,
-              "ebitda_margin": null,
+              "ebitda_margin": 31.01,
               "net_margin": 1.13,
               "roa": 1.48,
-              "roe": null,
+              "roe": 100.56,
               "debt_ratio": 340.83,
               "debt_ratio_ex_lease": 313.56,
               "current_ratio": 75.16,
               "equity_ratio": 22.68,
               "borrowing_dependency": 34.76,
-              "interest_coverage": null,
+              "interest_coverage": 1.16,
               "operating_cf_margin": 8.56
             },
             "market": {
@@ -258,20 +261,21 @@
               "gross_profit": 267523581621,
               "sga": 184357920072,
               "operating_income": 83165661549,
-              "interest_expense": null,
+              "interest_expense": 70091755191,
               "net_income": 32097196932,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 32097196932,
+              "depreciation": 1006894083044
             },
             "cf": {
               "operating_cf": 286096253750,
               "investing_cf": -69868343261,
-              "financing_cf": -176220178485
+              "financing_cf": -176220178485,
+              "interest_paid": 55662900008
             },
             "ratios": {
               "gross_margin": 8.2,
               "operating_margin": 2.55,
-              "ebitda_margin": null,
+              "ebitda_margin": 33.43,
               "net_margin": 0.98,
               "roa": 1.27,
               "roe": null,
@@ -280,7 +284,7 @@
               "current_ratio": 66.23,
               "equity_ratio": 22.63,
               "borrowing_dependency": 36.54,
-              "interest_coverage": null,
+              "interest_coverage": 1.19,
               "operating_cf_margin": 8.77
             },
             "market": {
@@ -310,7 +314,7 @@
               "current_liabilities": 904154463919,
               "non_current_liabilities": 1204056284683,
               "total_equity": 636508696498,
-              "controlling_equity": null,
+              "controlling_equity": 13373975751,
               "cash_and_equivalents": 94512709695,
               "trade_receivables": 382630288339,
               "inventory": 0,
@@ -326,29 +330,30 @@
               "gross_profit": 315757708854,
               "sga": 234052449141,
               "operating_income": 81705259713,
-              "interest_expense": null,
+              "interest_expense": 77636958036,
               "net_income": 13374655727,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 13374655727,
+              "depreciation": 1030348400392
             },
             "cf": {
               "operating_cf": 248694836366,
               "investing_cf": -67091192667,
-              "financing_cf": -245504099820
+              "financing_cf": -245504099820,
+              "interest_paid": 58835752072
             },
             "ratios": {
               "gross_margin": 9.28,
               "operating_margin": 2.4,
-              "ebitda_margin": null,
+              "ebitda_margin": 32.69,
               "net_margin": 0.39,
               "roa": 0.49,
-              "roe": null,
+              "roe": 100.01,
               "debt_ratio": 331.21,
               "debt_ratio_ex_lease": 303.64,
               "current_ratio": 60.6,
               "equity_ratio": 23.19,
               "borrowing_dependency": 32.03,
-              "interest_coverage": null,
+              "interest_coverage": 1.05,
               "operating_cf_margin": 7.31
             },
             "market": {
@@ -391,20 +396,21 @@
               "gross_profit": 264496309515,
               "sga": 192281392685,
               "operating_income": 72214916830,
-              "interest_expense": null,
+              "interest_expense": 63287608182,
               "net_income": 13450766067,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 13450766067,
+              "depreciation": 982084122303
             },
             "cf": {
               "operating_cf": 226334540201,
               "investing_cf": -44755423302,
-              "financing_cf": -226806075544
+              "financing_cf": -226806075544,
+              "interest_paid": 57577488756
             },
             "ratios": {
               "gross_margin": 8.53,
               "operating_margin": 2.33,
-              "ebitda_margin": null,
+              "ebitda_margin": 34.01,
               "net_margin": 0.43,
               "roa": 0.53,
               "roe": null,
@@ -413,7 +419,7 @@
               "current_ratio": 54.5,
               "equity_ratio": 23.34,
               "borrowing_dependency": 33.34,
-              "interest_coverage": null,
+              "interest_coverage": 1.14,
               "operating_cf_margin": 7.3
             },
             "market": {
@@ -448,7 +454,7 @@
               "controlling_equity": null,
               "cash_and_equivalents": 83862508584,
               "trade_receivables": 402838372700,
-              "inventory": null,
+              "inventory": 5355069661,
               "short_term_borrowings": 33020630350,
               "current_portion_lt_debt": 320414336218,
               "long_term_borrowings": 191500000000,
@@ -461,20 +467,21 @@
               "gross_profit": 66974152074,
               "sga": 50074526805,
               "operating_income": 16899625269,
-              "interest_expense": null,
+              "interest_expense": 19272786492,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1037549232537
             },
             "cf": {
               "operating_cf": 172072081394,
               "investing_cf": -30631524386,
-              "financing_cf": -169429866762
+              "financing_cf": -169429866762,
+              "interest_paid": 36895117412
             },
             "ratios": {
               "gross_margin": 7.44,
               "operating_margin": 1.88,
-              "ebitda_margin": null,
+              "ebitda_margin": 117.12,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -483,7 +490,7 @@
               "current_ratio": 63.3,
               "equity_ratio": 22.51,
               "borrowing_dependency": 36.16,
-              "interest_coverage": null,
+              "interest_coverage": 0.88,
               "operating_cf_margin": 19.11
             },
             "market": {
@@ -513,7 +520,7 @@
               "controlling_equity": null,
               "cash_and_equivalents": 58785465408,
               "trade_receivables": 378194937252,
-              "inventory": null,
+              "inventory": 5355069661,
               "short_term_borrowings": 30000000000,
               "current_portion_lt_debt": 317414336218,
               "long_term_borrowings": 191500000000,
@@ -526,20 +533,21 @@
               "gross_profit": 57140351577,
               "sga": 41900864124,
               "operating_income": 15239487453,
-              "interest_expense": null,
+              "interest_expense": 15797126303,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1017481438644
             },
             "cf": {
               "operating_cf": 140839955206,
               "investing_cf": -13304873195,
-              "financing_cf": -153074363407
+              "financing_cf": -153074363407,
+              "interest_paid": 33744628090
             },
             "ratios": {
               "gross_margin": 6.99,
               "operating_margin": 1.86,
-              "ebitda_margin": null,
+              "ebitda_margin": 126.29,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -548,7 +556,7 @@
               "current_ratio": 55.99,
               "equity_ratio": 22.47,
               "borrowing_dependency": 38.02,
-              "interest_coverage": null,
+              "interest_coverage": 0.96,
               "operating_cf_margin": 17.22
             },
             "market": {
@@ -578,7 +586,7 @@
               "current_liabilities": 698458564386,
               "non_current_liabilities": 1415260794736,
               "total_equity": 596175632530,
-              "controlling_equity": null,
+              "controlling_equity": 6856445918,
               "cash_and_equivalents": 98924719383,
               "trade_receivables": 400437167323,
               "inventory": 5091928538,
@@ -594,29 +602,30 @@
               "gross_profit": 73952604277,
               "sga": 51625885412,
               "operating_income": 22326718865,
-              "interest_expense": null,
+              "interest_expense": 19862287722,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 6856445918,
+              "depreciation": 1039540569744
             },
             "cf": {
               "operating_cf": 56850383046,
               "investing_cf": -38644584670,
-              "financing_cf": -29864417460
+              "financing_cf": -29864417460,
+              "interest_paid": 14394875594
             },
             "ratios": {
               "gross_margin": 8.35,
               "operating_margin": 2.52,
-              "ebitda_margin": null,
+              "ebitda_margin": 119.86,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 354.55,
               "debt_ratio_ex_lease": 327.92,
               "current_ratio": 82.49,
               "equity_ratio": 22.0,
               "borrowing_dependency": 36.64,
-              "interest_coverage": null,
+              "interest_coverage": 1.12,
               "operating_cf_margin": 6.42
             },
             "market": {
@@ -659,20 +668,21 @@
               "gross_profit": 61669893151,
               "sga": 42052117201,
               "operating_income": 19617775950,
-              "interest_expense": null,
+              "interest_expense": 18113356251,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1019950593382
             },
             "cf": {
               "operating_cf": 51341947060,
               "investing_cf": -16843952474,
-              "financing_cf": -26155001395
+              "financing_cf": -26155001395,
+              "interest_paid": 13342947991
             },
             "ratios": {
               "gross_margin": 7.66,
               "operating_margin": 2.44,
-              "ebitda_margin": null,
+              "ebitda_margin": 129.1,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -681,7 +691,7 @@
               "current_ratio": 73.61,
               "equity_ratio": 22.09,
               "borrowing_dependency": 38.71,
-              "interest_coverage": null,
+              "interest_coverage": 1.08,
               "operating_cf_margin": 6.38
             },
             "market": {
@@ -711,7 +721,7 @@
               "current_liabilities": 871650005214,
               "non_current_liabilities": 1362171826854,
               "total_equity": 605325384534,
-              "controlling_equity": null,
+              "controlling_equity": 18066958067,
               "cash_and_equivalents": 212050265720,
               "trade_receivables": 397395113341,
               "inventory": 129988,
@@ -727,29 +737,30 @@
               "gross_profit": 83667738003,
               "sga": 55249727214,
               "operating_income": 28418010789,
-              "interest_expense": null,
+              "interest_expense": 20271660009,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 18066958067,
+              "depreciation": 1012275882459
             },
             "cf": {
               "operating_cf": 196503450935,
               "investing_cf": -38965821733,
-              "financing_cf": -56595888117
+              "financing_cf": -56595888117,
+              "interest_paid": 28210133586
             },
             "ratios": {
               "gross_margin": 9.35,
               "operating_margin": 3.18,
-              "ebitda_margin": null,
+              "ebitda_margin": 116.31,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 369.03,
               "debt_ratio_ex_lease": 341.14,
               "current_ratio": 80.69,
               "equity_ratio": 21.32,
               "borrowing_dependency": 35.69,
-              "interest_coverage": null,
+              "interest_coverage": 1.4,
               "operating_cf_margin": 21.96
             },
             "market": {
@@ -792,20 +803,21 @@
               "gross_profit": 72211645709,
               "sga": 45573214354,
               "operating_income": 26638431355,
-              "interest_expense": null,
+              "interest_expense": 18645716819,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1000683083097
             },
             "cf": {
               "operating_cf": 185620409040,
               "investing_cf": -39427010127,
-              "financing_cf": -50801703469
+              "financing_cf": -50801703469,
+              "interest_paid": 26146238902
             },
             "ratios": {
               "gross_margin": 8.83,
               "operating_margin": 3.26,
-              "ebitda_margin": null,
+              "ebitda_margin": 125.63,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -814,7 +826,7 @@
               "current_ratio": 72.67,
               "equity_ratio": 21.33,
               "borrowing_dependency": 37.57,
-              "interest_coverage": null,
+              "interest_coverage": 1.43,
               "operating_cf_margin": 22.7
             },
             "market": {
@@ -844,7 +856,7 @@
               "current_liabilities": 753020317963,
               "non_current_liabilities": 1377747553372,
               "total_equity": 609184191988,
-              "controlling_equity": null,
+              "controlling_equity": 9609993959,
               "cash_and_equivalents": 160716386437,
               "trade_receivables": 374591992695,
               "inventory": 0,
@@ -860,29 +872,30 @@
               "gross_profit": 77641074708,
               "sga": 56168903309,
               "operating_income": 21472171399,
-              "interest_expense": null,
+              "interest_expense": 15859849612,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 9609993959,
+              "depreciation": 1017738880862
             },
             "cf": {
               "operating_cf": 245805450430,
               "investing_cf": -52987074653,
-              "financing_cf": -142017635778
+              "financing_cf": -142017635778,
+              "interest_paid": 45426535428
             },
             "ratios": {
               "gross_margin": 8.62,
               "operating_margin": 2.38,
-              "ebitda_margin": null,
+              "ebitda_margin": 115.33,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 349.77,
               "debt_ratio_ex_lease": 322.56,
               "current_ratio": 80.94,
               "equity_ratio": 22.23,
               "borrowing_dependency": 34.8,
-              "interest_coverage": null,
+              "interest_coverage": 1.35,
               "operating_cf_margin": 27.28
             },
             "market": {
@@ -925,20 +938,21 @@
               "gross_profit": 65637799147,
               "sga": 45830606551,
               "operating_income": 19807192596,
-              "interest_expense": null,
+              "interest_expense": 14442498613,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1006522586577
             },
             "cf": {
               "operating_cf": 241968732507,
               "investing_cf": -52903655766,
-              "financing_cf": -131353893919
+              "financing_cf": -131353893919,
+              "interest_paid": 42286830096
             },
             "ratios": {
               "gross_margin": 7.96,
               "operating_margin": 2.4,
-              "ebitda_margin": null,
+              "ebitda_margin": 124.41,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -947,7 +961,7 @@
               "current_ratio": 72.18,
               "equity_ratio": 22.22,
               "borrowing_dependency": 36.38,
-              "interest_coverage": null,
+              "interest_coverage": 1.37,
               "operating_cf_margin": 29.33
             },
             "market": {
@@ -977,7 +991,7 @@
               "current_liabilities": 877397820555,
               "non_current_liabilities": 1197841874087,
               "total_equity": 621287511305,
-              "controlling_equity": null,
+              "controlling_equity": 5272378634,
               "cash_and_equivalents": 152187280615,
               "trade_receivables": 360916734277,
               "inventory": null,
@@ -993,29 +1007,30 @@
               "gross_profit": 75325664088,
               "sga": 55366619301,
               "operating_income": 19959044787,
-              "interest_expense": null,
+              "interest_expense": 17867737721,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 5272378634,
+              "depreciation": 1005541263915
             },
             "cf": {
               "operating_cf": 56164806916,
               "investing_cf": -7967694001,
-              "financing_cf": -54867885755
+              "financing_cf": -54867885755,
+              "interest_paid": 16206426928
             },
             "ratios": {
               "gross_margin": 9.11,
               "operating_margin": 2.41,
-              "ebitda_margin": null,
+              "ebitda_margin": 123.97,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 334.02,
               "debt_ratio_ex_lease": 306.65,
               "current_ratio": 67.24,
               "equity_ratio": 23.04,
               "borrowing_dependency": 34.84,
-              "interest_coverage": null,
+              "interest_coverage": 1.12,
               "operating_cf_margin": 6.79
             },
             "market": {
@@ -1058,20 +1073,21 @@
               "gross_profit": 63537841344,
               "sga": 45064757335,
               "operating_income": 18473084009,
-              "interest_expense": null,
+              "interest_expense": 16914660265,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 993786425719
             },
             "cf": {
               "operating_cf": 64336881553,
               "investing_cf": -7422523525,
-              "financing_cf": -50361834486
+              "financing_cf": -50361834486,
+              "interest_paid": 15916168686
             },
             "ratios": {
               "gross_margin": 8.48,
               "operating_margin": 2.46,
-              "ebitda_margin": null,
+              "ebitda_margin": 135.05,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -1080,7 +1096,7 @@
               "current_ratio": 58.43,
               "equity_ratio": 22.92,
               "borrowing_dependency": 36.48,
-              "interest_coverage": null,
+              "interest_coverage": 1.09,
               "operating_cf_margin": 8.58
             },
             "market": {
@@ -1110,7 +1126,7 @@
               "current_liabilities": 936944644191,
               "non_current_liabilities": 1114277953079,
               "total_equity": 613280438417,
-              "controlling_equity": null,
+              "controlling_equity": -511269226,
               "cash_and_equivalents": 91810402385,
               "trade_receivables": 360445877231,
               "inventory": null,
@@ -1126,29 +1142,30 @@
               "gross_profit": 80921414452,
               "sga": 59979583410,
               "operating_income": 20941831042,
-              "interest_expense": null,
+              "interest_expense": 26583197936,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -511269226,
+              "depreciation": 1018574993313
             },
             "cf": {
               "operating_cf": 135666886845,
               "investing_cf": -32915898139,
-              "financing_cf": -165471971261
+              "financing_cf": -165471971261,
+              "interest_paid": 29323006811
             },
             "ratios": {
               "gross_margin": 9.76,
               "operating_margin": 2.53,
-              "ebitda_margin": null,
+              "ebitda_margin": 125.36,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 334.47,
               "debt_ratio_ex_lease": 306.12,
               "current_ratio": 55.24,
               "equity_ratio": 23.02,
               "borrowing_dependency": 32.76,
-              "interest_coverage": null,
+              "interest_coverage": 0.79,
               "operating_cf_margin": 16.36
             },
             "market": {
@@ -1191,20 +1208,21 @@
               "gross_profit": 68456721335,
               "sga": 49905619740,
               "operating_income": 18551101595,
-              "interest_expense": null,
+              "interest_expense": 19932736414,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 989904856811
             },
             "cf": {
               "operating_cf": 126755239973,
               "investing_cf": -14931610974,
-              "financing_cf": -154317967746
+              "financing_cf": -154317967746,
+              "interest_paid": 28761523367
             },
             "ratios": {
               "gross_margin": 8.86,
               "operating_margin": 2.4,
-              "ebitda_margin": null,
+              "ebitda_margin": 130.48,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -1213,7 +1231,7 @@
               "current_ratio": 48.65,
               "equity_ratio": 23.15,
               "borrowing_dependency": 34.11,
-              "interest_coverage": null,
+              "interest_coverage": 0.93,
               "operating_cf_margin": 16.4
             },
             "market": {
@@ -1243,7 +1261,7 @@
               "current_liabilities": 952569314039,
               "non_current_liabilities": 1214749805801,
               "total_equity": 625566335784,
-              "controlling_equity": null,
+              "controlling_equity": 7588683097,
               "cash_and_equivalents": 165384871709,
               "trade_receivables": 392969730980,
               "inventory": null,
@@ -1259,29 +1277,30 @@
               "gross_profit": 82875247928,
               "sga": 58818338427,
               "operating_income": 24056909501,
-              "interest_expense": null,
+              "interest_expense": 14541508212,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 7588683097,
+              "depreciation": 1023529940838
             },
             "cf": {
               "operating_cf": 186901706126,
               "investing_cf": -53265100291,
-              "financing_cf": -125797323614
+              "financing_cf": -125797323614,
+              "interest_paid": 44667648158
             },
             "ratios": {
               "gross_margin": 9.45,
               "operating_margin": 2.74,
-              "ebitda_margin": null,
+              "ebitda_margin": 119.46,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 346.46,
               "debt_ratio_ex_lease": 318.23,
               "current_ratio": 65.08,
               "equity_ratio": 22.4,
               "borrowing_dependency": 34.06,
-              "interest_coverage": null,
+              "interest_coverage": 1.65,
               "operating_cf_margin": 21.31
             },
             "market": {
@@ -1324,20 +1343,21 @@
               "gross_profit": 70563964465,
               "sga": 49663235988,
               "operating_income": 20900728477,
-              "interest_expense": null,
+              "interest_expense": 12073469782,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 983311734406
             },
             "cf": {
               "operating_cf": 171103860972,
               "investing_cf": -29485763210,
-              "financing_cf": -117781727173
+              "financing_cf": -117781727173,
+              "interest_paid": 43810726150
             },
             "ratios": {
               "gross_margin": 8.82,
               "operating_margin": 2.61,
-              "ebitda_margin": null,
+              "ebitda_margin": 125.55,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -1346,7 +1366,7 @@
               "current_ratio": 59.62,
               "equity_ratio": 22.53,
               "borrowing_dependency": 35.45,
-              "interest_coverage": null,
+              "interest_coverage": 1.73,
               "operating_cf_margin": 21.39
             },
             "market": {
@@ -1376,7 +1396,7 @@
               "current_liabilities": 839897242476,
               "non_current_liabilities": 1226792048906,
               "total_equity": 690132554200,
-              "controlling_equity": null,
+              "controlling_equity": 2859412904,
               "cash_and_equivalents": 83732689907,
               "trade_receivables": 384563595583,
               "inventory": null,
@@ -1392,29 +1412,30 @@
               "gross_profit": 75051036205,
               "sga": 57177592370,
               "operating_income": 17873443835,
-              "interest_expense": null,
+              "interest_expense": 21263459449,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 2859412904,
+              "depreciation": 1030285831227
             },
             "cf": {
               "operating_cf": 65390337119,
               "investing_cf": -12883129130,
-              "financing_cf": -64462450408
+              "financing_cf": -64462450408,
+              "interest_paid": 17813590110
             },
             "ratios": {
               "gross_margin": 8.79,
               "operating_margin": 2.09,
-              "ebitda_margin": null,
+              "ebitda_margin": 122.81,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 299.46,
               "debt_ratio_ex_lease": 275.49,
               "current_ratio": 65.03,
               "equity_ratio": 25.03,
               "borrowing_dependency": 28.98,
-              "interest_coverage": null,
+              "interest_coverage": 0.84,
               "operating_cf_margin": 7.66
             },
             "market": {
@@ -1457,20 +1478,21 @@
               "gross_profit": 61274478003,
               "sga": 46462058673,
               "operating_income": 14812419330,
-              "interest_expense": null,
+              "interest_expense": 20082321159,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 969631911413
             },
             "cf": {
               "operating_cf": 56677725710,
               "investing_cf": -7740308740,
-              "financing_cf": -55501101339
+              "financing_cf": -55501101339,
+              "interest_paid": 16419491009
             },
             "ratios": {
               "gross_margin": 8.0,
               "operating_margin": 1.93,
-              "ebitda_margin": null,
+              "ebitda_margin": 128.48,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -1479,7 +1501,7 @@
               "current_ratio": 58.54,
               "equity_ratio": 25.24,
               "borrowing_dependency": 30.17,
-              "interest_coverage": null,
+              "interest_coverage": 0.74,
               "operating_cf_margin": 7.4
             },
             "market": {
@@ -1535,10 +1557,10 @@
               "cash_and_equivalents": 229501708263,
               "trade_receivables": 1371077751375,
               "inventory": 25128745438,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 648594185264,
+              "current_portion_lt_debt": 648594185264,
+              "long_term_borrowings": 648594185264,
+              "bonds_payable": 199356848400,
               "lease_liabilities": 221662831736
             },
             "pl": {
@@ -1547,20 +1569,21 @@
               "gross_profit": 1071328065207,
               "sga": 727447299540,
               "operating_income": 343880765667,
-              "interest_expense": null,
+              "interest_expense": 204227563293,
               "net_income": 158279696245,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 158279696245,
+              "depreciation": 3312064212910
             },
             "cf": {
               "operating_cf": 344143274398,
               "investing_cf": 366409537628,
-              "financing_cf": -877201844759
+              "financing_cf": -877201844759,
+              "interest_paid": 90343120423
             },
             "ratios": {
               "gross_margin": 9.44,
               "operating_margin": 3.03,
-              "ebitda_margin": null,
+              "ebitda_margin": 32.23,
               "net_margin": 1.4,
               "roa": 1.76,
               "roe": null,
@@ -1568,8 +1591,8 @@
               "debt_ratio_ex_lease": 118.41,
               "current_ratio": 95.89,
               "equity_ratio": 44.66,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 26.32,
+              "interest_coverage": 1.68,
               "operating_cf_margin": 3.03
             },
             "market": {
@@ -1600,10 +1623,10 @@
               "cash_and_equivalents": 25186286181,
               "trade_receivables": 954223782052,
               "inventory": 14353303513,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 360170243554,
+              "current_portion_lt_debt": 360170243554,
+              "long_term_borrowings": 360170243554,
+              "bonds_payable": 199356848400,
               "lease_liabilities": 170923262492
             },
             "pl": {
@@ -1612,20 +1635,21 @@
               "gross_profit": 760447844408,
               "sga": 502780896981,
               "operating_income": 257666947427,
-              "interest_expense": null,
+              "interest_expense": 134854296673,
               "net_income": 93781500926,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 93781500926,
+              "depreciation": 2729097100690
             },
             "cf": {
               "operating_cf": 242949507880,
               "investing_cf": 24838927679,
-              "financing_cf": -455922152657
+              "financing_cf": -455922152657,
+              "interest_paid": 58227805565
             },
             "ratios": {
               "gross_margin": 9.84,
               "operating_margin": 3.33,
-              "ebitda_margin": null,
+              "ebitda_margin": 38.65,
               "net_margin": 1.21,
               "roa": 1.32,
               "roe": null,
@@ -1633,8 +1657,8 @@
               "debt_ratio_ex_lease": 102.48,
               "current_ratio": 77.13,
               "equity_ratio": 48.2,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 20.47,
+              "interest_coverage": 1.91,
               "operating_cf_margin": 3.14
             },
             "market": {
@@ -1668,10 +1692,10 @@
               "cash_and_equivalents": 582914148949,
               "trade_receivables": 1422739126795,
               "inventory": 34299355194,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1316083053534,
+              "current_portion_lt_debt": 1316083053534,
+              "long_term_borrowings": 1316083053534,
+              "bonds_payable": 209333268400,
               "lease_liabilities": 272027186131
             },
             "pl": {
@@ -1680,20 +1704,21 @@
               "gross_profit": 1186006559171,
               "sga": 774219671929,
               "operating_income": 411786887242,
-              "interest_expense": null,
+              "interest_expense": 203802164791,
               "net_income": 196821784424,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 196821784424,
+              "depreciation": 3364173934235
             },
             "cf": {
               "operating_cf": 622939080023,
               "investing_cf": -566860798377,
-              "financing_cf": 290402311158
+              "financing_cf": 290402311158,
+              "interest_paid": 107059540235
             },
             "ratios": {
               "gross_margin": 9.78,
               "operating_margin": 3.39,
-              "ebitda_margin": null,
+              "ebitda_margin": 31.13,
               "net_margin": 1.62,
               "roa": 2.03,
               "roe": null,
@@ -1701,8 +1726,8 @@
               "debt_ratio_ex_lease": 133.53,
               "current_ratio": 95.1,
               "equity_ratio": 41.62,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 45.7,
+              "interest_coverage": 2.02,
               "operating_cf_margin": 5.14
             },
             "market": {
@@ -1733,10 +1758,10 @@
               "cash_and_equivalents": 338843218120,
               "trade_receivables": 982801310506,
               "inventory": 20928752661,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1089893157007,
+              "current_portion_lt_debt": 1089893157007,
+              "long_term_borrowings": 1089893157007,
+              "bonds_payable": 209333268400,
               "lease_liabilities": 206474314718
             },
             "pl": {
@@ -1745,20 +1770,21 @@
               "gross_profit": 808770552904,
               "sga": 546047168158,
               "operating_income": 262723384746,
-              "interest_expense": null,
+              "interest_expense": 126751925547,
               "net_income": 200576208654,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 200576208654,
+              "depreciation": 2791920611050
             },
             "cf": {
               "operating_cf": 485405488649,
               "investing_cf": -546674709666,
-              "financing_cf": 374968635283
+              "financing_cf": 374968635283,
+              "interest_paid": 71338478975
             },
             "ratios": {
               "gross_margin": 9.85,
               "operating_margin": 3.2,
-              "ebitda_margin": null,
+              "ebitda_margin": 37.19,
               "net_margin": 2.44,
               "roa": 2.56,
               "roe": null,
@@ -1766,8 +1792,8 @@
               "debt_ratio_ex_lease": 122.33,
               "current_ratio": 78.55,
               "equity_ratio": 43.79,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 47.1,
+              "interest_coverage": 2.07,
               "operating_cf_margin": 5.91
             },
             "market": {
@@ -1801,10 +1827,10 @@
               "cash_and_equivalents": 290135224989,
               "trade_receivables": 1433160224550,
               "inventory": 29836219535,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1156632659433,
+              "current_portion_lt_debt": 1156632659433,
+              "long_term_borrowings": 1156632659433,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 321336950813
             },
             "pl": {
@@ -1813,29 +1839,30 @@
               "gross_profit": 1299127546139,
               "sga": null,
               "operating_income": 480234863157,
-              "interest_expense": null,
+              "interest_expense": 230064840603,
               "net_income": 242876054885,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 224803078902,
+              "depreciation": 3327912582905
             },
             "cf": {
               "operating_cf": 836599672323,
               "investing_cf": -80050815864,
-              "financing_cf": -1055669537274
+              "financing_cf": -1055669537274,
+              "interest_paid": 140365852287
             },
             "ratios": {
               "gross_margin": 11.04,
               "operating_margin": 4.08,
-              "ebitda_margin": null,
+              "ebitda_margin": 32.36,
               "net_margin": 2.06,
               "roa": 2.6,
-              "roe": null,
+              "roe": 6.24,
               "debt_ratio": 131.45,
               "debt_ratio_ex_lease": 123.5,
               "current_ratio": 94.89,
               "equity_ratio": 43.21,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 44.78,
+              "interest_coverage": 2.09,
               "operating_cf_margin": 7.11
             },
             "market": {
@@ -1866,10 +1893,10 @@
               "cash_and_equivalents": 79940581173,
               "trade_receivables": 958716126975,
               "inventory": 19651745110,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1023190914962,
+              "current_portion_lt_debt": 1023190914962,
+              "long_term_borrowings": 1023190914962,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 245956291720
             },
             "pl": {
@@ -1878,20 +1905,21 @@
               "gross_profit": 906284455902,
               "sga": null,
               "operating_income": 330671488073,
-              "interest_expense": null,
+              "interest_expense": 144582319287,
               "net_income": 208606874310,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 208606874310,
+              "depreciation": 2744048981756
             },
             "cf": {
               "operating_cf": 676107048039,
               "investing_cf": -31210417772,
-              "financing_cf": -903845154449
+              "financing_cf": -903845154449,
+              "interest_paid": 97226196093
             },
             "ratios": {
               "gross_margin": 11.19,
               "operating_margin": 4.08,
-              "ebitda_margin": null,
+              "ebitda_margin": 37.97,
               "net_margin": 2.58,
               "roa": 2.78,
               "roe": null,
@@ -1899,8 +1927,8 @@
               "debt_ratio_ex_lease": 111.33,
               "current_ratio": 79.53,
               "equity_ratio": 45.77,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 49.54,
+              "interest_coverage": 2.29,
               "operating_cf_margin": 8.35
             },
             "market": {
@@ -1934,10 +1962,10 @@
               "cash_and_equivalents": 277178323233,
               "trade_receivables": 1600260148395,
               "inventory": 36018783815,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1074501772815,
+              "current_portion_lt_debt": 1074501772815,
+              "long_term_borrowings": 1074501772815,
+              "bonds_payable": 0,
               "lease_liabilities": 344351327110
             },
             "pl": {
@@ -1946,29 +1974,30 @@
               "gross_profit": 1386661508536,
               "sga": 855998441403,
               "operating_income": 530663067133,
-              "interest_expense": null,
+              "interest_expense": 228838642607,
               "net_income": 268320297629,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 248485572988,
+              "depreciation": 3323597366657
             },
             "cf": {
               "operating_cf": 606203425256,
               "investing_cf": -278319354708,
-              "financing_cf": -346922577368
+              "financing_cf": -346922577368,
+              "interest_paid": 150615972546
             },
             "ratios": {
               "gross_margin": 11.44,
               "operating_margin": 4.38,
-              "ebitda_margin": null,
+              "ebitda_margin": 31.81,
               "net_margin": 2.21,
               "roa": 2.75,
-              "roe": null,
+              "roe": 6.29,
               "debt_ratio": 130.59,
               "debt_ratio_ex_lease": 122.44,
               "current_ratio": 92.88,
               "equity_ratio": 43.37,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 36.62,
+              "interest_coverage": 2.32,
               "operating_cf_margin": 5.0
             },
             "market": {
@@ -1999,10 +2028,10 @@
               "cash_and_equivalents": 60341783271,
               "trade_receivables": 1138770485786,
               "inventory": 22221140918,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 590349245437,
+              "current_portion_lt_debt": 590349245437,
+              "long_term_borrowings": 590349245437,
+              "bonds_payable": 0,
               "lease_liabilities": 253964048778
             },
             "pl": {
@@ -2011,20 +2040,21 @@
               "gross_profit": 980437107420,
               "sga": 600342362244,
               "operating_income": 380094745176,
-              "interest_expense": null,
+              "interest_expense": 155015778370,
               "net_income": 292756500220,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 292756500220,
+              "depreciation": 2653924514839
             },
             "cf": {
               "operating_cf": 513631953410,
               "investing_cf": -383472711869,
-              "financing_cf": -150182551391
+              "financing_cf": -150182551391,
+              "interest_paid": 104288014538
             },
             "ratios": {
               "gross_margin": 11.72,
               "operating_margin": 4.54,
-              "ebitda_margin": null,
+              "ebitda_margin": 36.26,
               "net_margin": 3.5,
               "roa": 3.79,
               "roe": null,
@@ -2032,8 +2062,8 @@
               "debt_ratio_ex_lease": 101.33,
               "current_ratio": 78.21,
               "equity_ratio": 48.04,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 26.18,
+              "interest_coverage": 2.45,
               "operating_cf_margin": 6.14
             },
             "market": {
@@ -2067,10 +2097,10 @@
               "cash_and_equivalents": 307146405592,
               "trade_receivables": 1557922171508,
               "inventory": 32899594521,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1117789903376,
+              "current_portion_lt_debt": 1117789903376,
+              "long_term_borrowings": 1117789903376,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 365877961051
             },
             "pl": {
@@ -2079,29 +2109,30 @@
               "gross_profit": 1351614886444,
               "sga": 843534065816,
               "operating_income": 508080820628,
-              "interest_expense": null,
+              "interest_expense": 261679565401,
               "net_income": 258742959823,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 242080917610,
+              "depreciation": 3650806055273
             },
             "cf": {
               "operating_cf": 902359906502,
               "investing_cf": -582983850511,
-              "financing_cf": -295177656453
+              "financing_cf": -295177656453,
+              "interest_paid": 155039693714
             },
             "ratios": {
               "gross_margin": 11.0,
               "operating_margin": 4.14,
-              "ebitda_margin": null,
+              "ebitda_margin": 33.85,
               "net_margin": 2.11,
               "roa": 2.5,
-              "roe": null,
+              "roe": 98.74,
               "debt_ratio": 132.88,
               "debt_ratio_ex_lease": 124.64,
               "current_ratio": 88.51,
               "equity_ratio": 42.94,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 39.83,
+              "interest_coverage": 1.94,
               "operating_cf_margin": 7.35
             },
             "market": {
@@ -2132,10 +2163,10 @@
               "cash_and_equivalents": 66790605840,
               "trade_receivables": 1084463318062,
               "inventory": 22045139148,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 563345258666,
+              "current_portion_lt_debt": 563345258666,
+              "long_term_borrowings": 563345258666,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 277988400732
             },
             "pl": {
@@ -2144,20 +2175,21 @@
               "gross_profit": 941578426556,
               "sga": 588450590527,
               "operating_income": 353127836029,
-              "interest_expense": null,
+              "interest_expense": 158163786468,
               "net_income": 206936220517,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 206936220517,
+              "depreciation": 2857583177527
             },
             "cf": {
               "operating_cf": 750802153322,
               "investing_cf": -481133210525,
-              "financing_cf": -262910345607
+              "financing_cf": -262910345607,
+              "interest_paid": 98401823422
             },
             "ratios": {
               "gross_margin": 11.27,
               "operating_margin": 4.23,
-              "ebitda_margin": null,
+              "ebitda_margin": 38.43,
               "net_margin": 2.48,
               "roa": 2.56,
               "roe": null,
@@ -2165,8 +2197,8 @@
               "debt_ratio_ex_lease": 99.07,
               "current_ratio": 74.44,
               "equity_ratio": 48.5,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 29.3,
+              "interest_coverage": 2.23,
               "operating_cf_margin": 8.99
             },
             "market": {
@@ -2202,10 +2234,10 @@
               "cash_and_equivalents": 710007102686,
               "trade_receivables": 1389298453691,
               "inventory": 26303367062,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1071969047058,
+              "current_portion_lt_debt": 1071969047058,
+              "long_term_borrowings": 1071969047058,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 284790406096
             },
             "pl": {
@@ -2214,20 +2246,21 @@
               "gross_profit": 309874349730,
               "sga": 210838530551,
               "operating_income": 99035819179,
-              "interest_expense": null,
+              "interest_expense": 58345659539,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3396511289629
             },
             "cf": {
               "operating_cf": 115232592701,
               "investing_cf": -11573443152,
-              "financing_cf": 18220611438
+              "financing_cf": 18220611438,
+              "interest_paid": 33895341851
             },
             "ratios": {
               "gross_margin": 11.04,
               "operating_margin": 3.53,
-              "ebitda_margin": null,
+              "ebitda_margin": 124.49,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2235,8 +2268,8 @@
               "debt_ratio_ex_lease": 132.02,
               "current_ratio": 107.56,
               "equity_ratio": 41.85,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 39.57,
+              "interest_coverage": 1.7,
               "operating_cf_margin": 4.1
             },
             "market": {
@@ -2267,10 +2300,10 @@
               "cash_and_equivalents": 489750289422,
               "trade_receivables": 902514972153,
               "inventory": 18690517036,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 849940533714,
+              "current_portion_lt_debt": 849940533714,
+              "long_term_borrowings": 849940533714,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 226356077567
             },
             "pl": {
@@ -2279,20 +2312,21 @@
               "gross_profit": 209767967142,
               "sga": 145385243827,
               "operating_income": 64382723315,
-              "interest_expense": null,
+              "interest_expense": 40870551866,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2803858735543
             },
             "cf": {
               "operating_cf": 87464452008,
               "investing_cf": 21909109334,
-              "financing_cf": 41410659373
+              "financing_cf": 41410659373,
+              "interest_paid": 23580845995
             },
             "ratios": {
               "gross_margin": 10.98,
               "operating_margin": 3.37,
-              "ebitda_margin": null,
+              "ebitda_margin": 150.17,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2300,8 +2334,8 @@
               "debt_ratio_ex_lease": 121.02,
               "current_ratio": 93.28,
               "equity_ratio": 43.96,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 39.89,
+              "interest_coverage": 1.58,
               "operating_cf_margin": 4.58
             },
             "market": {
@@ -2335,10 +2369,10 @@
               "cash_and_equivalents": 402341947873,
               "trade_receivables": 1392992519316,
               "inventory": 25537675992,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 863948288722,
+              "current_portion_lt_debt": 863948288722,
+              "long_term_borrowings": 863948288722,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 296317188118
             },
             "pl": {
@@ -2347,20 +2381,21 @@
               "gross_profit": 327412601248,
               "sga": 215019409338,
               "operating_income": 112393191910,
-              "interest_expense": null,
+              "interest_expense": 55743562082,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3420446251581
             },
             "cf": {
               "operating_cf": 308016327498,
               "investing_cf": -29883946435,
-              "financing_cf": -465470659419
+              "financing_cf": -465470659419,
+              "interest_paid": 70942690765
             },
             "ratios": {
               "gross_margin": 11.05,
               "operating_margin": 3.79,
-              "ebitda_margin": null,
+              "ebitda_margin": 119.25,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2368,8 +2403,8 @@
               "debt_ratio_ex_lease": 122.43,
               "current_ratio": 100.97,
               "equity_ratio": 43.56,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 34.49,
+              "interest_coverage": 2.02,
               "operating_cf_margin": 10.4
             },
             "market": {
@@ -2400,10 +2435,10 @@
               "cash_and_equivalents": 160033129373,
               "trade_receivables": 902966348328,
               "inventory": 19831115823,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 510800673381,
+              "current_portion_lt_debt": 510800673381,
+              "long_term_borrowings": 510800673381,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 236241512452
             },
             "pl": {
@@ -2412,20 +2447,21 @@
               "gross_profit": 230090663180,
               "sga": 150833952272,
               "operating_income": 79256710908,
-              "interest_expense": null,
+              "interest_expense": 35460733504,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2827823362187
             },
             "cf": {
               "operating_cf": 242492898001,
               "investing_cf": 12538346102,
-              "financing_cf": -433978479219
+              "financing_cf": -433978479219,
+              "interest_paid": 49722069479
             },
             "ratios": {
               "gross_margin": 11.34,
               "operating_margin": 3.91,
-              "ebitda_margin": null,
+              "ebitda_margin": 143.33,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2433,8 +2469,8 @@
               "debt_ratio_ex_lease": 109.6,
               "current_ratio": 87.26,
               "equity_ratio": 46.23,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 28.55,
+              "interest_coverage": 2.24,
               "operating_cf_margin": 11.96
             },
             "market": {
@@ -2468,32 +2504,33 @@
               "cash_and_equivalents": 498454935101,
               "trade_receivables": 1528163884040,
               "inventory": 25867775352,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 844111662078,
+              "current_portion_lt_debt": 844111662078,
+              "long_term_borrowings": 844111662078,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 314450937111
             },
             "pl": {
               "revenue": 2937071125081,
               "cost_of_revenue": 2602624886240,
               "gross_profit": 334446238841,
-              "sga": null,
+              "sga": 209653186712,
               "operating_income": 124793052129,
-              "interest_expense": null,
+              "interest_expense": 56531627787,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3410776986342
             },
             "cf": {
               "operating_cf": 586774494201,
               "investing_cf": -97447367294,
-              "financing_cf": -580227415637
+              "financing_cf": -580227415637,
+              "interest_paid": 104734635131
             },
             "ratios": {
               "gross_margin": 11.39,
               "operating_margin": 4.25,
-              "ebitda_margin": null,
+              "ebitda_margin": 120.38,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2501,8 +2538,8 @@
               "debt_ratio_ex_lease": 123.82,
               "current_ratio": 102.75,
               "equity_ratio": 43.24,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 33.19,
+              "interest_coverage": 2.21,
               "operating_cf_margin": 19.98
             },
             "market": {
@@ -2533,32 +2570,33 @@
               "cash_and_equivalents": 290118939064,
               "trade_receivables": 978248591491,
               "inventory": 20642836661,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 454663055455,
+              "current_portion_lt_debt": 454663055455,
+              "long_term_borrowings": 454663055455,
+              "bonds_payable": 398820248400,
               "lease_liabilities": 239379862430
             },
             "pl": {
               "revenue": 2013449543352,
               "cost_of_revenue": 1784719086487,
               "gross_profit": 228730456865,
-              "sga": null,
+              "sga": 140336183133,
               "operating_income": 88394273732,
-              "interest_expense": null,
+              "interest_expense": 33929604921,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2811711146109
             },
             "cf": {
               "operating_cf": 513111473032,
               "investing_cf": -30775751189,
-              "financing_cf": -531167143355
+              "financing_cf": -531167143355,
+              "interest_paid": 73554306307
             },
             "ratios": {
               "gross_margin": 11.36,
               "operating_margin": 4.39,
-              "ebitda_margin": null,
+              "ebitda_margin": 144.04,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2566,8 +2604,8 @@
               "debt_ratio_ex_lease": 110.14,
               "current_ratio": 91.63,
               "equity_ratio": 46.12,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 25.86,
+              "interest_coverage": 2.61,
               "operating_cf_margin": 25.48
             },
             "market": {
@@ -2601,10 +2639,10 @@
               "cash_and_equivalents": 324120563421,
               "trade_receivables": 1426917174063,
               "inventory": 28871404149,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 975074394535,
+              "current_portion_lt_debt": 975074394535,
+              "long_term_borrowings": 975074394535,
+              "bonds_payable": 0,
               "lease_liabilities": 330587005661
             },
             "pl": {
@@ -2613,29 +2651,30 @@
               "gross_profit": 327563538867,
               "sga": 218198206300,
               "operating_income": 109365332567,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 49141367747,
+              "net_income": 49264532459,
+              "controlling_net_income": 49264532459,
+              "depreciation": 3329195425856
             },
             "cf": {
               "operating_cf": 112425715579,
               "investing_cf": -66710736574,
-              "financing_cf": -16949749013
+              "financing_cf": -16949749013,
+              "interest_paid": 36479880872
             },
             "ratios": {
               "gross_margin": 11.21,
               "operating_margin": 3.74,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "ebitda_margin": 117.7,
+              "net_margin": 1.69,
+              "roa": 0.52,
+              "roe": 1.43,
               "debt_ratio": 143.1,
               "debt_ratio_ex_lease": 134.62,
               "current_ratio": 88.31,
               "equity_ratio": 41.14,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 34.33,
+              "interest_coverage": 2.23,
               "operating_cf_margin": 3.85
             },
             "market": {
@@ -2666,10 +2705,10 @@
               "cash_and_equivalents": 83873065975,
               "trade_receivables": 963239162052,
               "inventory": 20700898305,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 590960679246,
+              "current_portion_lt_debt": 590960679246,
+              "long_term_borrowings": 590960679246,
+              "bonds_payable": 0,
               "lease_liabilities": 259050882261
             },
             "pl": {
@@ -2678,20 +2717,21 @@
               "gross_profit": 228331003333,
               "sga": 150766137838,
               "operating_income": 77564865495,
-              "interest_expense": null,
+              "interest_expense": 33643969752,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2733980911635
             },
             "cf": {
               "operating_cf": 79448107104,
               "investing_cf": -40698362022,
-              "financing_cf": -34881098000
+              "financing_cf": -34881098000,
+              "interest_paid": 26063778830
             },
             "ratios": {
               "gross_margin": 11.4,
               "operating_margin": 3.87,
-              "ebitda_margin": null,
+              "ebitda_margin": 140.32,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2699,8 +2739,8 @@
               "debt_ratio_ex_lease": 123.03,
               "current_ratio": 72.41,
               "equity_ratio": 43.3,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 26.91,
+              "interest_coverage": 2.31,
               "operating_cf_margin": 3.97
             },
             "market": {
@@ -2734,10 +2774,10 @@
               "cash_and_equivalents": 332337643555,
               "trade_receivables": 1528841557928,
               "inventory": 33921000876,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1198256788854,
+              "current_portion_lt_debt": 1198256788854,
+              "long_term_borrowings": 1198256788854,
+              "bonds_payable": 0,
               "lease_liabilities": 331085261318
             },
             "pl": {
@@ -2746,29 +2786,30 @@
               "gross_profit": 356001594450,
               "sga": 230641038554,
               "operating_income": 125360555896,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 51793514514,
+              "net_income": 52383828192,
+              "controlling_net_income": 52383828192,
+              "depreciation": 3299815325748
             },
             "cf": {
               "operating_cf": 238239329329,
               "investing_cf": -139332805575,
-              "financing_cf": -62834273939
+              "financing_cf": -62834273939,
+              "interest_paid": 73702794650
             },
             "ratios": {
               "gross_margin": 11.64,
               "operating_margin": 4.1,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "ebitda_margin": 111.96,
+              "net_margin": 1.71,
+              "roa": 0.55,
+              "roe": 1.5,
               "debt_ratio": 139.89,
               "debt_ratio_ex_lease": 131.56,
               "current_ratio": 86.3,
               "equity_ratio": 41.69,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 41.19,
+              "interest_coverage": 2.42,
               "operating_cf_margin": 7.79
             },
             "market": {
@@ -2799,10 +2840,10 @@
               "cash_and_equivalents": 82016409791,
               "trade_receivables": 974956635670,
               "inventory": 25482092152,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 784495832752,
+              "current_portion_lt_debt": 784495832752,
+              "long_term_borrowings": 784495832752,
+              "bonds_payable": 0,
               "lease_liabilities": 256720262425
             },
             "pl": {
@@ -2811,20 +2852,21 @@
               "gross_profit": 250722631529,
               "sga": 160809927450,
               "operating_income": 89912704079,
-              "interest_expense": null,
+              "interest_expense": 36325942441,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2686251489469
             },
             "cf": {
               "operating_cf": 175169202464,
               "investing_cf": -94028945648,
-              "financing_cf": -79155740021
+              "financing_cf": -79155740021,
+              "interest_paid": 52137083212
             },
             "ratios": {
               "gross_margin": 11.99,
               "operating_margin": 4.3,
-              "ebitda_margin": null,
+              "ebitda_margin": 132.76,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2832,8 +2874,8 @@
               "debt_ratio_ex_lease": 122.11,
               "current_ratio": 70.17,
               "equity_ratio": 43.5,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 34.47,
+              "interest_coverage": 2.48,
               "operating_cf_margin": 8.38
             },
             "market": {
@@ -2867,10 +2909,10 @@
               "cash_and_equivalents": 308355119626,
               "trade_receivables": 1431569458902,
               "inventory": 26803639773,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1156479495299,
+              "current_portion_lt_debt": 1156479495299,
+              "long_term_borrowings": 1156479495299,
+              "bonds_payable": 0,
               "lease_liabilities": 332795909426
             },
             "pl": {
@@ -2879,29 +2921,30 @@
               "gross_profit": 348327240798,
               "sga": 206716045866,
               "operating_income": 141611194932,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 55259344150,
+              "net_income": 54824203279,
+              "controlling_net_income": 54824203279,
+              "depreciation": 3263629089967
             },
             "cf": {
               "operating_cf": 388466382634,
               "investing_cf": -201521058086,
-              "financing_cf": -175059506109
+              "financing_cf": -175059506109,
+              "interest_paid": 113083481922
             },
             "ratios": {
               "gross_margin": 11.71,
               "operating_margin": 4.76,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "ebitda_margin": 114.43,
+              "net_margin": 1.84,
+              "roa": 0.58,
+              "roe": 1.55,
               "debt_ratio": 133.84,
               "debt_ratio_ex_lease": 125.54,
               "current_ratio": 89.24,
               "equity_ratio": 42.76,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 40.56,
+              "interest_coverage": 2.56,
               "operating_cf_margin": 13.05
             },
             "market": {
@@ -2932,10 +2975,10 @@
               "cash_and_equivalents": 67732586660,
               "trade_receivables": 1045631814379,
               "inventory": 20371775945,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 747480672417,
+              "current_portion_lt_debt": 747480672417,
+              "long_term_borrowings": 747480672417,
+              "bonds_payable": 0,
               "lease_liabilities": 258623298943
             },
             "pl": {
@@ -2944,20 +2987,21 @@
               "gross_profit": 241955900364,
               "sga": 143499063238,
               "operating_income": 98456837126,
-              "interest_expense": null,
+              "interest_expense": 34623785528,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2653872669638
             },
             "cf": {
               "operating_cf": 308285774196,
               "investing_cf": -151271258906,
-              "financing_cf": -169397869107
+              "financing_cf": -169397869107,
+              "interest_paid": 79343853199
             },
             "ratios": {
               "gross_margin": 11.69,
               "operating_margin": 4.76,
-              "ebitda_margin": null,
+              "ebitda_margin": 132.96,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -2965,8 +3009,8 @@
               "debt_ratio_ex_lease": 114.37,
               "current_ratio": 74.7,
               "equity_ratio": 45.04,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 33.26,
+              "interest_coverage": 2.84,
               "operating_cf_margin": 14.89
             },
             "market": {
@@ -3000,10 +3044,10 @@
               "cash_and_equivalents": 435513583385,
               "trade_receivables": 1562485429007,
               "inventory": 35946056481,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1583368374891,
+              "current_portion_lt_debt": 1583368374891,
+              "long_term_borrowings": 1583368374891,
+              "bonds_payable": 30000000000,
               "lease_liabilities": 351729962450
             },
             "pl": {
@@ -3012,20 +3056,21 @@
               "gross_profit": 308940139476,
               "sga": 223573391319,
               "operating_income": 85366748157,
-              "interest_expense": null,
+              "interest_expense": 60210062677,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3349005267119
             },
             "cf": {
               "operating_cf": 112091503884,
               "investing_cf": -80455735769,
-              "financing_cf": 126021951111
+              "financing_cf": 126021951111,
+              "interest_paid": 39104944679
             },
             "ratios": {
               "gross_margin": 10.32,
               "operating_margin": 2.85,
-              "ebitda_margin": null,
+              "ebitda_margin": 114.76,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3033,8 +3078,8 @@
               "debt_ratio_ex_lease": 124.46,
               "current_ratio": 85.58,
               "equity_ratio": 42.97,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 51.75,
+              "interest_coverage": 1.42,
               "operating_cf_margin": 3.75
             },
             "market": {
@@ -3065,10 +3110,10 @@
               "cash_and_equivalents": 192122371814,
               "trade_receivables": 1071900843773,
               "inventory": 24697492256,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1072843501309,
+              "current_portion_lt_debt": 1072843501309,
+              "long_term_borrowings": 1072843501309,
+              "bonds_payable": 30000000000,
               "lease_liabilities": 266628009955
             },
             "pl": {
@@ -3077,20 +3122,21 @@
               "gross_profit": 211042530414,
               "sga": 154728512042,
               "operating_income": 56314018372,
-              "interest_expense": null,
+              "interest_expense": 37043914405,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2659585316274
             },
             "cf": {
               "operating_cf": 81332942169,
               "investing_cf": -51087957433,
-              "financing_cf": 101717864736
+              "financing_cf": 101717864736,
+              "interest_paid": 25366978581
             },
             "ratios": {
               "gross_margin": 10.67,
               "operating_margin": 2.85,
-              "ebitda_margin": null,
+              "ebitda_margin": 137.34,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3098,8 +3144,8 @@
               "debt_ratio_ex_lease": 102.54,
               "current_ratio": 71.09,
               "equity_ratio": 47.7,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 44.64,
+              "interest_coverage": 1.52,
               "operating_cf_margin": 4.11
             },
             "market": {
@@ -3133,10 +3179,10 @@
               "cash_and_equivalents": 414579908225,
               "trade_receivables": 1536408738688,
               "inventory": 30462500162,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1226082523152,
+              "current_portion_lt_debt": 1226082523152,
+              "long_term_borrowings": 1226082523152,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 354477298734
             },
             "pl": {
@@ -3145,29 +3191,30 @@
               "gross_profit": 332406397995,
               "sga": 217163071457,
               "operating_income": 115243326538,
-              "interest_expense": null,
+              "interest_expense": 79295629303,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 52546442360,
+              "depreciation": 3352052015802
             },
             "cf": {
               "operating_cf": 350297713538,
               "investing_cf": -159026803402,
-              "financing_cf": -55375192155
+              "financing_cf": -55375192155,
+              "interest_paid": 77738410984
             },
             "ratios": {
               "gross_margin": 10.9,
               "operating_margin": 3.78,
-              "ebitda_margin": null,
+              "ebitda_margin": 113.74,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 100.0,
               "debt_ratio": 132.57,
               "debt_ratio_ex_lease": 124.25,
               "current_ratio": 91.85,
               "equity_ratio": 43.0,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 44.75,
+              "interest_coverage": 1.45,
               "operating_cf_margin": 11.49
             },
             "market": {
@@ -3198,10 +3245,10 @@
               "cash_and_equivalents": 199831121620,
               "trade_receivables": 1073327983377,
               "inventory": 24407134901,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 723201444583,
+              "current_portion_lt_debt": 723201444583,
+              "long_term_borrowings": 723201444583,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 266385093159
             },
             "pl": {
@@ -3210,20 +3257,21 @@
               "gross_profit": 233585117214,
               "sga": 152856818917,
               "operating_income": 80728298297,
-              "interest_expense": null,
+              "interest_expense": 51859650758,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2676284437034
             },
             "cf": {
               "operating_cf": 356438212368,
               "investing_cf": -175386134742,
-              "financing_cf": -41004875812
+              "financing_cf": -41004875812,
+              "interest_paid": 48349911820
             },
             "ratios": {
               "gross_margin": 11.31,
               "operating_margin": 3.91,
-              "ebitda_margin": null,
+              "ebitda_margin": 133.53,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3231,8 +3279,8 @@
               "debt_ratio_ex_lease": 98.78,
               "current_ratio": 77.26,
               "equity_ratio": 48.61,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 35.82,
+              "interest_coverage": 1.56,
               "operating_cf_margin": 17.26
             },
             "market": {
@@ -3266,10 +3314,10 @@
               "cash_and_equivalents": 497136939332,
               "trade_receivables": 1507138298025,
               "inventory": 30858354857,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 1233522754263,
+              "current_portion_lt_debt": 1233522754263,
+              "long_term_borrowings": 1233522754263,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 369895115220
             },
             "pl": {
@@ -3278,20 +3326,21 @@
               "gross_profit": 355589287425,
               "sga": 207681932694,
               "operating_income": 147907354731,
-              "interest_expense": null,
+              "interest_expense": 47897983437,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3528210274065
             },
             "cf": {
               "operating_cf": 681728483055,
               "investing_cf": -390278905718,
-              "financing_cf": -74050627313
+              "financing_cf": -74050627313,
+              "interest_paid": 117834696748
             },
             "ratios": {
               "gross_margin": 11.6,
               "operating_margin": 4.82,
-              "ebitda_margin": null,
+              "ebitda_margin": 119.88,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3299,8 +3348,8 @@
               "debt_ratio_ex_lease": 128.48,
               "current_ratio": 90.85,
               "equity_ratio": 42.2,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 43.2,
+              "interest_coverage": 3.09,
               "operating_cf_margin": 22.23
             },
             "market": {
@@ -3331,10 +3380,10 @@
               "cash_and_equivalents": 259845577418,
               "trade_receivables": 1065020148545,
               "inventory": 26432754146,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 743275641140,
+              "current_portion_lt_debt": 743275641140,
+              "long_term_borrowings": 743275641140,
+              "bonds_payable": 398820948400,
               "lease_liabilities": 286212847102
             },
             "pl": {
@@ -3343,20 +3392,21 @@
               "gross_profit": 253164065616,
               "sga": 144265724158,
               "operating_income": 108898341458,
-              "interest_expense": null,
+              "interest_expense": 28581224554,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2808590468961
             },
             "cf": {
               "operating_cf": 584164807583,
               "investing_cf": -379943404248,
-              "financing_cf": -4287952430
+              "financing_cf": -4287952430,
+              "interest_paid": 73625782717
             },
             "ratios": {
               "gross_margin": 11.88,
               "operating_margin": 5.11,
-              "ebitda_margin": null,
+              "ebitda_margin": 136.93,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3364,8 +3414,8 @@
               "debt_ratio_ex_lease": 104.19,
               "current_ratio": 77.8,
               "equity_ratio": 47.28,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 35.21,
+              "interest_coverage": 3.81,
               "operating_cf_margin": 27.42
             },
             "market": {
@@ -3399,10 +3449,10 @@
               "cash_and_equivalents": 439775958474,
               "trade_receivables": 1635182917414,
               "inventory": 36998654116,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 966256296050,
+              "current_portion_lt_debt": 966256296050,
+              "long_term_borrowings": 966256296050,
+              "bonds_payable": 448686048400,
               "lease_liabilities": 401980591603
             },
             "pl": {
@@ -3411,20 +3461,21 @@
               "gross_profit": 316424531205,
               "sga": 224319183379,
               "operating_income": 92105347826,
-              "interest_expense": null,
+              "interest_expense": 72406618557,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 3719095095052
             },
             "cf": {
               "operating_cf": 164372151414,
               "investing_cf": -229796264994,
-              "financing_cf": 210835817313
+              "financing_cf": 210835817313,
+              "interest_paid": 42795410764
             },
             "ratios": {
               "gross_margin": 9.84,
               "operating_margin": 2.87,
-              "ebitda_margin": null,
+              "ebitda_margin": 118.56,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3432,8 +3483,8 @@
               "debt_ratio_ex_lease": 135.45,
               "current_ratio": 103.39,
               "equity_ratio": 40.91,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 34.31,
+              "interest_coverage": 1.27,
               "operating_cf_margin": 5.11
             },
             "market": {
@@ -3464,10 +3515,10 @@
               "cash_and_equivalents": 202599812369,
               "trade_receivables": 1104285034273,
               "inventory": 27094400970,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
-              "bonds_payable": null,
+              "short_term_borrowings": 433377428568,
+              "current_portion_lt_debt": 433377428568,
+              "long_term_borrowings": 433377428568,
+              "bonds_payable": 448686048400,
               "lease_liabilities": 300845618309
             },
             "pl": {
@@ -3476,20 +3527,21 @@
               "gross_profit": 212329938713,
               "sga": 157572134909,
               "operating_income": 54757803804,
-              "interest_expense": null,
+              "interest_expense": 43220457829,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 2867569173831
             },
             "cf": {
               "operating_cf": 108649072290,
               "investing_cf": -207889925143,
-              "financing_cf": 234867007360
+              "financing_cf": 234867007360,
+              "interest_paid": 24991783241
             },
             "ratios": {
               "gross_margin": 9.94,
               "operating_margin": 2.56,
-              "ebitda_margin": null,
+              "ebitda_margin": 136.76,
               "net_margin": null,
               "roa": null,
               "roe": null,
@@ -3497,8 +3549,8 @@
               "debt_ratio_ex_lease": 108.96,
               "current_ratio": 94.91,
               "equity_ratio": 46.15,
-              "borrowing_dependency": null,
-              "interest_coverage": null,
+              "borrowing_dependency": 24.3,
+              "interest_coverage": 1.27,
               "operating_cf_margin": 5.08
             },
             "market": {
@@ -3571,44 +3623,45 @@
               "total_equity": 1373971132765,
               "controlling_equity": 1223134526804,
               "cash_and_equivalents": 210571792757,
-              "trade_receivables": null,
+              "trade_receivables": 280111030356,
               "inventory": 9937244462,
               "short_term_borrowings": 62333882000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 322726002280,
               "long_term_borrowings": 322726002280,
               "bonds_payable": 195795620169,
-              "lease_liabilities": null
+              "lease_liabilities": 98677807767
             },
             "pl": {
-              "revenue": null,
+              "revenue": 2504131193753,
               "cost_of_revenue": 2310957656271,
               "gross_profit": 193173537482,
               "sga": 93740645780,
               "operating_income": 99432891702,
-              "interest_expense": null,
+              "interest_expense": 102281409718,
               "net_income": 161832906995,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 158718328229,
+              "depreciation": 1569906685770
             },
             "cf": {
               "operating_cf": 196051346200,
               "investing_cf": 59200596384,
-              "financing_cf": -175055752366
+              "financing_cf": -175055752366,
+              "interest_paid": 34991384048
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 7.71,
+              "operating_margin": 3.97,
+              "ebitda_margin": 66.66,
+              "net_margin": 6.46,
               "roa": 4.17,
-              "roe": null,
+              "roe": 12.98,
               "debt_ratio": 182.22,
-              "debt_ratio_ex_lease": 182.22,
+              "debt_ratio_ex_lease": 175.04,
               "current_ratio": 81.1,
               "equity_ratio": 35.43,
-              "borrowing_dependency": 14.98,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 25.85,
+              "interest_coverage": 0.97,
+              "operating_cf_margin": 7.83
             },
             "market": {
               "stock_price": null,
@@ -3636,44 +3689,45 @@
               "total_equity": 1333289964464,
               "controlling_equity": null,
               "cash_and_equivalents": 157360721094,
-              "trade_receivables": null,
+              "trade_receivables": 235442173212,
               "inventory": 5573699540,
               "short_term_borrowings": 61500000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 119500000000,
               "long_term_borrowings": 119500000000,
               "bonds_payable": 195795620169,
-              "lease_liabilities": null
+              "lease_liabilities": 52313001999
             },
             "pl": {
-              "revenue": null,
+              "revenue": 2155710481939,
               "cost_of_revenue": 2077428581218,
               "gross_profit": 78281900721,
               "sga": 53749169861,
               "operating_income": 24532730860,
-              "interest_expense": null,
+              "interest_expense": 44770344231,
               "net_income": 150634691548,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 150634691548,
+              "depreciation": 1342670769796
             },
             "cf": {
               "operating_cf": 58037613128,
               "investing_cf": 99018616422,
-              "financing_cf": -86615867771
+              "financing_cf": -86615867771,
+              "interest_paid": 21683483671
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 3.63,
+              "operating_margin": 1.14,
+              "ebitda_margin": 63.42,
+              "net_margin": 6.99,
               "roa": 5.36,
               "roe": null,
               "debt_ratio": 110.96,
-              "debt_ratio_ex_lease": 110.96,
+              "debt_ratio_ex_lease": 107.04,
               "current_ratio": 73.66,
               "equity_ratio": 47.4,
-              "borrowing_dependency": 13.4,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 19.5,
+              "interest_coverage": 0.55,
+              "operating_cf_margin": 2.69
             },
             "market": {
               "stock_price": null,
@@ -3704,44 +3758,45 @@
               "total_equity": 1534382938804,
               "controlling_equity": 1395853937235,
               "cash_and_equivalents": 144930375922,
-              "trade_receivables": null,
+              "trade_receivables": 289950011742,
               "inventory": 11840129141,
               "short_term_borrowings": 66190404000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 279197041680,
               "long_term_borrowings": 279197041680,
               "bonds_payable": 109969026229,
-              "lease_liabilities": null
+              "lease_liabilities": 105441123941
             },
             "pl": {
-              "revenue": null,
+              "revenue": 2849420869433,
               "cost_of_revenue": 2633570867957,
               "gross_profit": 215850001476,
               "sga": 101348218529,
               "operating_income": 114501782947,
-              "interest_expense": null,
+              "interest_expense": 106624358043,
               "net_income": 51759790504,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 47599588844,
+              "depreciation": 1820258450221
             },
             "cf": {
               "operating_cf": 182433348764,
               "investing_cf": -156804468027,
-              "financing_cf": -94394067590
+              "financing_cf": -94394067590,
+              "interest_paid": 37810481838
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 7.58,
+              "operating_margin": 4.02,
+              "ebitda_margin": 67.9,
+              "net_margin": 1.82,
               "roa": 1.26,
-              "roe": null,
+              "roe": 3.41,
               "debt_ratio": 166.77,
-              "debt_ratio_ex_lease": 166.77,
+              "debt_ratio_ex_lease": 159.89,
               "current_ratio": 76.92,
               "equity_ratio": 37.49,
-              "borrowing_dependency": 11.12,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 20.52,
+              "interest_coverage": 1.07,
+              "operating_cf_margin": 6.4
             },
             "market": {
               "stock_price": null,
@@ -3769,44 +3824,45 @@
               "total_equity": 1467059408858,
               "controlling_equity": null,
               "cash_and_equivalents": 79221781935,
-              "trade_receivables": null,
+              "trade_receivables": 241284865603,
               "inventory": 6532897660,
               "short_term_borrowings": 61500000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 102750000000,
               "long_term_borrowings": 102750000000,
               "bonds_payable": 109969026229,
-              "lease_liabilities": null
+              "lease_liabilities": 56395487938
             },
             "pl": {
-              "revenue": null,
+              "revenue": 2424482979823,
               "cost_of_revenue": 2339724020628,
               "gross_profit": 84758959195,
               "sga": 57378547565,
               "operating_income": 27380411630,
-              "interest_expense": null,
+              "interest_expense": 49188742760,
               "net_income": 12168775498,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 12168775498,
+              "depreciation": 1598601352846
             },
             "cf": {
               "operating_cf": 40711233484,
               "investing_cf": -135627126795,
-              "financing_cf": 13752715786
+              "financing_cf": 13752715786,
+              "interest_paid": 27906800172
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 3.5,
+              "operating_margin": 1.13,
+              "ebitda_margin": 67.07,
+              "net_margin": 0.5,
               "roa": 0.4,
               "roe": null,
               "debt_ratio": 106.17,
-              "debt_ratio_ex_lease": 106.17,
+              "debt_ratio_ex_lease": 102.32,
               "current_ratio": 65.74,
               "equity_ratio": 48.5,
-              "borrowing_dependency": 9.07,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 14.33,
+              "interest_coverage": 0.56,
+              "operating_cf_margin": 1.68
             },
             "market": {
               "stock_price": null,
@@ -3837,13 +3893,13 @@
               "total_equity": 1539576621744,
               "controlling_equity": 1410616452113,
               "cash_and_equivalents": 257529558277,
-              "trade_receivables": null,
+              "trade_receivables": 299753748074,
               "inventory": 9333007830,
               "short_term_borrowings": 174896700000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 285565835995,
               "long_term_borrowings": 285565835995,
               "bonds_payable": 104890678798,
-              "lease_liabilities": null
+              "lease_liabilities": 105178322425
             },
             "pl": {
               "revenue": 2807528782563,
@@ -3851,29 +3907,30 @@
               "gross_profit": 231370172912,
               "sga": 108843193666,
               "operating_income": 122526979246,
-              "interest_expense": null,
+              "interest_expense": 120686732226,
               "net_income": 26107574417,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 26107574417,
+              "depreciation": 1906073476982
             },
             "cf": {
               "operating_cf": 273753724004,
               "investing_cf": -88444618458,
-              "financing_cf": -74326145165
+              "financing_cf": -74326145165,
+              "interest_paid": 58286196941
             },
             "ratios": {
               "gross_margin": 8.24,
               "operating_margin": 4.36,
-              "ebitda_margin": null,
+              "ebitda_margin": 72.26,
               "net_margin": 0.93,
               "roa": 0.62,
-              "roe": null,
+              "roe": 1.85,
               "debt_ratio": 172.89,
-              "debt_ratio_ex_lease": 172.89,
+              "debt_ratio_ex_lease": 166.06,
               "current_ratio": 63.99,
               "equity_ratio": 36.64,
-              "borrowing_dependency": 13.46,
-              "interest_coverage": null,
+              "borrowing_dependency": 22.76,
+              "interest_coverage": 1.02,
               "operating_cf_margin": 9.75
             },
             "market": {
@@ -3902,13 +3959,13 @@
               "total_equity": 1453877120444,
               "controlling_equity": null,
               "cash_and_equivalents": 154931873493,
-              "trade_receivables": null,
+              "trade_receivables": 246328659033,
               "inventory": 3836415970,
               "short_term_borrowings": 174000000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 128750000000,
               "long_term_borrowings": 128750000000,
               "bonds_payable": 104890678798,
-              "lease_liabilities": null
+              "lease_liabilities": 53921533369
             },
             "pl": {
               "revenue": 2399737431829,
@@ -3916,29 +3973,30 @@
               "gross_profit": 101570237591,
               "sga": 61233966801,
               "operating_income": 40336270790,
-              "interest_expense": null,
+              "interest_expense": 63981064538,
               "net_income": 1575124764,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 1575124764,
+              "depreciation": 1693341944496
             },
             "cf": {
               "operating_cf": 151550556172,
               "investing_cf": -106533150732,
-              "financing_cf": 29447756867
+              "financing_cf": 29447756867,
+              "interest_paid": 40525777908
             },
             "ratios": {
               "gross_margin": 4.23,
               "operating_margin": 1.68,
-              "ebitda_margin": null,
+              "ebitda_margin": 72.24,
               "net_margin": 0.07,
               "roa": 0.05,
               "roe": null,
               "debt_ratio": 115.82,
-              "debt_ratio_ex_lease": 115.82,
+              "debt_ratio_ex_lease": 112.11,
               "current_ratio": 51.29,
               "equity_ratio": 46.33,
-              "borrowing_dependency": 12.99,
-              "interest_coverage": null,
+              "borrowing_dependency": 18.81,
+              "interest_coverage": 0.63,
               "operating_cf_margin": 6.32
             },
             "market": {
@@ -3970,13 +4028,13 @@
               "total_equity": 1523909993995,
               "controlling_equity": 1392484819184,
               "cash_and_equivalents": 225694343940,
-              "trade_receivables": null,
+              "trade_receivables": 324524381534,
               "inventory": 9049490485,
               "short_term_borrowings": 170882000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 233644722798,
               "long_term_borrowings": 233644722798,
               "bonds_payable": 21984027045,
-              "lease_liabilities": null
+              "lease_liabilities": 106593551051
             },
             "pl": {
               "revenue": 3015479161930,
@@ -3984,29 +4042,30 @@
               "gross_profit": 221817855411,
               "sga": 121729548831,
               "operating_income": 100088306580,
-              "interest_expense": null,
+              "interest_expense": 128281739423,
               "net_income": -365000885,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -365000885,
+              "depreciation": 1974306296874
             },
             "cf": {
               "operating_cf": 304365375501,
               "investing_cf": -124272407483,
-              "financing_cf": -218925639809
+              "financing_cf": -218925639809,
+              "interest_paid": 62424220991
             },
             "ratios": {
               "gross_margin": 7.36,
               "operating_margin": 3.32,
-              "ebitda_margin": null,
+              "ebitda_margin": 68.79,
               "net_margin": -0.01,
               "roa": -0.01,
-              "roe": null,
+              "roe": -0.03,
               "debt_ratio": 174.92,
-              "debt_ratio_ex_lease": 174.92,
+              "debt_ratio_ex_lease": 167.92,
               "current_ratio": 65.71,
               "equity_ratio": 36.37,
-              "borrowing_dependency": 10.18,
-              "interest_coverage": null,
+              "borrowing_dependency": 18.3,
+              "interest_coverage": 0.78,
               "operating_cf_margin": 10.09
             },
             "market": {
@@ -4035,13 +4094,13 @@
               "total_equity": 1410565484720,
               "controlling_equity": null,
               "cash_and_equivalents": 132246226917,
-              "trade_receivables": null,
+              "trade_receivables": 243970064860,
               "inventory": 3504190078,
               "short_term_borrowings": 170000000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 108000000000,
               "long_term_borrowings": 108000000000,
               "bonds_payable": 21984027045,
-              "lease_liabilities": null
+              "lease_liabilities": 54511317261
             },
             "pl": {
               "revenue": 2437470221431,
@@ -4049,29 +4108,30 @@
               "gross_profit": 79502228304,
               "sga": 67390245870,
               "operating_income": 12111982434,
-              "interest_expense": null,
+              "interest_expense": 73549238198,
               "net_income": -25730932099,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -25730932099,
+              "depreciation": 1770107871300
             },
             "cf": {
               "operating_cf": 152044910898,
               "investing_cf": -69974634216,
-              "financing_cf": -109345494643
+              "financing_cf": -109345494643,
+              "interest_paid": 45625217638
             },
             "ratios": {
               "gross_margin": 3.26,
               "operating_margin": 0.5,
-              "ebitda_margin": null,
+              "ebitda_margin": 73.12,
               "net_margin": -1.06,
               "roa": -0.83,
               "roe": null,
               "debt_ratio": 119.98,
-              "debt_ratio_ex_lease": 119.98,
+              "debt_ratio_ex_lease": 116.11,
               "current_ratio": 46.83,
               "equity_ratio": 45.46,
-              "borrowing_dependency": 9.67,
-              "interest_coverage": null,
+              "borrowing_dependency": 14.91,
+              "interest_coverage": 0.16,
               "operating_cf_margin": 6.24
             },
             "market": {
@@ -4103,44 +4163,45 @@
               "total_equity": 1523278806854,
               "controlling_equity": 1399782662320,
               "cash_and_equivalents": 257429263632,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 364761872727,
+              "inventory": 10188211406,
               "short_term_borrowings": 103659357242,
               "current_portion_lt_debt": 339154454912,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 120000000000,
               "bonds_payable": 463965569439,
-              "lease_liabilities": null
+              "lease_liabilities": 124272005080
             },
             "pl": {
-              "revenue": null,
+              "revenue": 3064925190779,
               "cost_of_revenue": 2819511273232,
               "gross_profit": 245413917547,
               "sga": 133218108357,
               "operating_income": 112195809190,
-              "interest_expense": null,
+              "interest_expense": 126893706699,
               "net_income": 984901814,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -1553950918,
+              "depreciation": 1995454026034
             },
             "cf": {
               "operating_cf": 243828651705,
               "investing_cf": -38569331738,
-              "financing_cf": -174895519735
+              "financing_cf": -174895519735,
+              "interest_paid": 55388346769
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 8.01,
+              "operating_margin": 3.66,
+              "ebitda_margin": 68.77,
+              "net_margin": 0.03,
               "roa": 0.02,
-              "roe": null,
+              "roe": -0.11,
               "debt_ratio": 183.4,
-              "debt_ratio_ex_lease": 183.4,
+              "debt_ratio_ex_lease": 175.24,
               "current_ratio": 81.08,
               "equity_ratio": 35.29,
-              "borrowing_dependency": 21.0,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 26.66,
+              "interest_coverage": 0.88,
+              "operating_cf_margin": 7.96
             },
             "market": {
               "stock_price": null,
@@ -4168,44 +4229,45 @@
               "total_equity": 1443332977528,
               "controlling_equity": null,
               "cash_and_equivalents": 165657929382,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 265170130988,
+              "inventory": 4006727976,
               "short_term_borrowings": 93000000000,
               "current_portion_lt_debt": 315835679210,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 120000000000,
               "bonds_payable": 0,
-              "lease_liabilities": null
+              "lease_liabilities": 67692301504
             },
             "pl": {
-              "revenue": null,
+              "revenue": 2389581460829,
               "cost_of_revenue": 2291532271371,
               "gross_profit": 98049189458,
               "sga": 69219534767,
               "operating_income": 28829654691,
-              "interest_expense": null,
+              "interest_expense": 71943349090,
               "net_income": 25011498529,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 25011498529,
+              "depreciation": 1799772183048
             },
             "cf": {
               "operating_cf": 120820459299,
               "investing_cf": -31571125652,
-              "financing_cf": -56197953899
+              "financing_cf": -56197953899,
+              "interest_paid": 41233107890
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 4.1,
+              "operating_margin": 1.21,
+              "ebitda_margin": 76.52,
+              "net_margin": 1.05,
               "roa": 0.76,
               "roe": null,
               "debt_ratio": 126.82,
-              "debt_ratio_ex_lease": 126.82,
+              "debt_ratio_ex_lease": 122.13,
               "current_ratio": 67.52,
               "equity_ratio": 44.09,
-              "borrowing_dependency": 12.49,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 18.22,
+              "interest_coverage": 0.4,
+              "operating_cf_margin": 5.06
             },
             "market": {
               "stock_price": null,
@@ -4238,44 +4300,45 @@
               "total_equity": 1527899242812,
               "controlling_equity": 1389114109780,
               "cash_and_equivalents": 205964991704,
-              "trade_receivables": null,
+              "trade_receivables": 283041688519,
               "inventory": 11965412173,
               "short_term_borrowings": 86347460000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 270534207111,
               "long_term_borrowings": 270534207111,
               "bonds_payable": 139834100963,
-              "lease_liabilities": null
+              "lease_liabilities": 110013149120
             },
             "pl": {
-              "revenue": null,
+              "revenue": 675050627967,
               "cost_of_revenue": 624077983263,
               "gross_profit": 50972644704,
               "sga": 27468145324,
               "operating_income": 23504499380,
-              "interest_expense": null,
+              "interest_expense": 27593308741,
               "net_income": -472649806,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -1602502314,
+              "depreciation": 1835606075923
             },
             "cf": {
               "operating_cf": 72949363913,
               "investing_cf": -47939163024,
-              "financing_cf": 33764970809
+              "financing_cf": 33764970809,
+              "interest_paid": 12603454077
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 7.55,
+              "operating_margin": 3.48,
+              "ebitda_margin": 275.4,
+              "net_margin": -0.07,
               "roa": -0.01,
-              "roe": null,
+              "roe": -0.12,
               "debt_ratio": 172.02,
-              "debt_ratio_ex_lease": 172.02,
+              "debt_ratio_ex_lease": 164.82,
               "current_ratio": 74.55,
               "equity_ratio": 36.76,
-              "borrowing_dependency": 11.95,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 21.11,
+              "interest_coverage": 0.85,
+              "operating_cf_margin": 10.81
             },
             "market": {
               "stock_price": null,
@@ -4303,44 +4366,45 @@
               "total_equity": 1452859407233,
               "controlling_equity": null,
               "cash_and_equivalents": 135394120926,
-              "trade_receivables": null,
+              "trade_receivables": 233178434968,
               "inventory": 6589972433,
               "short_term_borrowings": 81500000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 98625000000,
               "long_term_borrowings": 98625000000,
               "bonds_payable": 139834100963,
-              "lease_liabilities": null
+              "lease_liabilities": 59485888358
             },
             "pl": {
-              "revenue": null,
+              "revenue": 580911562276,
               "cost_of_revenue": 560866458081,
               "gross_profit": 20045104195,
               "sga": 16185026220,
               "operating_income": 3860077975,
-              "interest_expense": null,
+              "interest_expense": 13281677203,
               "net_income": -7162344391,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -7162344391,
+              "depreciation": 1616808292694
             },
             "cf": {
               "operating_cf": 49278721908,
               "investing_cf": -53649753843,
-              "financing_cf": 59543063649
+              "financing_cf": 59543063649,
+              "interest_paid": 9173244932
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 3.45,
+              "operating_margin": 0.66,
+              "ebitda_margin": 278.99,
+              "net_margin": -1.23,
               "roa": -0.23,
               "roe": null,
               "debt_ratio": 113.29,
-              "debt_ratio_ex_lease": 113.29,
+              "debt_ratio_ex_lease": 109.2,
               "current_ratio": 64.45,
               "equity_ratio": 46.88,
-              "borrowing_dependency": 10.33,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 15.43,
+              "interest_coverage": 0.29,
+              "operating_cf_margin": 8.48
             },
             "market": {
               "stock_price": null,
@@ -4371,44 +4435,45 @@
               "total_equity": 1532196033714,
               "controlling_equity": 1391213391343,
               "cash_and_equivalents": 243213366394,
-              "trade_receivables": null,
+              "trade_receivables": 287553716234,
               "inventory": 11433955894,
               "short_term_borrowings": 90926100000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 278687698205,
               "long_term_borrowings": 278687698205,
               "bonds_payable": 139888940179,
-              "lease_liabilities": null
+              "lease_liabilities": 109065009704
             },
             "pl": {
-              "revenue": null,
+              "revenue": 691852753803,
               "cost_of_revenue": 629983878386,
               "gross_profit": 61868875417,
               "sga": 26201036033,
               "operating_income": 35667839384,
-              "interest_expense": null,
+              "interest_expense": 29132177722,
               "net_income": 11150432783,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 9163153083,
+              "depreciation": 1867124739439
             },
             "cf": {
               "operating_cf": 150619090426,
               "investing_cf": -27333415143,
-              "financing_cf": -26949948072
+              "financing_cf": -26949948072,
+              "interest_paid": 29222743241
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 8.94,
+              "operating_margin": 5.16,
+              "ebitda_margin": 275.03,
+              "net_margin": 1.61,
               "roa": 0.27,
-              "roe": null,
+              "roe": 0.66,
               "debt_ratio": 171.36,
-              "debt_ratio_ex_lease": 171.36,
+              "debt_ratio_ex_lease": 164.25,
               "current_ratio": 70.83,
               "equity_ratio": 36.85,
-              "borrowing_dependency": 12.25,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 21.58,
+              "interest_coverage": 1.22,
+              "operating_cf_margin": 21.77
             },
             "market": {
               "stock_price": null,
@@ -4436,44 +4501,45 @@
               "total_equity": 1451742697092,
               "controlling_equity": null,
               "cash_and_equivalents": 176153163204,
-              "trade_receivables": null,
+              "trade_receivables": 237612405277,
               "inventory": 5716135250,
               "short_term_borrowings": 90000000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 111500000000,
               "long_term_borrowings": 111500000000,
               "bonds_payable": 139888940179,
-              "lease_liabilities": null
+              "lease_liabilities": 58140444953
             },
             "pl": {
-              "revenue": null,
+              "revenue": 586167324409,
               "cost_of_revenue": 560325560802,
               "gross_profit": 25841763607,
               "sga": 14977330085,
               "operating_income": 10864433522,
-              "interest_expense": null,
+              "interest_expense": 14950807591,
               "net_income": 5384630205,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 5384630205,
+              "depreciation": 1651065153852
             },
             "cf": {
               "operating_cf": 85971971868,
               "investing_cf": -17842115661,
-              "financing_cf": 27845168829
+              "financing_cf": 27845168829,
+              "interest_paid": 19276939247
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 4.41,
+              "operating_margin": 1.85,
+              "ebitda_margin": 283.52,
+              "net_margin": 0.92,
               "roa": 0.17,
               "roe": null,
               "debt_ratio": 114.11,
-              "debt_ratio_ex_lease": 114.11,
+              "debt_ratio_ex_lease": 110.11,
               "current_ratio": 59.18,
               "equity_ratio": 46.7,
-              "borrowing_dependency": 10.98,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 16.44,
+              "interest_coverage": 0.73,
+              "operating_cf_margin": 14.67
             },
             "market": {
               "stock_price": null,
@@ -4504,44 +4570,45 @@
               "total_equity": 1543784625795,
               "controlling_equity": 1409495558632,
               "cash_and_equivalents": 229773629846,
-              "trade_receivables": null,
-              "inventory": null,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
+              "trade_receivables": 309379343767,
+              "inventory": 8867363214,
+              "short_term_borrowings": 80000000000,
+              "current_portion_lt_debt": 249525726602,
               "long_term_borrowings": 249525726602,
               "bonds_payable": 326404958142,
-              "lease_liabilities": null
+              "lease_liabilities": 109754297640
             },
             "pl": {
-              "revenue": null,
+              "revenue": 691884452227,
               "cost_of_revenue": 630719577502,
               "gross_profit": 61164874725,
               "sga": 27454948972,
               "operating_income": 33709925753,
-              "interest_expense": null,
+              "interest_expense": 28542117379,
               "net_income": 8668529945,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 8306991615,
+              "depreciation": 1880589256486
             },
             "cf": {
               "operating_cf": 198394426592,
               "investing_cf": -72239534076,
-              "financing_cf": -44864741797
+              "financing_cf": -44864741797,
+              "interest_paid": 44084821486
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 8.84,
+              "operating_margin": 4.87,
+              "ebitda_margin": 276.68,
+              "net_margin": 1.25,
               "roa": 0.21,
-              "roe": null,
+              "roe": 0.59,
               "debt_ratio": 170.73,
-              "debt_ratio_ex_lease": 170.73,
+              "debt_ratio_ex_lease": 163.62,
               "current_ratio": 69.75,
               "equity_ratio": 36.94,
-              "borrowing_dependency": 13.78,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 24.29,
+              "interest_coverage": 1.18,
+              "operating_cf_margin": 28.67
             },
             "market": {
               "stock_price": null,
@@ -4569,44 +4636,45 @@
               "total_equity": 1461847223084,
               "controlling_equity": null,
               "cash_and_equivalents": 164826962642,
-              "trade_receivables": null,
-              "inventory": null,
-              "short_term_borrowings": null,
-              "current_portion_lt_debt": null,
+              "trade_receivables": 257950244022,
+              "inventory": 3109905084,
+              "short_term_borrowings": 80000000000,
+              "current_portion_lt_debt": 87375000000,
               "long_term_borrowings": 87375000000,
               "bonds_payable": 326404958142,
-              "lease_liabilities": null
+              "lease_liabilities": 58219803774
             },
             "pl": {
-              "revenue": null,
+              "revenue": 595771351147,
               "cost_of_revenue": 565675039202,
               "gross_profit": 30096311945,
               "sga": 15347186760,
               "operating_income": 14749125185,
-              "interest_expense": null,
+              "interest_expense": 14388013710,
               "net_income": 5993544219,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 5993544219,
+              "depreciation": 1665580219919
             },
             "cf": {
               "operating_cf": 110363688515,
               "investing_cf": -62170984468,
-              "financing_cf": 34946388807
+              "financing_cf": 34946388807,
+              "interest_paid": 29883128988
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 5.05,
+              "operating_margin": 2.48,
+              "ebitda_margin": 282.04,
+              "net_margin": 1.01,
               "roa": 0.19,
               "roe": null,
               "debt_ratio": 114.61,
-              "debt_ratio_ex_lease": 114.61,
+              "debt_ratio_ex_lease": 110.63,
               "current_ratio": 58.29,
               "equity_ratio": 46.6,
-              "borrowing_dependency": 13.19,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 20.38,
+              "interest_coverage": 1.03,
+              "operating_cf_margin": 18.52
             },
             "market": {
               "stock_price": null,
@@ -4637,13 +4705,13 @@
               "total_equity": 1526361321960,
               "controlling_equity": 1397840936027,
               "cash_and_equivalents": 210574704728,
-              "trade_receivables": null,
+              "trade_receivables": 309319494299,
               "inventory": 9456313346,
               "short_term_borrowings": 153940800000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 295587747546,
               "long_term_borrowings": 295587747546,
               "bonds_payable": 93878396090,
-              "lease_liabilities": null
+              "lease_liabilities": 106427065948
             },
             "pl": {
               "revenue": 712161042227,
@@ -4651,29 +4719,30 @@
               "gross_profit": 52898408018,
               "sga": 29511866705,
               "operating_income": 23386541313,
-              "interest_expense": null,
+              "interest_expense": 31323080667,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -4082343046,
+              "depreciation": 1931741447326
             },
             "cf": {
               "operating_cf": 55238632902,
               "investing_cf": -65267701039,
-              "financing_cf": -39904453008
+              "financing_cf": -39904453008,
+              "interest_paid": 12792765393
             },
             "ratios": {
               "gross_margin": 7.43,
               "operating_margin": 3.28,
-              "ebitda_margin": null,
+              "ebitda_margin": 274.53,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": -0.29,
               "debt_ratio": 175.1,
-              "debt_ratio_ex_lease": 175.1,
+              "debt_ratio_ex_lease": 168.13,
               "current_ratio": 59.84,
               "equity_ratio": 36.35,
-              "borrowing_dependency": 12.94,
-              "interest_coverage": null,
+              "borrowing_dependency": 22.52,
+              "interest_coverage": 0.75,
               "operating_cf_margin": 7.76
             },
             "market": {
@@ -4702,13 +4771,13 @@
               "total_equity": 1436513795923,
               "controlling_equity": null,
               "cash_and_equivalents": 131229204412,
-              "trade_receivables": null,
+              "trade_receivables": 247699852131,
               "inventory": 3695164335,
               "short_term_borrowings": 153000000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 143125000000,
               "long_term_borrowings": 143125000000,
               "bonds_payable": 93878396090,
-              "lease_liabilities": null
+              "lease_liabilities": 56846271303
             },
             "pl": {
               "revenue": 591427705571,
@@ -4716,29 +4785,30 @@
               "gross_profit": 19825099571,
               "sga": 16937986735,
               "operating_income": 2887112836,
-              "interest_expense": null,
+              "interest_expense": 18167242855,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1722283086438
             },
             "cf": {
               "operating_cf": 27773324684,
               "investing_cf": -37654769390,
-              "financing_cf": -16238840086
+              "financing_cf": -16238840086,
+              "interest_paid": 11314383007
             },
             "ratios": {
               "gross_margin": 3.35,
               "operating_margin": 0.49,
-              "ebitda_margin": null,
+              "ebitda_margin": 291.7,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 118.65,
-              "debt_ratio_ex_lease": 118.65,
+              "debt_ratio_ex_lease": 114.69,
               "current_ratio": 46.47,
               "equity_ratio": 45.73,
-              "borrowing_dependency": 12.42,
-              "interest_coverage": null,
+              "borrowing_dependency": 18.78,
+              "interest_coverage": 0.16,
               "operating_cf_margin": 4.7
             },
             "market": {
@@ -4770,13 +4840,13 @@
               "total_equity": 1538641934472,
               "controlling_equity": 1408363464651,
               "cash_and_equivalents": 196226421208,
-              "trade_receivables": null,
+              "trade_receivables": 313858492695,
               "inventory": 9585039823,
               "short_term_borrowings": 174898785438,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 280300449638,
               "long_term_borrowings": 280300449638,
               "bonds_payable": 56928890606,
-              "lease_liabilities": null
+              "lease_liabilities": 104586941558
             },
             "pl": {
               "revenue": 734209778927,
@@ -4784,29 +4854,30 @@
               "gross_profit": 64909652333,
               "sga": 28053703566,
               "operating_income": 36855948767,
-              "interest_expense": null,
+              "interest_expense": 32572465358,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 10522528624,
+              "depreciation": 1987719528931
             },
             "cf": {
               "operating_cf": 145825258364,
               "investing_cf": -91935001692,
-              "financing_cf": -119032108646
+              "financing_cf": -119032108646,
+              "interest_paid": 31897772673
             },
             "ratios": {
               "gross_margin": 8.84,
               "operating_margin": 5.02,
-              "ebitda_margin": null,
+              "ebitda_margin": 275.75,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 0.75,
               "debt_ratio": 170.52,
-              "debt_ratio_ex_lease": 170.52,
+              "debt_ratio_ex_lease": 163.73,
               "current_ratio": 59.11,
               "equity_ratio": 36.97,
-              "borrowing_dependency": 12.3,
-              "interest_coverage": null,
+              "borrowing_dependency": 21.55,
+              "interest_coverage": 1.13,
               "operating_cf_margin": 19.86
             },
             "market": {
@@ -4835,13 +4906,13 @@
               "total_equity": 1439541667976,
               "controlling_equity": null,
               "cash_and_equivalents": 107649508746,
-              "trade_receivables": null,
+              "trade_receivables": 238304293606,
               "inventory": 3680208440,
               "short_term_borrowings": 173997885438,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 133500000000,
               "long_term_borrowings": 133500000000,
               "bonds_payable": 56928890606,
-              "lease_liabilities": null
+              "lease_liabilities": 56381033444
             },
             "pl": {
               "revenue": 591383948414,
@@ -4849,29 +4920,30 @@
               "gross_profit": 24620467650,
               "sga": 15817995455,
               "operating_income": 8802472195,
-              "interest_expense": null,
+              "interest_expense": 19126382143,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1779682639921
             },
             "cf": {
               "operating_cf": 73634831071,
               "investing_cf": -55637748290,
-              "financing_cf": -67954512721
+              "financing_cf": -67954512721,
+              "interest_paid": 23417667232
             },
             "ratios": {
               "gross_margin": 4.16,
               "operating_margin": 1.49,
-              "ebitda_margin": null,
+              "ebitda_margin": 302.42,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 115.69,
-              "debt_ratio_ex_lease": 115.69,
+              "debt_ratio_ex_lease": 111.78,
               "current_ratio": 43.4,
               "equity_ratio": 46.36,
-              "borrowing_dependency": 11.74,
-              "interest_coverage": null,
+              "borrowing_dependency": 17.85,
+              "interest_coverage": 0.46,
               "operating_cf_margin": 12.45
             },
             "market": {
@@ -4903,13 +4975,13 @@
               "total_equity": 1545579070637,
               "controlling_equity": 1413589676067,
               "cash_and_equivalents": 206842486957,
-              "trade_receivables": null,
+              "trade_receivables": 310952673131,
               "inventory": 9570620070,
               "short_term_borrowings": 171859950000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 254470191880,
               "long_term_borrowings": 254470191880,
               "bonds_payable": 21958337429,
-              "lease_liabilities": null
+              "lease_liabilities": 105095427835
             },
             "pl": {
               "revenue": 756573959430,
@@ -4917,29 +4989,30 @@
               "gross_profit": 68015849209,
               "sga": 28068302855,
               "operating_income": 39947546354,
-              "interest_expense": null,
+              "interest_expense": 30009054496,
               "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": 5156030156,
+              "depreciation": 1982745919531
             },
             "cf": {
               "operating_cf": 211006049049,
               "investing_cf": -94690260565,
-              "financing_cf": -167733368629
+              "financing_cf": -167733368629,
+              "interest_paid": 46624505784
             },
             "ratios": {
               "gross_margin": 8.99,
               "operating_margin": 5.28,
-              "ebitda_margin": null,
+              "ebitda_margin": 267.35,
               "net_margin": null,
               "roa": null,
-              "roe": null,
+              "roe": 0.36,
               "debt_ratio": 168.91,
-              "debt_ratio_ex_lease": 168.91,
+              "debt_ratio_ex_lease": 162.11,
               "current_ratio": 63.0,
               "equity_ratio": 37.19,
-              "borrowing_dependency": 10.79,
-              "interest_coverage": null,
+              "borrowing_dependency": 19.44,
+              "interest_coverage": 1.33,
               "operating_cf_margin": 27.89
             },
             "market": {
@@ -4968,13 +5041,13 @@
               "total_equity": 1435187298593,
               "controlling_equity": null,
               "cash_and_equivalents": 124327734103,
-              "trade_receivables": null,
+              "trade_receivables": 236665050362,
               "inventory": 3524135991,
               "short_term_borrowings": 171000000000,
-              "current_portion_lt_debt": null,
+              "current_portion_lt_debt": 123875000000,
               "long_term_borrowings": 123875000000,
               "bonds_payable": 21958337429,
-              "lease_liabilities": null
+              "lease_liabilities": 56033672481
             },
             "pl": {
               "revenue": 604263608704,
@@ -4982,29 +5055,30 @@
               "gross_profit": 27994421133,
               "sga": 15181935706,
               "operating_income": 12812485427,
-              "interest_expense": null,
+              "interest_expense": 16312495955,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1775803244193
             },
             "cf": {
               "operating_cf": 105814467576,
               "investing_cf": -54800799578,
-              "financing_cf": -82051624785
+              "financing_cf": -82051624785,
+              "interest_paid": 34327348116
             },
             "ratios": {
               "gross_margin": 4.63,
               "operating_margin": 2.12,
-              "ebitda_margin": null,
+              "ebitda_margin": 296.0,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 116.56,
-              "debt_ratio_ex_lease": 116.56,
+              "debt_ratio_ex_lease": 112.66,
               "current_ratio": 46.61,
               "equity_ratio": 46.18,
-              "borrowing_dependency": 10.19,
-              "interest_coverage": null,
+              "borrowing_dependency": 15.98,
+              "interest_coverage": 0.79,
               "operating_cf_margin": 17.51
             },
             "market": {
@@ -5036,44 +5110,45 @@
               "total_equity": 1512470710169,
               "controlling_equity": 1381078392159,
               "cash_and_equivalents": 222992766251,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 324453154874,
+              "inventory": 8908927100,
               "short_term_borrowings": 174553354087,
               "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 50000000000,
               "bonds_payable": 2997631967,
-              "lease_liabilities": null
+              "lease_liabilities": 113421457797
             },
             "pl": {
-              "revenue": null,
+              "revenue": 729112019663,
               "cost_of_revenue": 671025077646,
               "gross_profit": 58086942017,
-              "sga": null,
+              "sga": 30769025289,
               "operating_income": 27317916728,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 29604824415,
+              "net_income": 1678708774,
+              "controlling_net_income": -1175805751,
+              "depreciation": 1964880121494
             },
             "cf": {
               "operating_cf": 46694125749,
               "investing_cf": -10554088480,
-              "financing_cf": -39942477667
+              "financing_cf": -39942477667,
+              "interest_paid": 160000000
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "gross_margin": 7.97,
+              "operating_margin": 3.75,
+              "ebitda_margin": 273.24,
+              "net_margin": 0.23,
+              "roa": 0.04,
+              "roe": -0.09,
               "debt_ratio": 177.99,
-              "debt_ratio_ex_lease": 177.99,
+              "debt_ratio_ex_lease": 170.49,
               "current_ratio": 68.39,
               "equity_ratio": 35.97,
-              "borrowing_dependency": 4.22,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 8.11,
+              "interest_coverage": 0.92,
+              "operating_cf_margin": 6.4
             },
             "market": {
               "stock_price": null,
@@ -5101,44 +5176,45 @@
               "total_equity": 1389796018394,
               "controlling_equity": null,
               "cash_and_equivalents": 125637231849,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 235143604873,
+              "inventory": 2985644445,
               "short_term_borrowings": 169000000000,
               "current_portion_lt_debt": null,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 50000000000,
               "bonds_payable": 2997631967,
-              "lease_liabilities": null
+              "lease_liabilities": 59314610509
             },
             "pl": {
-              "revenue": null,
+              "revenue": 567729783565,
               "cost_of_revenue": 547704741510,
               "gross_profit": 20025042055,
-              "sga": null,
+              "sga": 17220076225,
               "operating_income": 2804965830,
-              "interest_expense": null,
+              "interest_expense": 16048577078,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1764374889023
             },
             "cf": {
               "operating_cf": 22779838777,
               "investing_cf": -9566601254,
-              "financing_cf": -20078663986
+              "financing_cf": -20078663986,
+              "interest_paid": 10491293925
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
+              "gross_margin": 3.53,
+              "operating_margin": 0.49,
+              "ebitda_margin": 311.27,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 122.47,
-              "debt_ratio_ex_lease": 122.47,
+              "debt_ratio_ex_lease": 118.2,
               "current_ratio": 47.58,
               "equity_ratio": 44.95,
-              "borrowing_dependency": 5.56,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 9.1,
+              "interest_coverage": 0.17,
+              "operating_cf_margin": 4.01
             },
             "market": {
               "stock_price": null,
@@ -5169,44 +5245,45 @@
               "total_equity": 1524001566808,
               "controlling_equity": 1390892197321,
               "cash_and_equivalents": 277154122576,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 335743937144,
+              "inventory": 9188522534,
               "short_term_borrowings": 133561556012,
               "current_portion_lt_debt": 367702290593,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 90000000000,
               "bonds_payable": 0,
-              "lease_liabilities": null
+              "lease_liabilities": 117999616608
             },
             "pl": {
-              "revenue": null,
+              "revenue": 740791671733,
               "cost_of_revenue": 674079881263,
               "gross_profit": 66711790470,
               "sga": 29714111324,
               "operating_income": 36997679146,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 33795172585,
+              "net_income": 1833409433,
+              "controlling_net_income": 9388344924,
+              "depreciation": 1978104042420
             },
             "cf": {
               "operating_cf": 126666061492,
               "investing_cf": -42996935371,
-              "financing_cf": -29670362493
+              "financing_cf": -29670362493,
+              "interest_paid": 27839023667
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "gross_margin": 9.01,
+              "operating_margin": 4.99,
+              "ebitda_margin": 272.02,
+              "net_margin": 0.25,
+              "roa": 0.04,
+              "roe": 0.67,
               "debt_ratio": 181.55,
-              "debt_ratio_ex_lease": 181.55,
+              "debt_ratio_ex_lease": 173.8,
               "current_ratio": 80.63,
               "equity_ratio": 35.52,
-              "borrowing_dependency": 11.68,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 16.53,
+              "interest_coverage": 1.09,
+              "operating_cf_margin": 17.1
             },
             "market": {
               "stock_price": null,
@@ -5234,44 +5311,45 @@
               "total_equity": 1395920639905,
               "controlling_equity": null,
               "cash_and_equivalents": 159578007208,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 248479722433,
+              "inventory": 3185694970,
               "short_term_borrowings": 128000000000,
               "current_portion_lt_debt": 344414172513,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 90000000000,
               "bonds_payable": 0,
-              "lease_liabilities": null
+              "lease_liabilities": 63309538387
             },
             "pl": {
-              "revenue": null,
+              "revenue": 578307200647,
               "cost_of_revenue": 550468835844,
               "gross_profit": 27838364803,
               "sga": 16010193738,
               "operating_income": 11828171065,
-              "interest_expense": null,
+              "interest_expense": 20993698470,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1779706360347
             },
             "cf": {
               "operating_cf": 58812425189,
               "investing_cf": -42857284169,
-              "financing_cf": 13182489171
+              "financing_cf": 13182489171,
+              "interest_paid": 20619079985
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
+              "gross_margin": 4.81,
+              "operating_margin": 2.05,
+              "ebitda_margin": 309.79,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 128.1,
-              "debt_ratio_ex_lease": 128.1,
+              "debt_ratio_ex_lease": 123.57,
               "current_ratio": 58.59,
               "equity_ratio": 43.84,
-              "borrowing_dependency": 14.84,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 19.65,
+              "interest_coverage": 0.56,
+              "operating_cf_margin": 10.17
             },
             "market": {
               "stock_price": null,
@@ -5302,44 +5380,45 @@
               "total_equity": 1522922724019,
               "controlling_equity": 1398833066754,
               "cash_and_equivalents": 298253375972,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 373899808840,
+              "inventory": 9965114055,
               "short_term_borrowings": 139356664169,
               "current_portion_lt_debt": 349666674514,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 90000000000,
               "bonds_payable": 0,
-              "lease_liabilities": null
+              "lease_liabilities": 122161190525
             },
             "pl": {
-              "revenue": null,
+              "revenue": 799314362984,
               "cost_of_revenue": 736397454032,
               "gross_profit": 62916908952,
               "sga": 32095160318,
               "operating_income": 30821748634,
-              "interest_expense": null,
-              "net_income": null,
-              "controlling_net_income": null,
-              "depreciation": null
+              "interest_expense": 31231155334,
+              "net_income": -251284109,
+              "controlling_net_income": -1983084583,
+              "depreciation": 1981620413183
             },
             "cf": {
               "operating_cf": 173573804267,
               "investing_cf": -19340299392,
-              "financing_cf": -81177808463
+              "financing_cf": -81177808463,
+              "interest_paid": 41846078751
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
-              "roa": null,
-              "roe": null,
+              "gross_margin": 7.87,
+              "operating_margin": 3.86,
+              "ebitda_margin": 251.77,
+              "net_margin": -0.03,
+              "roa": -0.01,
+              "roe": -0.14,
               "debt_ratio": 184.55,
-              "debt_ratio_ex_lease": 184.55,
+              "debt_ratio_ex_lease": 176.53,
               "current_ratio": 82.47,
               "equity_ratio": 35.14,
-              "borrowing_dependency": 11.28,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 16.18,
+              "interest_coverage": 0.99,
+              "operating_cf_margin": 21.72
             },
             "market": {
               "stock_price": null,
@@ -5367,44 +5446,45 @@
               "total_equity": 1445153142224,
               "controlling_equity": null,
               "cash_and_equivalents": 224204531529,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 277290319661,
+              "inventory": 3679137745,
               "short_term_borrowings": 132782226820,
               "current_portion_lt_debt": 326391615222,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 90000000000,
               "bonds_payable": 0,
-              "lease_liabilities": null
+              "lease_liabilities": 67205622716
             },
             "pl": {
-              "revenue": null,
+              "revenue": 622167636771,
               "cost_of_revenue": 593116798555,
               "gross_profit": 29050838216,
               "sga": 16279709788,
               "operating_income": 12771128428,
-              "interest_expense": null,
+              "interest_expense": 17481137298,
               "net_income": null,
               "controlling_net_income": null,
-              "depreciation": null
+              "depreciation": 1783556544054
             },
             "cf": {
               "operating_cf": 87403164884,
               "investing_cf": -8175390369,
-              "financing_cf": 13636753083
+              "financing_cf": 13636753083,
+              "interest_paid": 31019244790
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
+              "gross_margin": 4.67,
+              "operating_margin": 2.05,
+              "ebitda_margin": 288.72,
               "net_margin": null,
               "roa": null,
               "roe": null,
               "debt_ratio": 128.36,
-              "debt_ratio_ex_lease": 128.36,
+              "debt_ratio_ex_lease": 123.71,
               "current_ratio": 70.22,
               "equity_ratio": 43.79,
-              "borrowing_dependency": 13.91,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 18.68,
+              "interest_coverage": 0.73,
+              "operating_cf_margin": 14.05
             },
             "market": {
               "stock_price": null,
@@ -5435,44 +5515,45 @@
               "total_equity": 1519362923236,
               "controlling_equity": 1396936916889,
               "cash_and_equivalents": 228933956598,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 374143986904,
+              "inventory": 10974470929,
               "short_term_borrowings": 104336147970,
               "current_portion_lt_debt": 285139337638,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 30000000000,
               "bonds_payable": 505815569220,
-              "lease_liabilities": null
+              "lease_liabilities": 128634281316
             },
             "pl": {
-              "revenue": null,
+              "revenue": 778956182832,
               "cost_of_revenue": 724800697983,
               "gross_profit": 54155484849,
               "sga": 34312675584,
               "operating_income": 19842809265,
-              "interest_expense": null,
+              "interest_expense": 30949354409,
               "net_income": -2265484498,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -3030216767,
+              "depreciation": 1984371724162
             },
             "cf": {
               "operating_cf": 34240995518,
               "investing_cf": -21706781212,
-              "financing_cf": -45406977345
+              "financing_cf": -45406977345,
+              "interest_paid": 12758433404
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 6.95,
+              "operating_margin": 2.55,
+              "ebitda_margin": 257.29,
+              "net_margin": -0.29,
               "roa": -0.05,
-              "roe": null,
+              "roe": -0.22,
               "debt_ratio": 183.63,
-              "debt_ratio_ex_lease": 183.63,
+              "debt_ratio_ex_lease": 175.17,
               "current_ratio": 84.88,
               "equity_ratio": 35.26,
-              "borrowing_dependency": 20.78,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 24.46,
+              "interest_coverage": 0.64,
+              "operating_cf_margin": 4.4
             },
             "market": {
               "stock_price": null,
@@ -5500,44 +5581,45 @@
               "total_equity": 1435361745181,
               "controlling_equity": null,
               "cash_and_equivalents": 141707039745,
-              "trade_receivables": null,
-              "inventory": null,
+              "trade_receivables": 272847488776,
+              "inventory": 4425105651,
               "short_term_borrowings": 93000000000,
               "current_portion_lt_debt": 261780021895,
-              "long_term_borrowings": null,
+              "long_term_borrowings": 30000000000,
               "bonds_payable": 505815569220,
-              "lease_liabilities": null
+              "lease_liabilities": 71100031986
             },
             "pl": {
-              "revenue": null,
+              "revenue": 615896142516,
               "cost_of_revenue": 595811606501,
               "gross_profit": 20084536015,
               "sga": 18092027805,
               "operating_income": 1992508210,
-              "interest_expense": null,
+              "interest_expense": 17708244000,
               "net_income": -7208638919,
-              "controlling_net_income": null,
-              "depreciation": null
+              "controlling_net_income": -7208638919,
+              "depreciation": 1790383928302
             },
             "cf": {
               "operating_cf": 13993232127,
               "investing_cf": -19497095803,
-              "financing_cf": -20782671154
+              "financing_cf": -20782671154,
+              "interest_paid": 10018431889
             },
             "ratios": {
-              "gross_margin": null,
-              "operating_margin": null,
-              "ebitda_margin": null,
-              "net_margin": null,
+              "gross_margin": 3.26,
+              "operating_margin": 0.32,
+              "ebitda_margin": 291.02,
+              "net_margin": -1.17,
               "roa": -0.22,
               "roe": null,
               "debt_ratio": 128.12,
-              "debt_ratio_ex_lease": 128.12,
+              "debt_ratio_ex_lease": 123.17,
               "current_ratio": 70.42,
               "equity_ratio": 43.84,
-              "borrowing_dependency": 26.28,
-              "interest_coverage": null,
-              "operating_cf_margin": null
+              "borrowing_dependency": 29.37,
+              "interest_coverage": 0.11,
+              "operating_cf_margin": 2.27
             },
             "market": {
               "stock_price": null,
