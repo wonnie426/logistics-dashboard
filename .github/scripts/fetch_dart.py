@@ -288,11 +288,12 @@ def main():
             if result:
                 output["companies"][code]["annual"][year] = result
                 if code not in latest_report or year > latest_report[code].get("year", ""):
+                    ref = result.get("CFS") or result.get("OFS") or {}
                     latest_report[code] = {
                         "year": year, "period": "annual",
-                        "report_type": result["report_type"],
-                        "filing_date": result["filing_date"],
-                        "report_url": result["report_url"],
+                        "report_type": ref.get("report_type", ""),
+                        "filing_date": ref.get("filing_date"),
+                        "report_url": ref.get("report_url"),
                     }
 
         quarters = [
