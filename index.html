@@ -162,7 +162,26 @@ const fmt = {
 let FIN = null, SEG = null, THRESH = null, IND_AVG = null;
 let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
+let fsMode = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
 const charts = {};
+
+function getPeriodData(co, periodKey, fsDiv) {
+  const raw = co[periodKey === 'annual' ? 'annual' : 'quarterly'];
+  if (!raw) return {};
+  const result = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (!v) continue;
+    const def = v._default || 'CFS';
+    const chosen = v[fsDiv] || v[def] || v['CFS'] || v['OFS'];
+    if (chosen) result[k] = chosen;
+  }
+  return result;
+}
+
+function setFs(code, div) {
+  fsMode[code] = div;
+  renderCompanyTab(code);
+}
 
 async function loadData() {
   try {
@@ -298,7 +317,8 @@ function renderCompanyTab(code) {
   const seg   = SEG.companies[code];
   const color = co.color;
   const pMode = periodMode[code];
-  const dataMap = pMode === 'annual' ? co.annual : co.quarterly;
+  const fs    = fsMode[code] || 'CFS';
+  const dataMap = getPeriodData(co, pMode, fs);
   const keys  = Object.keys(dataMap || {}).sort();
   const latest = keys[keys.length - 1];
   const ld    = dataMap?.[latest] || {};
@@ -307,11 +327,16 @@ function renderCompanyTab(code) {
   const bs    = ld.bs    || {};
 
   const prevKey  = String(parseInt(latest || '0') - 1);
-  const prevData = co.annual?.[prevKey] || {};
-  const prevPl   = prevData.pl || {};
-  const prevR    = prevData.ratios || {};
+  const prevData = getPeriodData(co, 'annual', fs);
+  const prevPl   = prevData[prevKey]?.pl || {};
+  const prevR    = prevData[prevKey]?.ratios || {};
 
   $(`tab-${code}`).innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <span style="font-size:13px;color:var(--text-sub)">재무제표 기준:</span>
+      <button class="period-btn ${fs==='CFS'?'active':''}" onclick="setFs('${code}','CFS')">연결</button>
+      <button class="period-btn ${fs==='OFS'?'active':''}" onclick="setFs('${code}','OFS')">별도</button>
+    </div>
     <div class="summary-grid">
       ${sc('매출액', fmt.won(pl.revenue), changeHtml(pl.revenue, prevPl.revenue), null, null)}
       ${sc('영업이익률', fmt.pct(r.operating_margin), changeHtml(r.operating_margin, prevR.operating_margin), 'operating_margin', r.operating_margin)}

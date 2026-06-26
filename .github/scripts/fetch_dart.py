@@ -85,6 +85,20 @@ def fetch_accounts(corp_code: str, api_key: str, year: str, reprt_code: str):
     return None, None
 
 
+def fetch_accounts_both(corp_code: str, api_key: str, year: str, reprt_code: str):
+    result = {}
+    for fs_div in ("CFS", "OFS"):
+        data = dart_get("fnlttSinglAcntAll.json", {
+            "corp_code": corp_code,
+            "bsns_year": year,
+            "reprt_code": reprt_code,
+            "fs_div": fs_div,
+        }, api_key)
+        if data and data.get("list"):
+            result[fs_div] = data["list"]
+    return result
+
+
 # ── 계정명 → 값 매핑 ──────────────────────────────────────────────────────
 def find_account(accounts: list, *names: str) -> int | None:
     for name in names:
@@ -197,40 +211,46 @@ def calc_ratios(bs: dict, pl: dict, cf: dict) -> dict:
 
 
 # ── 메인 수집 로직 ──────────────────────────────────────────────────────────
-def collect_period(corp_code: str, api_key: str, year: str,
-                   period_key: str, reprt_code: str) -> dict | None:
-    print(f"    수집 중: {year} {period_key} (reprt_code={reprt_code})")
-
-    report_info = fetch_report_list(corp_code, api_key, year, reprt_code)
-    accounts, fs_div = fetch_accounts(corp_code, api_key, year, reprt_code)
-
-    if accounts is None:
-        print(f"    → 데이터 없음 (미공시)")
-        return None
-
+def build_period_data(accounts: list, fs_div: str, year: str,
+                      period_key: str, report_info: dict | None) -> dict:
     bs = parse_bs(accounts)
     pl = parse_pl(accounts)
     cf = parse_cf(accounts)
     ratios = calc_ratios(bs, pl, cf)
-
     period_label = {"annual": "사업보고서", "Q1": "1분기보고서",
                     "Q2": "반기보고서", "Q3": "3분기보고서"}.get(period_key, "")
     fs_label = "연결" if fs_div == "CFS" else "별도"
-
     return {
         "source": f"{year}년 {period_label} ({fs_label}기준)",
         "report_type": period_label,
         "filing_date": report_info["rcept_dt"] if report_info else None,
         "report_url":  report_info["report_url"] if report_info else None,
-        "bs":     bs,
-        "pl":     pl,
-        "cf":     cf,
-        "ratios": ratios,
+        "bs": bs, "pl": pl, "cf": cf, "ratios": ratios,
         "market": {
             "stock_price": None, "shares_outstanding": None, "market_cap": None,
             "eps": None, "bps": None, "per": None, "pbr": None, "ev_ebitda": None
         },
     }
+
+
+def collect_period(corp_code: str, api_key: str, year: str,
+                   period_key: str, reprt_code: str) -> dict | None:
+    print(f"    수집 중: {year} {period_key} (reprt_code={reprt_code})")
+
+    report_info = fetch_report_list(corp_code, api_key, year, reprt_code)
+    both = fetch_accounts_both(corp_code, api_key, year, reprt_code)
+
+    if not both:
+        print(f"    → 데이터 없음 (미공시)")
+        return None
+
+    result = {}
+    for fs_div, accounts in both.items():
+        result[fs_div] = build_period_data(accounts, fs_div, year, period_key, report_info)
+
+    # 기본(default) 기준: CFS 우선
+    result["_default"] = "CFS" if "CFS" in result else "OFS"
+    return result
 
 
 def main():
