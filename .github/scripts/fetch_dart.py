@@ -57,10 +57,11 @@ def fetch_naver_prices(symbol: str) -> dict:
     try:
         r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
         prices = {}
-        for line in r.text.strip().split('\n'):
-            parts = line.strip().split('|')
-            if len(parts) >= 5 and parts[0] and parts[4] and parts[4] != '0':
-                prices[parts[0]] = int(parts[4])
+        # XML 형식: <item data="YYYYMMDD|open|high|low|close|volume" />
+        for m in re.finditer(r'data="(\d{8})\|[^|]*\|[^|]*\|[^|]*\|(\d+)\|', r.text):
+            date, close = m.group(1), m.group(2)
+            if close and close != '0':
+                prices[date] = int(close)
         return prices
     except Exception as e:
         print(f"  주가 수집 실패 ({symbol}): {e}")
