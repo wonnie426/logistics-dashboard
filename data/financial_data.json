@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-26T13:45:52.558362+09:00",
+  "last_updated": "2026-06-26T14:39:04.014268+09:00",
   "latest_report": {
     "LGL": {
       "year": "2025",
@@ -670,6 +670,71 @@
             "borrowing_dependency": 34.06,
             "interest_coverage": null,
             "operating_cf_margin": 21.31
+          },
+          "market": {
+            "stock_price": null,
+            "shares_outstanding": null,
+            "market_cap": null,
+            "eps": null,
+            "bps": null,
+            "per": null,
+            "pbr": null,
+            "ev_ebitda": null
+          }
+        },
+        "2026Q1": {
+          "source": "2026년 1분기보고서 (연결기준)",
+          "report_type": "1분기보고서",
+          "filing_date": "20260515",
+          "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002584",
+          "bs": {
+            "total_assets": 2756821845582,
+            "current_assets": 546149113516,
+            "non_current_assets": 2210672732066,
+            "total_liabilities": 2066689291382,
+            "current_liabilities": 839897242476,
+            "non_current_liabilities": 1226792048906,
+            "total_equity": 690132554200,
+            "controlling_equity": null,
+            "cash_and_equivalents": 83732689907,
+            "trade_receivables": 384563595583,
+            "inventory": null,
+            "short_term_borrowings": 48599220240,
+            "current_portion_lt_debt": 229993547411,
+            "long_term_borrowings": 233300000000,
+            "bonds_payable": 121542712987,
+            "lease_liabilities": 165455217399
+          },
+          "pl": {
+            "revenue": 853499234603,
+            "cost_of_revenue": 778448198398,
+            "gross_profit": 75051036205,
+            "sga": 57177592370,
+            "operating_income": 17873443835,
+            "interest_expense": null,
+            "net_income": null,
+            "controlling_net_income": null,
+            "depreciation": null
+          },
+          "cf": {
+            "operating_cf": 65390337119,
+            "investing_cf": -12883129130,
+            "financing_cf": -64462450408
+          },
+          "ratios": {
+            "gross_margin": 8.79,
+            "operating_margin": 2.09,
+            "ebitda_margin": null,
+            "net_margin": null,
+            "roa": null,
+            "roe": null,
+            "debt_ratio": 299.46,
+            "debt_ratio_ex_lease": 275.49,
+            "current_ratio": 65.03,
+            "equity_ratio": 25.03,
+            "borrowing_dependency": 28.98,
+            "interest_coverage": null,
+            "operating_cf_margin": 7.66
           },
           "market": {
             "stock_price": null,
@@ -1601,6 +1666,71 @@
             "pbr": null,
             "ev_ebitda": null
           }
+        },
+        "2026Q1": {
+          "source": "2026년 1분기보고서 (연결기준)",
+          "report_type": "1분기보고서",
+          "filing_date": "20260515",
+          "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002802",
+          "bs": {
+            "total_assets": 10927013099038,
+            "current_assets": 3182791340834,
+            "non_current_assets": 7744221758204,
+            "total_liabilities": 6456827658977,
+            "current_liabilities": 3078388855457,
+            "non_current_liabilities": 3378438803520,
+            "total_equity": 4470185440061,
+            "controlling_equity": 50691018919,
+            "cash_and_equivalents": 439775958474,
+            "trade_receivables": 1635182917414,
+            "inventory": 36998654116,
+            "short_term_borrowings": null,
+            "current_portion_lt_debt": null,
+            "long_term_borrowings": null,
+            "bonds_payable": null,
+            "lease_liabilities": 401980591603
+          },
+          "pl": {
+            "revenue": 3214545850775,
+            "cost_of_revenue": 2898121319570,
+            "gross_profit": 316424531205,
+            "sga": 224319183379,
+            "operating_income": 92105347826,
+            "interest_expense": null,
+            "net_income": null,
+            "controlling_net_income": null,
+            "depreciation": null
+          },
+          "cf": {
+            "operating_cf": 164372151414,
+            "investing_cf": -229796264994,
+            "financing_cf": 210835817313
+          },
+          "ratios": {
+            "gross_margin": 9.84,
+            "operating_margin": 2.87,
+            "ebitda_margin": null,
+            "net_margin": null,
+            "roa": null,
+            "roe": null,
+            "debt_ratio": 144.44,
+            "debt_ratio_ex_lease": 135.45,
+            "current_ratio": 103.39,
+            "equity_ratio": 40.91,
+            "borrowing_dependency": null,
+            "interest_coverage": null,
+            "operating_cf_margin": 5.11
+          },
+          "market": {
+            "stock_price": null,
+            "shares_outstanding": null,
+            "market_cap": null,
+            "eps": null,
+            "bps": null,
+            "per": null,
+            "pbr": null,
+            "ev_ebitda": null
+          }
         }
       }
     },
@@ -2508,6 +2638,71 @@
             "current_ratio": 82.47,
             "equity_ratio": 35.14,
             "borrowing_dependency": 11.28,
+            "interest_coverage": null,
+            "operating_cf_margin": null
+          },
+          "market": {
+            "stock_price": null,
+            "shares_outstanding": null,
+            "market_cap": null,
+            "eps": null,
+            "bps": null,
+            "per": null,
+            "pbr": null,
+            "ev_ebitda": null
+          }
+        },
+        "2026Q1": {
+          "source": "2026년 1분기보고서 (연결기준)",
+          "report_type": "1분기보고서",
+          "filing_date": "20260515",
+          "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002513",
+          "bs": {
+            "total_assets": 4309439099772,
+            "current_assets": 720154863887,
+            "non_current_assets": 3589284235885,
+            "total_liabilities": 2790076176536,
+            "current_liabilities": 848402700468,
+            "non_current_liabilities": 1941673476068,
+            "total_equity": 1519362923236,
+            "controlling_equity": 1396936916889,
+            "cash_and_equivalents": 228933956598,
+            "trade_receivables": null,
+            "inventory": null,
+            "short_term_borrowings": 104336147970,
+            "current_portion_lt_debt": 285139337638,
+            "long_term_borrowings": null,
+            "bonds_payable": 505815569220,
+            "lease_liabilities": null
+          },
+          "pl": {
+            "revenue": null,
+            "cost_of_revenue": 724800697983,
+            "gross_profit": 54155484849,
+            "sga": 34312675584,
+            "operating_income": 19842809265,
+            "interest_expense": null,
+            "net_income": -2265484498,
+            "controlling_net_income": null,
+            "depreciation": null
+          },
+          "cf": {
+            "operating_cf": 34240995518,
+            "investing_cf": -21706781212,
+            "financing_cf": -45406977345
+          },
+          "ratios": {
+            "gross_margin": null,
+            "operating_margin": null,
+            "ebitda_margin": null,
+            "net_margin": null,
+            "roa": -0.05,
+            "roe": null,
+            "debt_ratio": 183.63,
+            "debt_ratio_ex_lease": 183.63,
+            "current_ratio": 84.88,
+            "equity_ratio": 35.26,
+            "borrowing_dependency": 20.78,
             "interest_coverage": null,
             "operating_cf_margin": null
           },
