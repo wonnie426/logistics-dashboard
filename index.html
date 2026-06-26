@@ -272,7 +272,7 @@ function makeLineChart(id, labels, datasets, isPct) {
           callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : (isPct ? c.raw.toFixed(1)+'%' : Math.round(c.raw/1e8).toLocaleString()+'억')}` }
         }
       },
-      scales: { y: { ticks: { callback: v => isPct ? v+'%' : v }, grid: { color: 'rgba(0,0,0,0.05)' } } }
+      scales: { y: { ticks: { callback: v => isPct ? v.toFixed(1)+'%' : Math.round(v/1e8).toLocaleString('ko-KR')+'억' }, grid: { color: 'rgba(0,0,0,0.05)' } } }
     }
   });
 }
