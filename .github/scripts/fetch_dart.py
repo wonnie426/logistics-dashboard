@@ -20,9 +20,9 @@ BASE_URL = "https://opendart.fss.or.kr/api"
 KST = timezone(timedelta(hours=9))
 
 COMPANIES = {
-    "LGL": {"corp_code": "01388369", "name": "롯데글로벌로지스", "color": "#C8102E", "listed": False},
-    "CJ":  {"corp_code": "00113526", "name": "CJ대한통운",       "color": "#00A0DC", "listed": True},
-    "HJ":  {"corp_code": "00102027", "name": "한진",             "color": "#003087", "listed": True},
+    "LGL": {"corp_code": "00207676", "name": "롯데글로벌로지스", "color": "#C8102E", "listed": False},
+    "CJ":  {"corp_code": "00113410", "name": "CJ대한통운",       "color": "#00A0DC", "listed": True},
+    "HJ":  {"corp_code": "00163512", "name": "한진",             "color": "#003087", "listed": True},
 }
 
 REPORT_CODES = {
