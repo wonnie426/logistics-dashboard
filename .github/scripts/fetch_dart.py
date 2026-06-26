@@ -217,10 +217,11 @@ def fetch_accounts_both(corp_code: str, api_key: str, year: str, reprt_code: str
 
 
 # ── 계정명 → 값 매핑 ──────────────────────────────────────────────────────
-def find_account(accounts: list, *names: str) -> int | None:
+def find_account(accounts: list, *names: str, sj_filter: str = None) -> int | None:
+    pool = [a for a in accounts if sj_filter is None or a.get("sj_div") == sj_filter]
     # 1차: 정확히 일치
     for name in names:
-        for acc in accounts:
+        for acc in pool:
             if acc.get("account_nm", "").strip() == name:
                 val = acc.get("thstrm_amount", "").replace(",", "").replace(" ", "")
                 if val and val not in ("", "-", "－"):
@@ -228,75 +229,71 @@ def find_account(accounts: list, *names: str) -> int | None:
                         return int(val)
                     except ValueError:
                         pass
-    # 2차: 포함 일치 (긴 이름 먼저)
-    for name in sorted(names, key=len, reverse=True):
-        for acc in accounts:
-            nm = acc.get("account_nm", "").strip()
-            if name in nm or nm in name:
-                val = acc.get("thstrm_amount", "").replace(",", "").replace(" ", "")
-                if val and val not in ("", "-", "－"):
-                    try:
-                        return int(val)
-                    except ValueError:
-                        pass
+    # 2차: 포함 일치 (긴 이름 먼저, BS/IS만 허용)
+    if sj_filter in ("BS", "IS", "CIS", None):
+        for name in sorted(names, key=len, reverse=True):
+            for acc in pool:
+                nm = acc.get("account_nm", "").strip()
+                if name in nm or nm in name:
+                    val = acc.get("thstrm_amount", "").replace(",", "").replace(" ", "")
+                    if val and val not in ("", "-", "－"):
+                        try:
+                            return int(val)
+                        except ValueError:
+                            pass
     return None
 
 
 def parse_bs(accounts: list) -> dict:
+    bs = "BS"
     return {
-        "total_assets":            find_account(accounts, "자산총계"),
-        "current_assets":          find_account(accounts, "유동자산"),
-        "non_current_assets":      find_account(accounts, "비유동자산"),
-        "total_liabilities":       find_account(accounts, "부채총계"),
-        "current_liabilities":     find_account(accounts, "유동부채"),
-        "non_current_liabilities": find_account(accounts, "비유동부채"),
-        "total_equity":            find_account(accounts, "자본총계"),
+        "total_assets":            find_account(accounts, "자산총계", sj_filter=bs),
+        "current_assets":          find_account(accounts, "유동자산", sj_filter=bs),
+        "non_current_assets":      find_account(accounts, "비유동자산", sj_filter=bs),
+        "total_liabilities":       find_account(accounts, "부채총계", sj_filter=bs),
+        "current_liabilities":     find_account(accounts, "유동부채", sj_filter=bs),
+        "non_current_liabilities": find_account(accounts, "비유동부채", sj_filter=bs),
+        "total_equity":            find_account(accounts, "자본총계", sj_filter=bs),
         "controlling_equity":      find_account(accounts,
                                                "지배기업의 소유주에게 귀속되는 자본",
                                                "지배기업 소유주지분", "지배기업소유주지분",
                                                "지배주주지분", "지배기업주주지분",
-                                               "지배기업 소유주에게 귀속되는 자본"),
-        "cash_and_equivalents":    find_account(accounts, "현금및현금성자산"),
-        "trade_receivables":       find_account(accounts, "매출채권", "매출채권 및 기타채권"),
-        "inventory":               find_account(accounts, "재고자산"),
-        "short_term_borrowings":   find_account(accounts, "단기차입금"),
-        "current_portion_lt_debt": find_account(accounts, "유동성장기부채", "유동성 장기차입금"),
-        "long_term_borrowings":    find_account(accounts, "장기차입금"),
-        "bonds_payable":           find_account(accounts, "사채"),
-        "lease_liabilities":       find_account(accounts, "리스부채"),
+                                               "지배기업 소유주에게 귀속되는 자본",
+                                               sj_filter=bs),
+        "cash_and_equivalents":    find_account(accounts, "현금및현금성자산", sj_filter=bs),
+        "trade_receivables":       find_account(accounts, "매출채권", "매출채권 및 기타채권", sj_filter=bs),
+        "inventory":               find_account(accounts, "재고자산", sj_filter=bs),
+        "short_term_borrowings":   find_account(accounts, "단기차입금", sj_filter=bs),
+        "current_portion_lt_debt": find_account(accounts, "유동성장기부채", "유동성 장기차입금", sj_filter=bs),
+        "long_term_borrowings":    find_account(accounts, "장기차입금", sj_filter=bs),
+        "bonds_payable":           find_account(accounts, "사채", sj_filter=bs),
+        "lease_liabilities":       find_account(accounts, "리스부채", sj_filter=bs),
     }
 
 
 def parse_pl(accounts: list) -> dict:
+    def pl_find(*names):
+        # IS 우선, 없으면 CIS에서 찾기
+        return (find_account(accounts, *names, sj_filter="IS") or
+                find_account(accounts, *names, sj_filter="CIS"))
     return {
-        "revenue":                find_account(accounts,
-                                               "매출액", "영업수익", "수익(매출액)",
-                                               "이익(매출액)", "매출", "영업수익(매출액)"),
-        "cost_of_revenue":        find_account(accounts, "매출원가", "영업비용"),
-        "gross_profit":           find_account(accounts, "매출총이익", "매출총손익"),
-        "sga":                    find_account(accounts,
-                                               "판매비와관리비", "판매비및관리비",
-                                               "판매비와 관리비"),
-        "operating_income":       find_account(accounts,
-                                               "영업이익", "영업이익(손실)",
-                                               "영업손익"),
-        "interest_expense":       find_account(accounts,
-                                               "이자비용", "금융원가", "금융비용",
-                                               "이자비용(금융원가)", "이자비용 등"),
-        "net_income":             find_account(accounts,
-                                               "당기순이익", "당기순이익(손실)",
-                                               "당기순손익"),
-        "controlling_net_income": find_account(accounts,
-                                               "지배기업 소유주 귀속 당기순이익",
-                                               "지배기업의 소유주에게 귀속되는 당기순이익",
-                                               "지배기업의 소유주에게 귀속되는 당기순이익(손실)",
-                                               "지배기업 소유주지분 당기순이익",
-                                               "지배기업 소유주에게 귀속되는 당기순이익",
-                                               "지배주주귀속 당기순이익",
-                                               "지배기업주주지분 순이익"),
-        "depreciation":           find_account(accounts,
-                                               "감가상각비", "유형자산감가상각비",
-                                               "감가상각 및 상각비"),
+        "revenue":                pl_find("매출액", "영업수익", "수익(매출액)",
+                                          "이익(매출액)", "영업수익(매출액)"),
+        "cost_of_revenue":        pl_find("매출원가", "영업비용"),
+        "gross_profit":           pl_find("매출총이익", "매출총손익"),
+        "sga":                    pl_find("판매비와관리비", "판매비및관리비", "판매비와 관리비"),
+        "operating_income":       pl_find("영업이익", "영업이익(손실)", "영업손익"),
+        "interest_expense":       pl_find("이자비용", "금융원가", "금융비용",
+                                          "이자비용(금융원가)", "이자비용 등"),
+        "net_income":             pl_find("당기순이익", "당기순이익(손실)", "당기순손익"),
+        "controlling_net_income": pl_find("지배기업 소유주 귀속 당기순이익",
+                                          "지배기업의 소유주에게 귀속되는 당기순이익",
+                                          "지배기업의 소유주에게 귀속되는 당기순이익(손실)",
+                                          "지배기업 소유주지분 당기순이익",
+                                          "지배기업 소유주에게 귀속되는 당기순이익",
+                                          "지배주주귀속 당기순이익"),
+        "depreciation":           pl_find("감가상각비", "유형자산감가상각비",
+                                          "감가상각 및 상각비"),
     }
 
 
