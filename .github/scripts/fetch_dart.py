@@ -32,7 +32,7 @@ REPORT_CODES = {
     "Q3":     "11014",
 }
 
-COLLECT_YEARS = ["2021", "2022", "2023", "2024", "2025"]
+COLLECT_YEARS = ["2021", "2022", "2023", "2024", "2025", "2026"]
 
 # ── DART API 헬퍼 ──────────────────────────────────────────────────────────
 def dart_get(endpoint: str, params: dict, api_key: str) -> dict | None:
@@ -280,7 +280,7 @@ def main():
             ("Q2", REPORT_CODES["Q2"]),
             ("Q3", REPORT_CODES["Q3"]),
         ]
-        for year in ["2023", "2024", "2025"]:
+        for year in ["2023", "2024", "2025", "2026"]:
             for q_key, reprt_code in quarters:
                 period_key = f"{year}{q_key}"
                 result = collect_period(corp_code, api_key, year, q_key, reprt_code)
