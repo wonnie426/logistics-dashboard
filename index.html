@@ -202,6 +202,7 @@
   </div>
   <div class="header-right">
     <span id="last-updated" style="font-size:12px;color:var(--text-sub)"></span>
+    <button id="unit-toggle" class="theme-toggle" onclick="toggleUnit()">단위: 억원</button>
     <button class="theme-toggle" onclick="toggleTheme()">🌙 다크모드</button>
   </div>
 </header>
@@ -224,11 +225,25 @@
 
 <script>
 const $ = id => document.getElementById(id);
+let unitMode = '억'; // '억' | '원'
+
 const fmt = {
-  won:  v => v == null ? '—' : Math.round(v / 1e8).toLocaleString('ko-KR') + '억',
-  pct:  v => v == null ? '—' : v.toFixed(1) + '%',
-  x:    v => v == null ? '—' : v.toFixed(2) + '배',
+  won: v => {
+    if (v == null) return '—';
+    if (unitMode === '원') return Math.round(v).toLocaleString('ko-KR');
+    return Math.round(v / 1e8).toLocaleString('ko-KR');
+  },
+  wonUnit: () => unitMode === '억' ? '(억원)' : '(원)',
+  pct: v => v == null ? '—' : v.toFixed(1) + '%',
+  x:   v => v == null ? '—' : v.toFixed(2) + '배',
 };
+
+function toggleUnit() {
+  unitMode = unitMode === '억' ? '원' : '억';
+  const btn = document.getElementById('unit-toggle');
+  if (btn) btn.textContent = unitMode === '억' ? '단위: 억원' : '단위: 원';
+  renderActiveTab();
+}
 
 let FIN = null, SEG = null, THRESH = null, IND_AVG = null;
 let activeTab = 'compare';
@@ -363,6 +378,16 @@ function downloadChart(canvasId, filename) {
   a.click();
 }
 
+function wonTick(v) {
+  if (unitMode === '원') return Math.round(v).toLocaleString('ko-KR');
+  return Math.round(v / 1e8).toLocaleString('ko-KR');
+}
+function wonTooltip(v) {
+  if (v == null) return '미공시';
+  if (unitMode === '원') return Math.round(v).toLocaleString('ko-KR') + '원';
+  return Math.round(v / 1e8).toLocaleString('ko-KR') + '억';
+}
+
 function makeLineChart(id, labels, datasets, isPct) {
   destroyChart(id);
   const ctx = document.getElementById(id)?.getContext('2d');
@@ -376,10 +401,10 @@ function makeLineChart(id, labels, datasets, isPct) {
         legend: { position: 'top' },
         tooltip: {
           mode: 'index', intersect: false,
-          callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : (isPct ? c.raw.toFixed(1)+'%' : Math.round(c.raw/1e8).toLocaleString()+'억')}` }
+          callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : (isPct ? c.raw.toFixed(1)+'%' : wonTooltip(c.raw))}` }
         }
       },
-      scales: { y: { ticks: { callback: v => isPct ? v.toFixed(1)+'%' : Math.round(v/1e8).toLocaleString('ko-KR')+'억' }, grid: { color: 'rgba(0,0,0,0.05)' } } }
+      scales: { y: { ticks: { callback: v => isPct ? v.toFixed(1)+'%' : wonTick(v) }, grid: { color: 'rgba(0,0,0,0.05)' } } }
     }
   });
 }
@@ -393,8 +418,10 @@ function makeBarChart(id, labels, datasets) {
     data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false } },
-      scales: { y: { ticks: { callback: v => Math.round(v/1e8).toLocaleString()+'억' }, grid: { color: 'rgba(0,0,0,0.05)' } } }
+      plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false,
+        callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : wonTooltip(c.raw)}` }
+      } },
+      scales: { y: { ticks: { callback: v => wonTick(v) }, grid: { color: 'rgba(0,0,0,0.05)' } } }
     }
   });
 }
@@ -455,16 +482,21 @@ function renderCompanyTab(code) {
 
   // 재무요약 테이블 (네이버금융 스타일)
   const periodKeys = keys.slice(-8);
-  function finRow(label, getter, isPct, metric) {
+  // isPct: 'pct' | 'x' | false(won)
+  function finRow(label, getter, valType, metric) {
     const cells = periodKeys.map(k => {
       const v = getter(dataMap[k]);
       const rag = metric ? ragDot(metric, v) : '';
-      const txt = v == null ? '<span style="color:var(--text-sub)">—</span>' : (isPct ? fmt.pct(v) : fmt.won(v));
+      let txt;
+      if (v == null) txt = '<span style="color:var(--text-sub)">—</span>';
+      else if (valType === 'pct') txt = fmt.pct(v);
+      else if (valType === 'x')   txt = fmt.x(v);
+      else                        txt = fmt.won(v);
       return `<td>${txt}${rag}</td>`;
     }).join('');
-    const stk = stockForPeriod(periodKeys[periodKeys.length-1]);
     return `<tr><td>${label}</td>${cells}</tr>`;
   }
+  const wu = fmt.wonUnit();
   const finTableHtml = `
     <div class="card" style="margin-bottom:20px">
       <div class="card-title">재무 요약</div>
@@ -475,13 +507,13 @@ function renderCompanyTab(code) {
             ${periodKeys.map(k => `<th>${k}</th>`).join('')}
           </tr></thead>
           <tbody>
-            ${finRow('매출액(억원)',     d => d?.pl?.revenue,           false)}
-            ${finRow('영업이익(억원)',   d => d?.pl?.operating_income,  false)}
-            ${finRow('당기순이익(억원)', d => d?.pl?.net_income,        false)}
-            ${finRow('영업이익률(%)',    d => d?.ratios?.operating_margin, true, 'operating_margin')}
-            ${finRow('ROE(%)',          d => d?.ratios?.roe,            true, 'roe')}
-            ${finRow('부채비율(%)',      d => d?.ratios?.debt_ratio,     true, 'debt_ratio')}
-            ${finRow('이자보상비율(배)', d => d?.ratios?.interest_coverage != null ? d.ratios.interest_coverage : null, false)}
+            ${finRow(`매출액 ${wu}`,     d => d?.pl?.revenue,           false)}
+            ${finRow(`영업이익 ${wu}`,   d => d?.pl?.operating_income,  false)}
+            ${finRow(`당기순이익 ${wu}`, d => d?.pl?.net_income,        false)}
+            ${finRow('영업이익률(%)',    d => d?.ratios?.operating_margin, 'pct', 'operating_margin')}
+            ${finRow('ROE(%)',          d => d?.ratios?.roe,            'pct', 'roe')}
+            ${finRow('부채비율(%)',      d => d?.ratios?.debt_ratio,     'pct', 'debt_ratio')}
+            ${finRow('이자보상비율(배)', d => d?.ratios?.interest_coverage ?? null, 'x')}
           </tbody>
         </table>
       </div>
@@ -721,7 +753,7 @@ function renderCompareTab() {
     <div class="three-col" id="cmp-cards"></div>
     <div class="chart-grid">
       <div class="card">
-        <div class="chart-title">매출액 추이 (억원)
+        <div class="chart-title" id="cmp-rev-title">매출액 추이
           <button class="chart-download" onclick="downloadChart('c-cmp-rev','3사_매출액.png')">💾</button>
         </div>
         <canvas id="c-cmp-rev"></canvas>
@@ -762,7 +794,7 @@ function renderCompareTab() {
     div.innerHTML = `
       <div style="font-size:15px;font-weight:700;color:${co.color};margin-bottom:12px">${co.name}</div>
       <table class="ratio-table">
-        <tr><td>매출액</td><td class="num">${fmt.won(p.revenue)}</td></tr>
+        <tr><td>매출액 ${fmt.wonUnit()}</td><td class="num">${fmt.won(p.revenue)}</td></tr>
         <tr><td>영업이익률</td><td class="num">${fmt.pct(r.operating_margin)} ${ragDot('operating_margin', r.operating_margin)}</td></tr>
         <tr><td>ROE(지배)</td><td class="num">${fmt.pct(r.roe)} ${ragDot('roe', r.roe)}</td></tr>
         <tr><td>부채비율</td><td class="num">${fmt.pct(r.debt_ratio)} ${ragDot('debt_ratio', r.debt_ratio)}</td></tr>
