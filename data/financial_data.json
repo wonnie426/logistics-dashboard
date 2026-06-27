@@ -1,6 +1,28 @@
 {
-  "last_updated": "2026-06-27T15:54:16.271985+09:00",
-  "latest_report": {},
+  "last_updated": "2026-06-27T16:38:35.827693+09:00",
+  "latest_report": {
+    "LGL": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "20260331",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331004385"
+    },
+    "CJ": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "20260316",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001417"
+    },
+    "HJ": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "20260316",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001427"
+    }
+  },
   "companies": {
     "LGL": {
       "name": "롯데글로벌로지스",
@@ -1498,9 +1520,254 @@
       },
       "stock_code": "040830",
       "stock_type": "kotc",
-      "info": {},
+      "info": {
+        "ceo": "강병구",
+        "established": "19880613",
+        "employees": null,
+        "industry": "5299",
+        "address": "서울특별시 중구 통일로 10 (남대문로5가, 연세세브란스빌딩)",
+        "homepage": "https://www.lotteglogis.com",
+        "phone": "02-2170-3355",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
       "stock_prices": {},
-      "disclosures": []
+      "disclosures": [
+        {
+          "rcept_no": "20260529001556",
+          "rcept_dt": "20260529",
+          "report_nm": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529001556"
+        },
+        {
+          "rcept_no": "20260515002584",
+          "rcept_dt": "20260515",
+          "report_nm": "분기보고서 (2026.03)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002584"
+        },
+        {
+          "rcept_no": "20260331004385",
+          "rcept_dt": "20260331",
+          "report_nm": "사업보고서 (2025.12)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "연",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260331004385"
+        },
+        {
+          "rcept_no": "20260327001235",
+          "rcept_dt": "20260327",
+          "report_nm": "주요사항보고서(자본으로인정되는채무증권발행결정)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327001235"
+        },
+        {
+          "rcept_no": "20260227003252",
+          "rcept_dt": "20260227",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260227003252"
+        },
+        {
+          "rcept_no": "20260213001788",
+          "rcept_dt": "20260213",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260213001788"
+        },
+        {
+          "rcept_no": "20251128001243",
+          "rcept_dt": "20251128",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251128001243"
+        },
+        {
+          "rcept_no": "20251114002274",
+          "rcept_dt": "20251114",
+          "report_nm": "분기보고서 (2025.09)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251114002274"
+        },
+        {
+          "rcept_no": "20250829000882",
+          "rcept_dt": "20250829",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250829000882"
+        },
+        {
+          "rcept_no": "20250814003939",
+          "rcept_dt": "20250814",
+          "report_nm": "반기보고서 (2025.06)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814003939"
+        },
+        {
+          "rcept_no": "20250813001440",
+          "rcept_dt": "20250813",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250813001440"
+        },
+        {
+          "rcept_no": "20250611000553",
+          "rcept_dt": "20250611",
+          "report_nm": "주요주주의주식보유변동",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250611000553"
+        },
+        {
+          "rcept_no": "20250611000551",
+          "rcept_dt": "20250611",
+          "report_nm": "최대주주등의주식보유변동",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250611000551"
+        },
+        {
+          "rcept_no": "20250530001600",
+          "rcept_dt": "20250530",
+          "report_nm": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250530001600"
+        },
+        {
+          "rcept_no": "20250515001753",
+          "rcept_dt": "20250515",
+          "report_nm": "분기보고서 (2025.03)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250515001753"
+        },
+        {
+          "rcept_no": "20250502000300",
+          "rcept_dt": "20250502",
+          "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250502000300"
+        },
+        {
+          "rcept_no": "20241230000404",
+          "rcept_dt": "20241230",
+          "report_nm": "특수관계인과의내부거래",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241230000404"
+        },
+        {
+          "rcept_no": "20241128000777",
+          "rcept_dt": "20241128",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241128000777"
+        },
+        {
+          "rcept_no": "20241114002050",
+          "rcept_dt": "20241114",
+          "report_nm": "분기보고서 (2024.09)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241114002050"
+        },
+        {
+          "rcept_no": "20241031000139",
+          "rcept_dt": "20241031",
+          "report_nm": "임원의변동",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241031000139"
+        },
+        {
+          "rcept_no": "20240828000955",
+          "rcept_dt": "20240828",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240828000955"
+        },
+        {
+          "rcept_no": "20240814004433",
+          "rcept_dt": "20240814",
+          "report_nm": "반기보고서 (2024.06)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240814004433"
+        },
+        {
+          "rcept_no": "20240813001569",
+          "rcept_dt": "20240813",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240813001569"
+        },
+        {
+          "rcept_no": "20240705000592",
+          "rcept_dt": "20240708",
+          "report_nm": "임원의변동",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240705000592"
+        },
+        {
+          "rcept_no": "20240530000144",
+          "rcept_dt": "20240530",
+          "report_nm": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240530000144"
+        },
+        {
+          "rcept_no": "20240516001346",
+          "rcept_dt": "20240516",
+          "report_nm": "분기보고서 (2024.03)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240516001346"
+        }
+      ]
     },
     "CJ": {
       "name": "CJ대한통운",
@@ -3538,7 +3805,17 @@
       },
       "stock_code": "000120",
       "stock_type": "krx",
-      "info": {},
+      "info": {
+        "ceo": "신영수, 민영학 (각자 대표)",
+        "established": "19301115",
+        "employees": null,
+        "industry": "493",
+        "address": "서울특별시 종로구 종로5길 7(청진동) Tower 8",
+        "homepage": "www.cjlogistics.com",
+        "phone": "02-3782-0114",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
       "stock_prices": {
         "annual_2021": 126000,
         "annual_2022": 93700,
@@ -3559,7 +3836,278 @@
         "2025Q3": 84200,
         "2026Q3": 71800
       },
-      "disclosures": []
+      "disclosures": [
+        {
+          "rcept_no": "20260624000312",
+          "rcept_dt": "20260624",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "유현철",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260624000312"
+        },
+        {
+          "rcept_no": "20260624000287",
+          "rcept_dt": "20260624",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "최갑주",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260624000287"
+        },
+        {
+          "rcept_no": "20260622800183",
+          "rcept_dt": "20260622",
+          "report_nm": "[기재정정]투자판단관련주요경영사항              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260622800183"
+        },
+        {
+          "rcept_no": "20260612800751",
+          "rcept_dt": "20260612",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260612800751"
+        },
+        {
+          "rcept_no": "20260601801592",
+          "rcept_dt": "20260601",
+          "report_nm": "기업지배구조보고서공시              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260601801592"
+        },
+        {
+          "rcept_no": "20260601001422",
+          "rcept_dt": "20260601",
+          "report_nm": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260601001422"
+        },
+        {
+          "rcept_no": "20260601001331",
+          "rcept_dt": "20260601",
+          "report_nm": "주식등의대량보유상황보고서(약식)",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "국민연금공단",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260601001331"
+        },
+        {
+          "rcept_no": "20260520800252",
+          "rcept_dt": "20260520",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260520800252"
+        },
+        {
+          "rcept_no": "20260515002802",
+          "rcept_dt": "20260515",
+          "report_nm": "분기보고서 (2026.03)",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002802"
+        },
+        {
+          "rcept_no": "20260515801151",
+          "rcept_dt": "20260515",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515801151"
+        },
+        {
+          "rcept_no": "20251218800625",
+          "rcept_dt": "20251218",
+          "report_nm": "기타경영사항(자율공시)              (배당기준일 안내)",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218800625"
+        },
+        {
+          "rcept_no": "20251218800594",
+          "rcept_dt": "20251218",
+          "report_nm": "단기차입금증가결정              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218800594"
+        },
+        {
+          "rcept_no": "20251218000392",
+          "rcept_dt": "20251218",
+          "report_nm": "동일인등출자계열회사와의상품ㆍ용역거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218000392"
+        },
+        {
+          "rcept_no": "20251218000385",
+          "rcept_dt": "20251218",
+          "report_nm": "동일인등출자계열회사와의상품ㆍ용역거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218000385"
+        },
+        {
+          "rcept_no": "20251218000379",
+          "rcept_dt": "20251218",
+          "report_nm": "특수관계인과의내부거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218000379"
+        },
+        {
+          "rcept_no": "20251218000374",
+          "rcept_dt": "20251218",
+          "report_nm": "특수관계인에대한증여",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251218000374"
+        },
+        {
+          "rcept_no": "20251201000343",
+          "rcept_dt": "20251201",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "국민연금공단",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251201000343"
+        },
+        {
+          "rcept_no": "20251128800790",
+          "rcept_dt": "20251128",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251128800790"
+        },
+        {
+          "rcept_no": "20251128800735",
+          "rcept_dt": "20251128",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251128800735"
+        },
+        {
+          "rcept_no": "20251128800692",
+          "rcept_dt": "20251128",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251128800692"
+        },
+        {
+          "rcept_no": "20241220800450",
+          "rcept_dt": "20241220",
+          "report_nm": "기타경영사항(자율공시)              (배당기준일 안내)",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241220800450"
+        },
+        {
+          "rcept_no": "20241219800694",
+          "rcept_dt": "20241219",
+          "report_nm": "[기재정정]단기차입금증가결정              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219800694"
+        },
+        {
+          "rcept_no": "20241219000453",
+          "rcept_dt": "20241219",
+          "report_nm": "동일인등출자계열회사와의상품ㆍ용역거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219000453"
+        },
+        {
+          "rcept_no": "20241219000437",
+          "rcept_dt": "20241219",
+          "report_nm": "동일인등출자계열회사와의상품ㆍ용역거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219000437"
+        },
+        {
+          "rcept_no": "20241219000426",
+          "rcept_dt": "20241219",
+          "report_nm": "특수관계인과의내부거래",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219000426"
+        },
+        {
+          "rcept_no": "20241219000421",
+          "rcept_dt": "20241219",
+          "report_nm": "특수관계인에대한증여",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219000421"
+        },
+        {
+          "rcept_no": "20241219000417",
+          "rcept_dt": "20241219",
+          "report_nm": "동일인등출자계열회사와의상품ㆍ용역거래변경",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219000417"
+        },
+        {
+          "rcept_no": "20241219800455",
+          "rcept_dt": "20241219",
+          "report_nm": "단기차입금증가결정              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유정",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241219800455"
+        },
+        {
+          "rcept_no": "20241218800551",
+          "rcept_dt": "20241218",
+          "report_nm": "유상증자결정(종속회사의주요경영사항)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241218800551"
+        },
+        {
+          "rcept_no": "20241211800790",
+          "rcept_dt": "20241211",
+          "report_nm": "기업설명회(IR)개최(안내공시)              ",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241211800790"
+        }
+      ]
     },
     "HJ": {
       "name": "한진",
@@ -5597,7 +6145,17 @@
       },
       "stock_code": "002320",
       "stock_type": "krx",
-      "info": {},
+      "info": {
+        "ceo": "노삼석",
+        "established": "19580310",
+        "employees": null,
+        "industry": "49309",
+        "address": "서울특별시 중구 남대문로 63 한진빌딩",
+        "homepage": "www.hanjin.com",
+        "phone": "02-728-5114",
+        "fiscal_month": "12",
+        "auditor": ""
+      },
       "stock_prices": {
         "annual_2021": 30100,
         "annual_2022": 21050,
@@ -5618,7 +6176,278 @@
         "2025Q3": 20250,
         "2026Q3": 14860
       },
-      "disclosures": []
+      "disclosures": [
+        {
+          "rcept_no": "20260529801794",
+          "rcept_dt": "20260529",
+          "report_nm": "기업지배구조보고서공시              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529801794"
+        },
+        {
+          "rcept_no": "20260529002004",
+          "rcept_dt": "20260529",
+          "report_nm": "대규모기업집단현황공시[연1회공시및1/4분기용(개별회사)]",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529002004"
+        },
+        {
+          "rcept_no": "20260515002513",
+          "rcept_dt": "20260515",
+          "report_nm": "분기보고서 (2026.03)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002513"
+        },
+        {
+          "rcept_no": "20260430800840",
+          "rcept_dt": "20260430",
+          "report_nm": "[기재정정]타법인주식및출자증권취득결정              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260430800840"
+        },
+        {
+          "rcept_no": "20260420000277",
+          "rcept_dt": "20260420",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "한진",
+          "flr_nm": "송대길",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000277"
+        },
+        {
+          "rcept_no": "20260413800816",
+          "rcept_dt": "20260413",
+          "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260413800816"
+        },
+        {
+          "rcept_no": "20260327801096",
+          "rcept_dt": "20260327",
+          "report_nm": "최대주주등소유주식변동신고서              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327801096"
+        },
+        {
+          "rcept_no": "20260327000839",
+          "rcept_dt": "20260327",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "한진",
+          "flr_nm": "CHO EMILY LEE",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260327000839"
+        },
+        {
+          "rcept_no": "20260324000981",
+          "rcept_dt": "20260324",
+          "report_nm": "사외이사의선임ㆍ해임또는중도퇴임에관한신고",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324000981"
+        },
+        {
+          "rcept_no": "20260324801456",
+          "rcept_dt": "20260324",
+          "report_nm": "정기주주총회결과              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260324801456"
+        },
+        {
+          "rcept_no": "20251215801428",
+          "rcept_dt": "20251215",
+          "report_nm": "주주명부폐쇄기간또는기준일설정              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215801428"
+        },
+        {
+          "rcept_no": "20251211800759",
+          "rcept_dt": "20251211",
+          "report_nm": "타법인주식및출자증권취득결정              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유정",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251211800759"
+        },
+        {
+          "rcept_no": "20251211000118",
+          "rcept_dt": "20251211",
+          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
+          "corp_name": "한진",
+          "flr_nm": "조홍제",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251211000118"
+        },
+        {
+          "rcept_no": "20251128001983",
+          "rcept_dt": "20251128",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251128001983"
+        },
+        {
+          "rcept_no": "20251114000771",
+          "rcept_dt": "20251114",
+          "report_nm": "분기보고서 (2025.09)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251114000771"
+        },
+        {
+          "rcept_no": "20251114800762",
+          "rcept_dt": "20251114",
+          "report_nm": "최대주주등소유주식변동신고서              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251114800762"
+        },
+        {
+          "rcept_no": "20251017800409",
+          "rcept_dt": "20251017",
+          "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251017800409"
+        },
+        {
+          "rcept_no": "20250910000531",
+          "rcept_dt": "20250910",
+          "report_nm": "증권발행실적보고서",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250910000531"
+        },
+        {
+          "rcept_no": "20250910000012",
+          "rcept_dt": "20250910",
+          "report_nm": "투자설명서",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250910000012"
+        },
+        {
+          "rcept_no": "20250909000348",
+          "rcept_dt": "20250909",
+          "report_nm": "[발행조건확정]증권신고서(채무증권)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250909000348"
+        },
+        {
+          "rcept_no": "20241213801683",
+          "rcept_dt": "20241213",
+          "report_nm": "주주명부폐쇄기간또는기준일설정              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241213801683"
+        },
+        {
+          "rcept_no": "20241128001122",
+          "rcept_dt": "20241128",
+          "report_nm": "대규모기업집단현황공시[분기별공시(개별회사용)]",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "공",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241128001122"
+        },
+        {
+          "rcept_no": "20241114001768",
+          "rcept_dt": "20241114",
+          "report_nm": "분기보고서 (2024.09)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241114001768"
+        },
+        {
+          "rcept_no": "20241025000465",
+          "rcept_dt": "20241025",
+          "report_nm": "증권발행실적보고서",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241025000465"
+        },
+        {
+          "rcept_no": "20241025000037",
+          "rcept_dt": "20241025",
+          "report_nm": "투자설명서",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241025000037"
+        },
+        {
+          "rcept_no": "20241024000455",
+          "rcept_dt": "20241024",
+          "report_nm": "[발행조건확정]증권신고서(채무증권)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241024000455"
+        },
+        {
+          "rcept_no": "20241021000246",
+          "rcept_dt": "20241021",
+          "report_nm": "[발행조건확정]증권신고서(채무증권)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "정",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241021000246"
+        },
+        {
+          "rcept_no": "20241021000234",
+          "rcept_dt": "20241021",
+          "report_nm": "[기재정정]증권신고서(채무증권)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "정",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241021000234"
+        },
+        {
+          "rcept_no": "20241015000450",
+          "rcept_dt": "20241015",
+          "report_nm": "증권신고서(채무증권)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "정",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241015000450"
+        },
+        {
+          "rcept_no": "20241011800048",
+          "rcept_dt": "20241011",
+          "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "유",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241011800048"
+        }
+      ]
     }
   }
 }
