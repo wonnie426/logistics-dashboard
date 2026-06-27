@@ -219,6 +219,31 @@
       .rpt-table td.warn { color: #ca8a04 !important; }
       .rpt-table td.bad  { color: #dc2626 !important; }
     }
+    /* 정규화 도움말 팝업 */
+    .norm-help-wrap { display: inline-flex; align-items: center; position: relative; }
+    .norm-help-btn {
+      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #6b7280;
+      background: none; cursor: pointer; font-size: 11px; font-weight: 700;
+      color: #6b7280; line-height: 1; padding: 0; margin-left: 6px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .norm-help-btn:hover, .norm-help-btn.pinned { background: #003087; color: #fff; border-color: #003087; }
+    .norm-help-popup {
+      position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      width: 320px; background: #1a202c; color: #e2e8f0;
+      border-radius: 8px; padding: 14px 16px; font-size: 12px; line-height: 1.7;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35); z-index: 9999;
+      opacity: 0; pointer-events: none; transition: opacity 0.1s;
+    }
+    .norm-help-popup.visible { opacity: 1; pointer-events: auto; }
+    .norm-help-popup::before {
+      content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      border: 6px solid transparent; border-bottom-color: #1a202c;
+    }
+    .norm-help-popup b { color: #90cdf4; }
+    .norm-help-popup .norm-ex { margin-top: 8px; background: #2d3748; border-radius: 4px;
+                                padding: 6px 10px; font-family: monospace; font-size: 11px; }
     /* 공시자료 탭 */
     .dart-wrap { max-width: 1100px; margin: 0 auto; }
     .dart-header { background: #003087; color: #fff; border-radius: var(--radius) var(--radius) 0 0;
@@ -902,6 +927,34 @@ function setPeriod(code, type) {
 }
 
 // ── 종합 비교 탭 ──────────────────────────────────────────────────────────
+/* ── 정규화 도움말 ──────────────────────────────────────── */
+let _normPinned = false;
+function normHelpShow() {
+  const p = $('norm-help-popup'); if (p) p.classList.add('visible');
+}
+function normHelpHide() {
+  if (_normPinned) return;
+  const p = $('norm-help-popup'); if (p) p.classList.remove('visible');
+}
+function normHelpTogglePin(e) {
+  e.stopPropagation();
+  _normPinned = !_normPinned;
+  const btn = $('norm-help-btn');
+  const pop = $('norm-help-popup');
+  if (btn) btn.classList.toggle('pinned', _normPinned);
+  if (pop) pop.classList.toggle('visible', _normPinned);
+}
+// 팝업 외부 클릭 시 핀 해제
+document.addEventListener('click', e => {
+  if (_normPinned && !e.target.closest('.norm-help-wrap')) {
+    _normPinned = false;
+    const btn = $('norm-help-btn');
+    const pop = $('norm-help-popup');
+    if (btn) btn.classList.remove('pinned');
+    if (pop) pop.classList.remove('visible');
+  }
+});
+
 /* ── 공시자료 탭 ────────────────────────────────────────── */
 let dartCo = 'LGL';
 let dartFilter = '';
@@ -985,13 +1038,29 @@ function renderCompareTab() {
           ${YEARS.map(y => `<option value="${y}" ${y===prevYear?'selected':''}>${y}</option>`).join('')}
         </select>
       </label>
-      <label>비교 기준 정규화:
-        <select id="cmp-norm" onchange="renderCompareTab()">
+      <label style="display:inline-flex;align-items:center;gap:0">비교 기준 정규화:
+        <select id="cmp-norm" onchange="renderCompareTab()" style="margin-left:6px">
           <option value="none" ${prevNorm==='none'?'selected':''}>정규화 없음</option>
           <option value="LGL" ${prevNorm==='LGL'?'selected':''}>롯데글로벌로지스 = 1.0</option>
           <option value="CJ"  ${prevNorm==='CJ'?'selected':''}>CJ대한통운 = 1.0</option>
           <option value="HJ"  ${prevNorm==='HJ'?'selected':''}>한진 = 1.0</option>
         </select>
+        <span class="norm-help-wrap">
+          <button class="norm-help-btn" id="norm-help-btn"
+            onmouseenter="normHelpShow()"
+            onmouseleave="normHelpHide()"
+            onclick="normHelpTogglePin(event)">?</button>
+          <div class="norm-help-popup" id="norm-help-popup">
+            <b>정규화란?</b><br>
+            특정 회사의 값을 <b>1.0 기준</b>으로 설정하고,<br>
+            다른 회사 값을 그에 대한 <b>상대 배수</b>로 표시합니다.<br><br>
+            회사 간 절대 규모 차이를 제거하고<br>
+            <b>성장률·변화 방향</b>을 직관적으로 비교할 때 유용합니다.
+            <div class="norm-ex">예) CJ=1.0 기준 시<br>
+LGL 매출 34,015 → 0.28배<br>
+한진 매출 30,649 → 0.25배</div>
+          </div>
+        </span>
       </label>
     </div>
     <div class="three-col" id="cmp-cards"></div>
