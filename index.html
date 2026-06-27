@@ -142,6 +142,27 @@
       .content { padding: 12px; }
       .tabs { padding: 0 12px; overflow-x: auto; }
     }
+    /* 연도 드롭다운 */
+    .year-select { border: none; background: var(--card-bg); color: var(--text); font-size: 13px;
+                   padding: 4px 8px; cursor: pointer; outline: none; height: 32px; border-radius: 0; }
+    .year-select option { background: var(--card-bg); color: var(--text); }
+    /* 재무비율 상세 compact */
+    .ratio-table-v2 { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ratio-table-v2 th { padding: 7px 10px; background: var(--bg); font-weight: 600;
+                         color: var(--text-sub); border-bottom: 1px solid var(--border); text-align: left; }
+    .ratio-table-v2 th.num { text-align: right; }
+    .ratio-table-v2 td { padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .ratio-table-v2 td.sec { font-weight: 600; color: var(--text-sub); font-size: 12px; width: 70px; }
+    .ratio-table-v2 td.lbl { width: 140px; }
+    .ratio-table-v2 td.num { text-align: right; width: 100px; }
+    .ratio-table-v2 td.formula { font-size: 11px; color: var(--text-sub); font-style: italic; }
+    .ratio-table-v2 tr:last-child td { border-bottom: none; }
+    .ratio-table-v2 tr:hover td { background: var(--bg); }
+    .tooltip-row td.lbl { cursor: help; }
+    .tooltip-row td.lbl::after { content: ' ⓘ'; font-size: 10px; color: var(--text-sub); }
+    /* 기간 레이블 */
+    .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
+                    border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
     /* 보고서 탭 */
     .report-wrap { max-width: 960px; margin: 0 auto; }
     .report-toolbar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
@@ -554,9 +575,20 @@ function renderCompanyTab(code) {
       </div>
     </div>` : '';
 
+  // 분기 기간 레이블
+  function periodLabel(key) {
+    if (pMode === 'annual') return `${key}년`;
+    const m = key.match(/^(\d{4})Q(\d)$/);
+    if (m) { const n = {'1':'1분기','2':'반기','3':'3분기','4':'연간'}; return `${m[1]}년 ${n[m[2]]||m[2]+'분기'}`; }
+    return key;
+  }
+  const periodBadge = `<span class="period-badge">${periodLabel(latest)} 기준</span>`;
+
   const yearSelectHtml = pMode === 'annual' ? `
     <div class="fs-divider"></div>
-    ${annualKeys.map(y => `<button class="fs-btn ${y===latest?'active':''}" onclick="setYear('${code}','${y}')">${y}</button>`).join('')}
+    <select class="year-select" onchange="setYear('${code}', this.value)">
+      ${annualKeys.map(y => `<option value="${y}" ${y===latest?'selected':''}>${y}년</option>`).join('')}
+    </select>
   ` : '';
 
   $(`tab-${code}`).innerHTML = `
@@ -574,6 +606,10 @@ function renderCompanyTab(code) {
       </div>
     </div>
     ${overviewHtml}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--text-sub)">주요 지표</span>
+      ${periodBadge}
+    </div>
     <div class="summary-grid" style="margin-bottom:20px">
       ${sc('매출액', fmt.won(pl.revenue), changeHtml(pl.revenue, prevPl.revenue), null, null)}
       ${sc('영업이익률', fmt.pct(r.operating_margin), changeHtml(r.operating_margin, prevR.operating_margin), 'operating_margin', r.operating_margin)}
@@ -610,8 +646,14 @@ function renderCompanyTab(code) {
       </div>
     </div>
     <div class="card" style="margin-bottom:24px">
-      <div class="card-title">재무비율 상세</div>
-      ${ratioTable(r, ld)}
+      <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>재무비율 상세</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          ${periodBadge}
+          <button class="chart-download" onclick="downloadRatioExcel('${code}','${latest}')">📥 Excel</button>
+        </div>
+      </div>
+      ${ratioTable(r, ld, code, latest)}
     </div>
     <div class="card" style="margin-bottom:24px">
       <div class="card-title">사업부문별 실적</div>
@@ -644,39 +686,94 @@ function sc(label, value, chgHtml, metric, val) {
   </div>`;
 }
 
-function ratioTable(r, ld) {
+const RATIO_FORMULAS = {
+  '영업이익률':        '영업이익 ÷ 매출액 × 100',
+  'EBITDA율':          '(영업이익 + 감가상각비) ÷ 매출액 × 100',
+  '순이익률':          '당기순이익 ÷ 매출액 × 100',
+  'ROA':               '당기순이익 ÷ 총자산 × 100',
+  'ROE(지배)':         '지배주주귀속 순이익 ÷ 지배주주 지분 × 100',
+  '부채비율':          '총부채 ÷ 자기자본 × 100',
+  '부채비율(리스제외)':'(총부채 − 리스부채) ÷ 자기자본 × 100',
+  '유동비율':          '유동자산 ÷ 유동부채 × 100',
+  '자기자본비율':      '자기자본 ÷ 총자산 × 100',
+  '이자보상비율':      '영업이익 ÷ 이자비용',
+  '차입금의존도':      '(단·장기차입금 합계) ÷ 총자산 × 100',
+  '영업현금흐름/매출': '영업활동현금흐름 ÷ 매출액 × 100',
+};
+
+function ratioTable(r, ld, code, period) {
   const rows = [
     ['수익성', [
-      ['영업이익률',   fmt.pct(r.operating_margin), 'operating_margin', r.operating_margin],
-      ['EBITDA율',     fmt.pct(r.ebitda_margin),     null, null],
-      ['순이익률',     fmt.pct(r.net_margin),         'net_margin', r.net_margin],
-      ['ROA',         fmt.pct(r.roa),                'roa', r.roa],
-      ['ROE(지배)',    fmt.pct(r.roe),                'roe', r.roe],
+      ['영업이익률',       fmt.pct(r.operating_margin),    'operating_margin', r.operating_margin],
+      ['EBITDA율',         fmt.pct(r.ebitda_margin),        null, null],
+      ['순이익률',         fmt.pct(r.net_margin),            'net_margin', r.net_margin],
+      ['ROA',             fmt.pct(r.roa),                   'roa', r.roa],
+      ['ROE(지배)',        fmt.pct(r.roe),                   'roe', r.roe],
     ]],
     ['안정성', [
-      ['부채비율',       fmt.pct(r.debt_ratio),        'debt_ratio', r.debt_ratio],
-      ['부채비율(리스제외)', fmt.pct(r.debt_ratio_ex_lease), null, null],
-      ['유동비율',       fmt.pct(r.current_ratio),     'current_ratio', r.current_ratio],
-      ['자기자본비율',   fmt.pct(r.equity_ratio),      'equity_ratio', r.equity_ratio],
-      ['이자보상비율',   fmt.x(r.interest_coverage),   'interest_coverage', r.interest_coverage],
-      ['차입금의존도',   fmt.pct(r.borrowing_dependency),'borrowing_dependency', r.borrowing_dependency],
+      ['부채비율',         fmt.pct(r.debt_ratio),           'debt_ratio', r.debt_ratio],
+      ['부채비율(리스제외)',fmt.pct(r.debt_ratio_ex_lease),  null, null],
+      ['유동비율',         fmt.pct(r.current_ratio),        'current_ratio', r.current_ratio],
+      ['자기자본비율',     fmt.pct(r.equity_ratio),         'equity_ratio', r.equity_ratio],
+      ['이자보상비율',     fmt.x(r.interest_coverage),      'interest_coverage', r.interest_coverage],
+      ['차입금의존도',     fmt.pct(r.borrowing_dependency),  'borrowing_dependency', r.borrowing_dependency],
     ]],
     ['현금창출', [
       ['영업현금흐름/매출', fmt.pct(r.operating_cf_margin), 'operating_cf_margin', r.operating_cf_margin],
     ]],
   ];
-  let html = `<table class="ratio-table"><thead><tr><th>구분</th><th>항목</th><th class="num">값</th><th>출처</th></tr></thead><tbody>`;
+  let html = `<table class="ratio-table-v2">
+    <thead><tr><th style="width:70px">구분</th><th>항목</th><th style="font-size:11px;font-weight:400;color:var(--text-sub)">계산식 (마우스 올리면 표시)</th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
   for (const [sec, items] of rows) {
     items.forEach(([lbl, val, metric, mv], i) => {
-      html += `<tr>
-        ${i === 0 ? `<td rowspan="${items.length}" style="font-weight:600;color:var(--text-sub)">${sec}</td>` : ''}
-        <td>${lbl}</td>
+      const formula = RATIO_FORMULAS[lbl] || '';
+      html += `<tr class="tooltip-row">
+        ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
+        <td class="lbl" title="${formula}">${lbl}</td>
+        <td class="formula">${formula}</td>
         <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
-        <td>${ld.report_url ? `<a href="${ld.report_url}" target="_blank" class="report-link">📄</a>` : '—'}</td>
       </tr>`;
     });
   }
   return html + '</tbody></table>';
+}
+
+function downloadRatioExcel(code, period) {
+  const co = FIN.companies[code];
+  const fs = fsMode[code] || 'CFS';
+  const d  = getPeriodData(co, 'annual', fs)?.[period] || {};
+  const r  = d.ratios || {};
+  const pl = d.pl || {};
+  const bs = d.bs || {};
+  const wb = XLSX.utils.book_new();
+  const header = ['구분','항목','계산식','값','단위'];
+  const dataRows = [
+    header,
+    ['수익성','영업이익률','영업이익 ÷ 매출액 × 100', r.operating_margin != null ? +r.operating_margin.toFixed(2) : '—', '%'],
+    ['수익성','EBITDA율','(영업이익+감가상각비) ÷ 매출액 × 100', r.ebitda_margin != null ? +r.ebitda_margin.toFixed(2) : '—', '%'],
+    ['수익성','순이익률','당기순이익 ÷ 매출액 × 100', r.net_margin != null ? +r.net_margin.toFixed(2) : '—', '%'],
+    ['수익성','ROA','당기순이익 ÷ 총자산 × 100', r.roa != null ? +r.roa.toFixed(2) : '—', '%'],
+    ['수익성','ROE(지배)','지배주주귀속순이익 ÷ 지배주주지분 × 100', r.roe != null ? +r.roe.toFixed(2) : '—', '%'],
+    ['안정성','부채비율','총부채 ÷ 자기자본 × 100', r.debt_ratio != null ? +r.debt_ratio.toFixed(2) : '—', '%'],
+    ['안정성','부채비율(리스제외)','(총부채-리스부채) ÷ 자기자본 × 100', r.debt_ratio_ex_lease != null ? +r.debt_ratio_ex_lease.toFixed(2) : '—', '%'],
+    ['안정성','유동비율','유동자산 ÷ 유동부채 × 100', r.current_ratio != null ? +r.current_ratio.toFixed(2) : '—', '%'],
+    ['안정성','자기자본비율','자기자본 ÷ 총자산 × 100', r.equity_ratio != null ? +r.equity_ratio.toFixed(2) : '—', '%'],
+    ['안정성','이자보상비율','영업이익 ÷ 이자비용', r.interest_coverage != null ? +r.interest_coverage.toFixed(2) : '—', '배'],
+    ['안정성','차입금의존도','(단+장기차입금) ÷ 총자산 × 100', r.borrowing_dependency != null ? +r.borrowing_dependency.toFixed(2) : '—', '%'],
+    ['현금창출','영업현금흐름/매출','영업CF ÷ 매출액 × 100', r.operating_cf_margin != null ? +r.operating_cf_margin.toFixed(2) : '—', '%'],
+    [],
+    ['주요 재무수치 (억원)','','','',''],
+    ['','매출액','', pl.revenue != null ? Math.round(pl.revenue/1e8) : '—', '억원'],
+    ['','영업이익','', pl.operating_income != null ? Math.round(pl.operating_income/1e8) : '—', '억원'],
+    ['','당기순이익','', pl.net_income != null ? Math.round(pl.net_income/1e8) : '—', '억원'],
+    ['','총자산','', bs.total_assets != null ? Math.round(bs.total_assets/1e8) : '—', '억원'],
+    ['','총부채','', bs.total_liabilities != null ? Math.round(bs.total_liabilities/1e8) : '—', '억원'],
+    ['','자기자본','', bs.total_equity != null ? Math.round(bs.total_equity/1e8) : '—', '억원'],
+  ];
+  const ws = XLSX.utils.aoa_to_sheet(dataRows);
+  ws['!cols'] = [{wch:10},{wch:20},{wch:38},{wch:12},{wch:8}];
+  XLSX.utils.book_append_sheet(wb, ws, `${co.name}_${period}`);
+  XLSX.writeFile(wb, `재무비율_${co.name}_${period}_${fs}.xlsx`);
 }
 
 function segTable(code) {
