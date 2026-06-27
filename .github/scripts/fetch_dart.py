@@ -167,6 +167,34 @@ def dart_get(endpoint: str, params: dict, api_key: str) -> dict | None:
         return None
 
 
+def fetch_disclosures(corp_code: str, api_key: str, days: int = 730) -> list:
+    """최근 공시목록 수집 (최대 100건, 기본 2년치)"""
+    from datetime import date, timedelta
+    bgn = (date.today() - timedelta(days=days)).strftime("%Y%m%d")
+    end = date.today().strftime("%Y%m%d")
+    data = dart_get("list.json", {
+        "corp_code": corp_code,
+        "bgn_de": bgn,
+        "end_de": end,
+        "page_no": 1,
+        "page_count": 100,
+        "sort": "date",
+        "sort_mth": "desc",
+    }, api_key)
+    if not data:
+        return []
+    items = data.get("list", [])
+    return [{
+        "rcept_no":  d["rcept_no"],
+        "rcept_dt":  d["rcept_dt"],
+        "report_nm": d["report_nm"],
+        "corp_name": d["corp_name"],
+        "flr_nm":    d["flr_nm"],
+        "rm":        d.get("rm", ""),
+        "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={d['rcept_no']}",
+    } for d in items[:100]]
+
+
 def fetch_report_list(corp_code: str, api_key: str, year: str, reprt_code: str) -> dict | None:
     data = dart_get("list.json", {
         "corp_code": corp_code,
@@ -438,6 +466,10 @@ def main():
         # 기업정보 수집
         print(f"  기업정보 수집 중...")
         co_data["info"] = fetch_company_info(corp_code, api_key)
+
+        # 공시목록 수집
+        print(f"  공시목록 수집 중...")
+        co_data["disclosures"] = fetch_disclosures(corp_code, api_key)
 
         # 주가 수집
         stock_prices = collect_stock_prices(info)

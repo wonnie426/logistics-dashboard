@@ -158,8 +158,19 @@
     .ratio-table-v2 td.formula { font-size: 11px; color: var(--text-sub); font-style: italic; }
     .ratio-table-v2 tr:last-child td { border-bottom: none; }
     .ratio-table-v2 tr:hover td { background: var(--bg); }
-    .tooltip-row td.lbl { cursor: help; }
+    .tooltip-row td.lbl { cursor: help; position: relative; }
     .tooltip-row td.lbl::after { content: ' ⓘ'; font-size: 10px; color: var(--text-sub); }
+    [data-tooltip] { position: relative; }
+    [data-tooltip]::before {
+      content: attr(data-tooltip);
+      position: absolute; bottom: calc(100% + 6px); left: 0;
+      background: #1a202c; color: #fff; padding: 5px 10px;
+      border-radius: 5px; font-size: 11px; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity 0.08s;
+      z-index: 9999; font-weight: 400; font-style: normal;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    [data-tooltip]:hover::before { opacity: 1; }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -208,6 +219,47 @@
       .rpt-table td.warn { color: #ca8a04 !important; }
       .rpt-table td.bad  { color: #dc2626 !important; }
     }
+    /* 공시자료 탭 */
+    .dart-wrap { max-width: 1100px; margin: 0 auto; }
+    .dart-header { background: #003087; color: #fff; border-radius: var(--radius) var(--radius) 0 0;
+                   padding: 14px 20px; display: flex; align-items: center; gap: 12px; }
+    .dart-logo { font-weight: 900; font-size: 18px; letter-spacing: 1px;
+                 background: #E8000D; padding: 2px 8px; border-radius: 3px; }
+    .dart-header-title { font-size: 14px; font-weight: 600; flex: 1; }
+    .dart-header-update { font-size: 11px; opacity: 0.75; }
+    .dart-co-tabs { display: flex; background: #f0f4f8; border: 1px solid var(--border);
+                    border-top: none; }
+    .dart-co-tab { flex: 1; padding: 10px; text-align: center; cursor: pointer;
+                   font-size: 13px; font-weight: 600; border-right: 1px solid var(--border);
+                   color: var(--text-sub); transition: background 0.15s; }
+    .dart-co-tab:last-child { border-right: none; }
+    .dart-co-tab.active { background: #fff; color: #003087; border-bottom: 2px solid #003087; }
+    .dart-co-tab:hover:not(.active) { background: #e4eaf0; }
+    .dart-search-bar { display: flex; gap: 8px; padding: 12px 16px;
+                       background: var(--card-bg); border: 1px solid var(--border); border-top: none; }
+    .dart-search-bar input { flex: 1; border: 1px solid var(--border); border-radius: var(--radius);
+                              padding: 6px 12px; font-size: 13px; background: var(--bg); color: var(--text); }
+    .dart-search-bar select { border: 1px solid var(--border); border-radius: var(--radius);
+                               padding: 6px 10px; font-size: 13px; background: var(--bg); color: var(--text); }
+    .dart-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+    .dart-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .dart-table thead th { background: #f5f7fa; color: #003087; font-weight: 700;
+                           padding: 10px 14px; border-bottom: 2px solid #003087; white-space: nowrap; text-align: left; }
+    .dart-table tbody tr { border-bottom: 1px solid var(--border); }
+    .dart-table tbody tr:last-child { border-bottom: none; }
+    .dart-table tbody tr:hover { background: #f0f4f8; }
+    .dart-table tbody td { padding: 9px 14px; vertical-align: middle; }
+    .dart-table td.dart-date { white-space: nowrap; color: var(--text-sub); font-size: 12px; width: 95px; }
+    .dart-table td.dart-name { }
+    .dart-table td.dart-filer { color: var(--text-sub); font-size: 12px; width: 120px; }
+    .dart-table td.dart-rm { color: #c53030; font-size: 11px; width: 60px; }
+    .dart-table td.dart-link { width: 60px; text-align: center; }
+    .dart-view-btn { display: inline-block; padding: 4px 12px; background: #003087; color: #fff;
+                     border-radius: 3px; font-size: 12px; text-decoration: none; font-weight: 600; }
+    .dart-view-btn:hover { background: #004ab3; }
+    .dart-empty { text-align: center; padding: 48px; color: var(--text-sub); font-size: 14px; }
+    .dart-count { font-size: 12px; color: var(--text-sub); padding: 6px 16px;
+                  background: var(--card-bg); border: 1px solid var(--border); border-top: none; }
   </style>
 </head>
 <body data-theme="light">
@@ -233,7 +285,8 @@
   <button class="tab-btn" data-tab="report">보고서</button>
   <button class="tab-btn" data-tab="LGL" data-company="LGL">롯데글로벌로지스</button>
   <button class="tab-btn" data-tab="CJ"  data-company="CJ">CJ대한통운</button>
-  <button class="tab-btn" data-tab="HJ"  data-company="HJ">한진</button>
+  <button class="tab-btn" data-tab="HJ"   data-company="HJ">한진</button>
+  <button class="tab-btn" data-tab="dart">공시자료</button>
 </nav>
 
 <main class="content">
@@ -242,6 +295,7 @@
   <div id="tab-LGL"     class="tab-panel"></div>
   <div id="tab-CJ"      class="tab-panel"></div>
   <div id="tab-HJ"      class="tab-panel"></div>
+  <div id="tab-dart"    class="tab-panel"></div>
 </main>
 
 <script>
@@ -732,7 +786,7 @@ function ratioTable(r, ld, code, period) {
       const formula = RATIO_FORMULAS[lbl] || '';
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
-        <td class="lbl" title="${formula}">${lbl}</td>
+        <td class="lbl" data-tooltip="${formula}">${lbl}</td>
         <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
       </tr>`;
     });
@@ -848,6 +902,72 @@ function setPeriod(code, type) {
 }
 
 // ── 종합 비교 탭 ──────────────────────────────────────────────────────────
+/* ── 공시자료 탭 ────────────────────────────────────────── */
+let dartCo = 'LGL';
+let dartFilter = '';
+let dartType  = '';
+
+function renderDartTab() {
+  const el = $('tab-dart');
+  const coNames = { LGL: '롯데글로벌로지스', CJ: 'CJ대한통운', HJ: '한진' };
+  const coColors = { LGL: '#C8102E', CJ: '#00A0DC', HJ: '#003087' };
+
+  const co = FIN.companies?.[dartCo];
+  const disclosures = co?.disclosures || [];
+  const updatedAt = FIN.updated_at ? FIN.updated_at.slice(0,16).replace('T',' ') : '—';
+
+  const filtered = disclosures.filter(d => {
+    const q = dartFilter.toLowerCase();
+    const matchText = !q || d.report_nm?.toLowerCase().includes(q) || d.flr_nm?.toLowerCase().includes(q);
+    const matchType = !dartType || d.report_nm?.includes(dartType);
+    return matchText && matchType;
+  });
+
+  // type options from data
+  const types = ['사업보고서','반기보고서','분기보고서','감사보고서','기타'];
+
+  const coTabsHtml = Object.entries(coNames).map(([k,v]) =>
+    `<div class="dart-co-tab${dartCo===k?' active':''}" onclick="dartCo='${k}';renderDartTab()">${v}</div>`
+  ).join('');
+
+  const rowsHtml = filtered.length === 0
+    ? `<tr><td colspan="5" class="dart-empty">공시 자료가 없습니다.</td></tr>`
+    : filtered.map(d => {
+        const dt = d.rcept_dt ? d.rcept_dt.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '—';
+        const rm = d.rm === '유' ? '<span style="color:#c53030">정정</span>' : '';
+        return `<tr>
+          <td class="dart-date">${dt}</td>
+          <td class="dart-name">${d.report_nm || '—'} ${rm}</td>
+          <td class="dart-filer">${d.flr_nm || '—'}</td>
+          <td class="dart-link"><a href="${d.url}" target="_blank" class="dart-view-btn">보기</a></td>
+        </tr>`;
+      }).join('');
+
+  el.innerHTML = `<div class="dart-wrap">
+    <div class="dart-header">
+      <span class="dart-logo">DART</span>
+      <span class="dart-header-title">전자공시 시스템 — 최근 공시 목록</span>
+      <span class="dart-header-update">업데이트: ${updatedAt} KST</span>
+    </div>
+    <div class="dart-co-tabs">${coTabsHtml}</div>
+    <div class="dart-search-bar">
+      <input type="text" placeholder="보고서명 또는 제출인 검색..." value="${dartFilter}"
+             oninput="dartFilter=this.value;renderDartTab()">
+      <select onchange="dartType=this.value;renderDartTab()">
+        <option value="">전체 유형</option>
+        ${types.map(t=>`<option value="${t}"${dartType===t?' selected':''}>${t}</option>`).join('')}
+      </select>
+    </div>
+    <div class="dart-count">총 <b>${filtered.length}</b>건 (전체 ${disclosures.length}건)</div>
+    <div class="dart-table-wrap">
+      <table class="dart-table">
+        <thead><tr><th>공시일자</th><th>보고서명</th><th>제출인</th><th>보기</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
 function renderCompareTab() {
   const YEARS = ['2021','2022','2023','2024','2025'];
   const CODES = ['LGL','CJ','HJ'];
@@ -1240,6 +1360,7 @@ async function exportPPT() {
 function renderActiveTab() {
   if (activeTab === 'compare') renderCompareTab();
   else if (activeTab === 'report') renderReportTab();
+  else if (activeTab === 'dart') renderDartTab();
   else renderCompanyTab(activeTab);
 }
 
