@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>물류 3사 재무비율 대시보드</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <style>
     :root {
       --lgl: #C8102E;
@@ -139,6 +142,37 @@
       .content { padding: 12px; }
       .tabs { padding: 0 12px; overflow-x: auto; }
     }
+    /* 보고서 탭 */
+    .report-wrap { max-width: 960px; margin: 0 auto; }
+    .report-toolbar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
+    .report-toolbar label { font-size: 13px; font-weight: 500; }
+    .report-toolbar select { border: 1px solid var(--border); border-radius: var(--radius);
+                             padding: 5px 10px; background: var(--card-bg); color: var(--text); font-size: 13px; }
+    .export-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 18px;
+                  border-radius: var(--radius); border: none; cursor: pointer; font-size: 13px; font-weight: 600;
+                  transition: opacity 0.15s; }
+    .export-btn:hover { opacity: 0.85; }
+    .export-btn.ppt  { background: #c43e1c; color: #fff; }
+    .export-btn.xlsx { background: #1e7145; color: #fff; }
+    .export-btn.pdf  { background: #b00020; color: #fff; }
+    .rpt-cover { background: linear-gradient(135deg, #C8102E 0%, #8b0000 100%);
+                 color: #fff; border-radius: var(--radius); padding: 36px 40px; margin-bottom: 20px; }
+    .rpt-cover-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .rpt-cover-sub   { font-size: 14px; opacity: 0.85; }
+    .rpt-section-title { font-size: 15px; font-weight: 700; color: var(--text);
+                         border-left: 4px solid var(--lgl); padding-left: 10px; margin: 20px 0 12px; }
+    .rpt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .rpt-table th { padding: 9px 12px; background: #C8102E; color: #fff; font-weight: 600;
+                    text-align: center; white-space: nowrap; }
+    .rpt-table th:first-child { text-align: left; background: #8b0000; }
+    .rpt-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: center; }
+    .rpt-table td:first-child { text-align: left; font-weight: 500; background: var(--bg); }
+    .rpt-table tr:last-child td { border-bottom: none; }
+    .rpt-table tr:hover td { background: var(--bg); }
+    .rpt-table td.good  { color: #16a34a; font-weight: 600; }
+    .rpt-table td.warn  { color: #ca8a04; font-weight: 600; }
+    .rpt-table td.bad   { color: #dc2626; font-weight: 600; }
+    .rpt-note { font-size: 11px; color: var(--text-sub); margin-top: 8px; }
     @media print {
       .header, .tabs, .period-selector, .compare-controls, .theme-toggle, .chart-download { display: none !important; }
       .tab-panel { display: block !important; }
@@ -167,6 +201,7 @@
 
 <nav class="tabs">
   <button class="tab-btn active" data-tab="compare">종합 비교</button>
+  <button class="tab-btn" data-tab="report">보고서</button>
   <button class="tab-btn" data-tab="LGL" data-company="LGL">롯데글로벌로지스</button>
   <button class="tab-btn" data-tab="CJ"  data-company="CJ">CJ대한통운</button>
   <button class="tab-btn" data-tab="HJ"  data-company="HJ">한진</button>
@@ -174,6 +209,7 @@
 
 <main class="content">
   <div id="tab-compare" class="tab-panel active"></div>
+  <div id="tab-report"  class="tab-panel"></div>
   <div id="tab-LGL"     class="tab-panel"></div>
   <div id="tab-CJ"      class="tab-panel"></div>
   <div id="tab-HJ"      class="tab-panel"></div>
@@ -192,6 +228,17 @@ let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
 let fsMode = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
 const charts = {};
+
+function getYearData(co, year, fsDiv) {
+  fsDiv = fsDiv || 'CFS';
+  const v = co?.annual?.[year];
+  if (!v) return null;
+  if (v._default || v.CFS || v.OFS) {
+    const def = v._default || 'CFS';
+    return v[fsDiv] || v[def] || v['CFS'] || v['OFS'] || null;
+  }
+  return v;
+}
 
 function getPeriodData(co, periodKey, fsDiv) {
   const raw = co[periodKey === 'annual' ? 'annual' : 'quarterly'];
@@ -695,12 +742,12 @@ function renderCompareTab() {
 
   const selYear = $('cmp-year')?.value || '2025';
   const normCode = $('cmp-norm')?.value || 'none';
-  const normBase = normCode !== 'none' ? FIN.companies[normCode]?.annual?.[selYear] : null;
+  const normBase = normCode !== 'none' ? getYearData(FIN.companies[normCode], selYear) : null;
 
   const cardsEl = $('cmp-cards');
   CODES.forEach(code => {
     const co = FIN.companies[code];
-    const d  = co?.annual?.[selYear];
+    const d  = getYearData(co, selYear);
     const r  = d?.ratios || {};
     const p  = d?.pl || {};
     const div = document.createElement('div');
@@ -730,9 +777,9 @@ function renderCompareTab() {
   const ds = (metric) => CODES.map(code => ({
     label: NAMES[code],
     data: YEARS.map(y => {
-      const v = FIN.companies[code]?.annual?.[y]?.ratios?.[metric] ?? null;
+      const v = getYearData(FIN.companies[code], y)?.ratios?.[metric] ?? null;
       if (!normBase) return v;
-      const b = FIN.companies[normCode]?.annual?.[y]?.ratios?.[metric] ?? null;
+      const b = getYearData(FIN.companies[normCode], y)?.ratios?.[metric] ?? null;
       return (v != null && b) ? +(v/b).toFixed(3) : null;
     }),
     borderColor: COLORS[code], backgroundColor: COLORS[code]+'33',
@@ -742,9 +789,9 @@ function renderCompareTab() {
   const revDs = CODES.map(code => ({
     label: NAMES[code],
     data: YEARS.map(y => {
-      const v = FIN.companies[code]?.annual?.[y]?.pl?.revenue ?? null;
+      const v = getYearData(FIN.companies[code], y)?.pl?.revenue ?? null;
       if (!normBase) return v;
-      const b = FIN.companies[normCode]?.annual?.[y]?.pl?.revenue ?? null;
+      const b = getYearData(FIN.companies[normCode], y)?.pl?.revenue ?? null;
       return (v != null && b) ? +(v/b).toFixed(3) : null;
     }),
     borderColor: COLORS[code], backgroundColor: COLORS[code]+'33',
@@ -757,8 +804,281 @@ function renderCompareTab() {
   makeLineChart('c-cmp-roe',    YEARS, ds('roe'),         true);
 }
 
+// ── 보고서 탭 ──────────────────────────────────────────────────────────────
+function renderReportTab() {
+  const YEARS = ['2021','2022','2023','2024','2025'];
+  const CODES = ['LGL','CJ','HJ'];
+  const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+
+  $('tab-report').innerHTML = `
+    <div class="report-wrap">
+      <div class="report-toolbar">
+        <label>기준연도:
+          <select id="rpt-year" onchange="renderReportTab()">
+            ${YEARS.map(y=>`<option ${y==='2025'?'selected':''}>${y}</option>`).join('')}
+          </select>
+        </label>
+        <button class="export-btn ppt"  onclick="exportPPT()">📊 PPT 저장</button>
+        <button class="export-btn xlsx" onclick="exportExcel()">📋 Excel 저장</button>
+        <button class="export-btn pdf"  onclick="exportPDF()">📄 PDF 저장</button>
+      </div>
+      <div id="rpt-body"></div>
+    </div>`;
+
+  buildReportBody($('rpt-year').value);
+}
+
+function buildReportBody(selYear) {
+  const CODES = ['LGL','CJ','HJ'];
+  const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+  const YEARS = ['2021','2022','2023','2024','2025'];
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+  function ragCell(metric, val) {
+    if (val == null) return '<td>—</td>';
+    const cls = ragClass(metric, val);
+    const tdCls = cls === 'green' ? 'good' : cls === 'yellow' ? 'warn' : cls === 'red' ? 'bad' : '';
+    return `<td class="${tdCls}">${fmt.pct(val)}</td>`;
+  }
+  function ragCellX(metric, val) {
+    if (val == null) return '<td>—</td>';
+    const cls = ragClass(metric, val);
+    const tdCls = cls === 'green' ? 'good' : cls === 'yellow' ? 'warn' : cls === 'red' ? 'bad' : '';
+    return `<td class="${tdCls}">${fmt.x(val)}</td>`;
+  }
+
+  // 주요 지표 요약 테이블 (기준연도)
+  let summaryRows = '';
+  const metrics = [
+    { label:'매출액 (억원)',    get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—', rag: false },
+    { label:'영업이익 (억원)',  get: d => d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8).toLocaleString('ko-KR') : '—', rag: false },
+    { label:'영업이익률 (%)',   get: d => d?.ratios?.operating_margin, metric:'operating_margin', rag: true },
+    { label:'순이익률 (%)',     get: d => d?.ratios?.net_margin,        metric:'net_margin',       rag: true },
+    { label:'ROE(지배) (%)',    get: d => d?.ratios?.roe,               metric:'roe',              rag: true },
+    { label:'ROA (%)',          get: d => d?.ratios?.roa,               metric:'roa',              rag: true },
+    { label:'부채비율 (%)',     get: d => d?.ratios?.debt_ratio,        metric:'debt_ratio',       rag: true },
+    { label:'유동비율 (%)',     get: d => d?.ratios?.current_ratio,     metric:'current_ratio',    rag: true },
+    { label:'이자보상비율 (배)', get: d => d?.ratios?.interest_coverage, metric:'interest_coverage', ragX: true },
+    { label:'차입금의존도 (%)', get: d => d?.ratios?.borrowing_dependency, metric:'borrowing_dependency', rag: true },
+  ];
+
+  const datas = CODES.map(c => getYearData(FIN.companies[c], selYear));
+
+  metrics.forEach(m => {
+    const cells = datas.map((d, i) => {
+      const val = m.get(d);
+      if (!m.rag && !m.ragX) return `<td>${val}</td>`;
+      if (m.ragX) return ragCellX(m.metric, val);
+      return ragCell(m.metric, val);
+    }).join('');
+    summaryRows += `<tr><td>${m.label}</td>${cells}</tr>`;
+  });
+
+  // 연도별 추이 테이블
+  function trendTable(title, getter, isPct) {
+    let rows = CODES.map(code => {
+      const cells = YEARS.map(y => {
+        const v = getter(getYearData(FIN.companies[code], y));
+        if (v == null) return '<td style="color:var(--text-sub)">—</td>';
+        return `<td>${isPct ? fmt.pct(v) : (typeof v === 'number' ? Math.round(v/1e8).toLocaleString('ko-KR') : v)}</td>`;
+      }).join('');
+      return `<tr><td>${NAMES[code]}</td>${cells}</tr>`;
+    }).join('');
+    return `
+      <div class="rpt-section-title">${title}</div>
+      <div class="card" style="margin-bottom:20px;padding:16px">
+        <div class="fin-table-wrap">
+          <table class="rpt-table">
+            <thead><tr><th>회사</th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  const body = `
+    <div class="rpt-cover">
+      <div class="rpt-cover-title">물류 3사 주요 재무비율 정리</div>
+      <div class="rpt-cover-sub">기준연도: ${selYear}년 | 작성일: ${dateStr} | 출처: DART 공시 데이터 (연결재무제표 기준)</div>
+    </div>
+
+    <div class="rpt-section-title">${selYear}년 주요 지표 비교</div>
+    <div class="card" style="margin-bottom:20px;padding:16px">
+      <div class="fin-table-wrap">
+        <table class="rpt-table">
+          <thead><tr><th>항목</th>${CODES.map(c=>`<th>${NAMES[c]}</th>`).join('')}</tr></thead>
+          <tbody>${summaryRows}</tbody>
+        </table>
+      </div>
+      <div class="rpt-note">※ 색상: <span style="color:#16a34a">■ 양호</span> &nbsp; <span style="color:#ca8a04">■ 주의</span> &nbsp; <span style="color:#dc2626">■ 위험</span> &nbsp;(기준: 물류업종 일반적 임계치)</div>
+    </div>
+
+    ${trendTable('매출액 추이 (억원)', d => d?.pl?.revenue, false)}
+    ${trendTable('영업이익률 추이 (%)', d => d?.ratios?.operating_margin, true)}
+    ${trendTable('ROE(지배) 추이 (%)', d => d?.ratios?.roe, true)}
+    ${trendTable('부채비율 추이 (%)', d => d?.ratios?.debt_ratio, true)}
+    ${trendTable('이자보상비율 추이 (배)', d => d?.ratios?.interest_coverage ? fmt.x(d.ratios.interest_coverage) : null, false)}
+  `;
+
+  $('rpt-body').innerHTML = body;
+}
+
+// ── 내보내기 ──────────────────────────────────────────────────────────────
+function exportExcel() {
+  const CODES = ['LGL','CJ','HJ'];
+  const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+  const YEARS = ['2021','2022','2023','2024','2025'];
+  const selYear = $('rpt-year')?.value || '2025';
+
+  const wb = XLSX.utils.book_new();
+
+  // 시트1: 주요 지표 비교
+  const header = ['항목', ...CODES.map(c => NAMES[c])];
+  const metrics = [
+    ['매출액 (억원)',    d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8) : null],
+    ['영업이익 (억원)',  d => d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8) : null],
+    ['영업이익률 (%)',   d => d?.ratios?.operating_margin],
+    ['순이익률 (%)',     d => d?.ratios?.net_margin],
+    ['ROE(지배) (%)',    d => d?.ratios?.roe],
+    ['ROA (%)',          d => d?.ratios?.roa],
+    ['부채비율 (%)',     d => d?.ratios?.debt_ratio],
+    ['유동비율 (%)',     d => d?.ratios?.current_ratio],
+    ['이자보상비율 (배)',d => d?.ratios?.interest_coverage],
+    ['차입금의존도 (%)', d => d?.ratios?.borrowing_dependency],
+  ];
+  const rows1 = [header];
+  metrics.forEach(([label, getter]) => {
+    rows1.push([label, ...CODES.map(c => {
+      const v = getter(getYearData(FIN.companies[c], selYear));
+      return v != null ? +v.toFixed(2) : '—';
+    })]);
+  });
+  const ws1 = XLSX.utils.aoa_to_sheet(rows1);
+  ws1['!cols'] = [{ wch: 20 }, { wch: 18 }, { wch: 14 }, { wch: 10 }];
+  XLSX.utils.book_append_sheet(wb, ws1, `${selYear}년 비교`);
+
+  // 시트2~4: 회사별 연도별 데이터
+  CODES.forEach(code => {
+    const yearHeader = ['연도', '매출액(억)', '영업이익(억)', '영업이익률(%)', 'ROE(%)', '부채비율(%)', '유동비율(%)', '이자보상비율(배)'];
+    const yearRows = [yearHeader];
+    YEARS.forEach(y => {
+      const d = getYearData(FIN.companies[code], y);
+      yearRows.push([
+        y,
+        d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8) : '—',
+        d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8) : '—',
+        d?.ratios?.operating_margin != null ? +d.ratios.operating_margin.toFixed(2) : '—',
+        d?.ratios?.roe != null ? +d.ratios.roe.toFixed(2) : '—',
+        d?.ratios?.debt_ratio != null ? +d.ratios.debt_ratio.toFixed(2) : '—',
+        d?.ratios?.current_ratio != null ? +d.ratios.current_ratio.toFixed(2) : '—',
+        d?.ratios?.interest_coverage != null ? +d.ratios.interest_coverage.toFixed(2) : '—',
+      ]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(yearRows);
+    ws['!cols'] = [{ wch: 8 },{ wch: 12 },{ wch: 14 },{ wch: 14 },{ wch: 10 },{ wch: 12 },{ wch: 10 },{ wch: 14 }];
+    XLSX.utils.book_append_sheet(wb, ws, NAMES[code]);
+  });
+
+  XLSX.writeFile(wb, `물류3사_재무비율_${selYear}.xlsx`);
+}
+
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const el = $('rpt-body');
+  if (!el) return;
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: `물류3사_재무비율_${$('rpt-year')?.value||'2025'}.pdf`,
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+  };
+  // jsPDF html 지원 여부 확인
+  if (typeof jsPDF.prototype.html === 'function' || true) {
+    const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'landscape' });
+    doc.html(el, {
+      callback: d => d.save(opt.filename),
+      x: 10, y: 10, width: 277, windowWidth: 960,
+      autoPaging: 'text',
+    });
+  }
+}
+
+function exportPPT() {
+  const CODES = ['LGL','CJ','HJ'];
+  const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+  const YEARS = ['2021','2022','2023','2024','2025'];
+  const selYear = $('rpt-year')?.value || '2025';
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+  const prs = new PptxGenJS();
+  prs.layout = 'LAYOUT_WIDE';
+  prs.author = 'LOTTE';
+  prs.subject = '물류 3사 재무비율';
+
+  // 슬라이드 1: 표지
+  const s1 = prs.addSlide();
+  s1.background = { color: 'C8102E' };
+  s1.addText('물류 3사 주요 재무비율 정리', { x:0.5, y:1.5, w:12, h:1.2, fontSize:36, bold:true, color:'FFFFFF' });
+  s1.addText(`기준연도: ${selYear}년 | 작성일: ${dateStr}`, { x:0.5, y:2.8, w:12, h:0.5, fontSize:16, color:'FFD0D0' });
+  s1.addText('롯데글로벌로지스 · CJ대한통운 · 한진', { x:0.5, y:3.5, w:12, h:0.5, fontSize:14, color:'FFFFFF' });
+  s1.addText('출처: DART 공시 데이터 (연결재무제표 기준)', { x:0.5, y:4.5, w:12, h:0.4, fontSize:11, color:'FFB0B0' });
+
+  // 슬라이드 2: 주요 지표 비교
+  const s2 = prs.addSlide();
+  s2.addText(`${selYear}년 주요 지표 비교`, { x:0.4, y:0.2, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
+
+  const metrics = [
+    ['매출액 (억원)',    d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—'],
+    ['영업이익 (억원)',  d => d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8).toLocaleString('ko-KR') : '—'],
+    ['영업이익률 (%)',   d => d?.ratios?.operating_margin != null ? d.ratios.operating_margin.toFixed(1)+'%' : '—'],
+    ['ROE(지배) (%)',    d => d?.ratios?.roe != null ? d.ratios.roe.toFixed(1)+'%' : '—'],
+    ['부채비율 (%)',     d => d?.ratios?.debt_ratio != null ? d.ratios.debt_ratio.toFixed(1)+'%' : '—'],
+    ['유동비율 (%)',     d => d?.ratios?.current_ratio != null ? d.ratios.current_ratio.toFixed(1)+'%' : '—'],
+    ['이자보상비율 (배)',d => d?.ratios?.interest_coverage != null ? d.ratios.interest_coverage.toFixed(2)+'배' : '—'],
+    ['차입금의존도 (%)', d => d?.ratios?.borrowing_dependency != null ? d.ratios.borrowing_dependency.toFixed(1)+'%' : '—'],
+  ];
+
+  const tblRows = [
+    [{ text:'항목', options:{ bold:true, color:'FFFFFF', fill:'8B0000' } },
+     ...CODES.map(c => ({ text:NAMES[c], options:{ bold:true, color:'FFFFFF', fill:'C8102E' } }))],
+  ];
+  metrics.forEach(([label, getter]) => {
+    tblRows.push([
+      { text: label, options:{ bold:true, fill:'F5F5F5' } },
+      ...CODES.map(c => ({ text: getter(getYearData(FIN.companies[c], selYear)) })),
+    ]);
+  });
+  s2.addTable(tblRows, { x:0.4, y:0.8, w:12.2, colW:[3,3,3,3.2], fontSize:12, border:{ type:'solid', pt:0.5, color:'DDDDDD' } });
+
+  // 슬라이드 3~5: 연도별 추이
+  const trendMetrics = [
+    { title:'매출액 추이 (억원)',       get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—' },
+    { title:'영업이익률 추이 (%)',       get: d => d?.ratios?.operating_margin != null ? d.ratios.operating_margin.toFixed(1)+'%' : '—' },
+    { title:'ROE(지배) 추이 (%)',        get: d => d?.ratios?.roe != null ? d.ratios.roe.toFixed(1)+'%' : '—' },
+    { title:'부채비율 추이 (%)',          get: d => d?.ratios?.debt_ratio != null ? d.ratios.debt_ratio.toFixed(1)+'%' : '—' },
+  ];
+
+  trendMetrics.forEach(({ title, get: getter }) => {
+    const sl = prs.addSlide();
+    sl.addText(title, { x:0.4, y:0.2, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
+    const hdr = [{ text:'회사', options:{ bold:true, color:'FFFFFF', fill:'8B0000' } },
+      ...YEARS.map(y => ({ text:y, options:{ bold:true, color:'FFFFFF', fill:'C8102E' } }))];
+    const dataRows = CODES.map(c => [
+      { text: NAMES[c], options:{ bold:true, fill:'F5F5F5' } },
+      ...YEARS.map(y => ({ text: getter(getYearData(FIN.companies[c], y)) })),
+    ]);
+    sl.addTable([hdr, ...dataRows], { x:0.4, y:0.9, w:12.2, fontSize:12, border:{ type:'solid', pt:0.5, color:'DDDDDD' } });
+  });
+
+  prs.writeFile({ fileName: `물류3사_재무비율_${selYear}.pptx` });
+}
+
 function renderActiveTab() {
   if (activeTab === 'compare') renderCompareTab();
+  else if (activeTab === 'report') renderReportTab();
   else renderCompanyTab(activeTab);
 }
 
