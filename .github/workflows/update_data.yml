@@ -15,28 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install -r .github/scripts/requirements.txt
-
-      - name: Fetch DART data
-        env:
-          DART_API_KEY: ${{ secrets.DART_API_KEY }}
-        run: python .github/scripts/fetch_dart.py --api-key "$DART_API_KEY"
-
-      - name: Commit if changed
+      # DART API는 등록된 IP만 접근 가능 → VM cron에서 직접 실행 후 push
+      # 이 워크플로우는 수동 트리거 시 상태만 확인
+      - name: Check data freshness
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/financial_data.json
-          if git diff --staged --quiet; then
-            echo "변경 없음 — 커밋 스킵"
+          if [ -f data/financial_data.json ]; then
+            echo "financial_data.json exists"
+            python3 -c "import json; d=json.load(open('data/financial_data.json')); print('updated_at:', d.get('updated_at','unknown'))"
           else
-            git commit -m "data: auto-update financial data $(date +'%Y-%m-%d')"
-            git pull --rebase origin main
-            git push
+            echo "financial_data.json not found"
           fi
