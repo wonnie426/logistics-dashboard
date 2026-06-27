@@ -158,19 +158,59 @@
     .ratio-table-v2 td.formula { font-size: 11px; color: var(--text-sub); font-style: italic; }
     .ratio-table-v2 tr:last-child td { border-bottom: none; }
     .ratio-table-v2 tr:hover td { background: var(--bg); }
-    .tooltip-row td.lbl { cursor: help; position: relative; }
-    .tooltip-row td.lbl::after { content: ' ⓘ'; font-size: 10px; color: var(--text-sub); }
-    [data-tooltip] { position: relative; }
-    [data-tooltip]::before {
-      content: attr(data-tooltip);
-      position: absolute; bottom: calc(100% + 6px); left: 0;
-      background: #1a202c; color: #fff; padding: 5px 10px;
-      border-radius: 5px; font-size: 11px; white-space: nowrap;
-      opacity: 0; pointer-events: none; transition: opacity 0.08s;
-      z-index: 9999; font-weight: 400; font-style: normal;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    .tooltip-row td.lbl { cursor: pointer; position: relative; }
+    .tooltip-row td.lbl::after { content: ' ⓘ'; font-size: 10px; color: #93c5fd; }
+    .tooltip-row td.lbl.tt-pinned::after { content: ' ⓘ'; color: #3b82f6; font-weight: 700; }
+    /* 재무비율 팝업 */
+    #ratio-tt {
+      position: fixed; z-index: 9999; display: none;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #e2e8f0; border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(148,163,184,0.15);
+      min-width: 240px; max-width: 320px;
+      font-size: 13px; line-height: 1.6; pointer-events: none;
+      overflow: hidden;
     }
-    [data-tooltip]:hover::before { opacity: 1; }
+    #ratio-tt.pinned { pointer-events: auto; }
+    #ratio-tt.visible { display: block; }
+    #ratio-tt .tt-head {
+      background: rgba(59,130,246,0.25); padding: 10px 14px 8px;
+      border-bottom: 1px solid rgba(148,163,184,0.2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #ratio-tt .tt-name { font-weight: 700; font-size: 14px; color: #93c5fd; }
+    #ratio-tt .tt-pin-badge {
+      font-size: 10px; background: #3b82f6; color: #fff;
+      padding: 2px 7px; border-radius: 20px; display: none;
+    }
+    #ratio-tt.pinned .tt-pin-badge { display: inline; }
+    #ratio-tt .tt-body { padding: 10px 14px 12px; }
+    #ratio-tt .tt-formula-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+      color: #64748b; margin-bottom: 4px;
+    }
+    #ratio-tt .tt-formula {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 6px; padding: 7px 12px;
+      font-family: 'Consolas', 'D2Coding', monospace; font-size: 12px;
+      color: #fde68a; letter-spacing: 0.3px;
+    }
+    #ratio-tt .tt-desc {
+      margin-top: 8px; font-size: 12px; color: #94a3b8; line-height: 1.55;
+    }
+    #ratio-tt .tt-close {
+      margin-top: 10px; width: 100%; padding: 6px;
+      background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.35);
+      border-radius: 5px; color: #93c5fd; font-size: 11px; cursor: pointer;
+      text-align: center; display: none;
+    }
+    #ratio-tt.pinned .tt-close { display: block; }
+    #ratio-tt .tt-close:hover { background: rgba(59,130,246,0.4); }
+    /* 화살표 */
+    #ratio-tt::before {
+      content: ''; position: absolute; top: 100%; left: 20px;
+      border: 7px solid transparent; border-top-color: #0f172a;
+    }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -322,6 +362,20 @@
   <div id="tab-HJ"      class="tab-panel"></div>
   <div id="tab-dart"    class="tab-panel"></div>
 </main>
+
+<!-- 재무비율 팝업 -->
+<div id="ratio-tt">
+  <div class="tt-head">
+    <span class="tt-name" id="tt-name"></span>
+    <span class="tt-pin-badge">📌 고정됨</span>
+  </div>
+  <div class="tt-body">
+    <div class="tt-formula-label">계산식</div>
+    <div class="tt-formula" id="tt-formula"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-close" onclick="ratioTtUnpin()">✕ 닫기</div>
+  </div>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -811,7 +865,11 @@ function ratioTable(r, ld, code, period) {
       const formula = RATIO_FORMULAS[lbl] || '';
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
-        <td class="lbl" data-tooltip="${formula}">${lbl}</td>
+        <td class="lbl"
+          onmouseenter="ratioTtShow(this,'${lbl.replace(/'/g,"\\'")}','${formula.replace(/'/g,"\\'")}${formula?'':'—'}')"
+          onmouseleave="ratioTtHide()"
+          onclick="ratioTtClick(this,'${lbl.replace(/'/g,"\\'")}','${formula.replace(/'/g,"\\'")}${formula?'':'—'}')"
+        >${lbl}</td>
         <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
       </tr>`;
     });
@@ -927,6 +985,87 @@ function setPeriod(code, type) {
 }
 
 // ── 종합 비교 탭 ──────────────────────────────────────────────────────────
+/* ── 재무비율 팝업 ──────────────────────────────────────── */
+const RATIO_DESCS = {
+  '영업이익률':         '본업에서 매출 대비 얼마나 이익을 냈는지 보여주는 핵심 수익성 지표',
+  'EBITDA율':           '감가상각을 제외한 실질 영업창출력. 설비투자가 많은 물류업에서 특히 중요',
+  '순이익률':           '모든 비용과 세금을 제한 후 최종 남은 이익 비율',
+  'ROA':                '보유한 전체 자산을 얼마나 효율적으로 활용해 이익을 냈는지 측정',
+  'ROE(지배)':          '지배주주 자본 대비 수익률. 주주 관점에서 가장 중요한 수익성 지표',
+  '부채비율':           '자기자본 대비 부채 규모. 낮을수록 재무 안정성이 높음',
+  '부채비율(리스제외)': '리스부채(물류 차량·창고 임차 등)를 제외한 실질 차입 수준',
+  '유동비율':           '1년 내 갚아야 할 부채 대비 유동자산 비율. 100% 이상이면 단기 상환 여력 있음',
+  '자기자본비율':       '전체 자산 중 자기자본 비중. 높을수록 부채 의존도가 낮아 안정적',
+  '이자보상비율':       '영업이익으로 이자를 몇 배 감당할 수 있는지. 1배 미만이면 이자도 못 내는 수준',
+  '차입금의존도':       '총자산 중 차입금 비중. 낮을수록 외부 자금 의존도가 낮음',
+  '영업현금흐름/매출':  '매출 대비 실제 현금이 얼마나 들어오는지. 이익 대비 현금창출 질을 확인',
+};
+
+let _ttPinned = false;
+let _ttPinnedEl = null;
+
+function ratioTtShow(el, name, formula) {
+  const tt = document.getElementById('ratio-tt');
+  if (!tt) return;
+  document.getElementById('tt-name').textContent = name;
+  document.getElementById('tt-formula').textContent = formula || '—';
+  const desc = RATIO_DESCS[name] || '';
+  const descEl = document.getElementById('tt-desc');
+  descEl.textContent = desc;
+  descEl.style.display = desc ? 'block' : 'none';
+
+  const rect = el.getBoundingClientRect();
+  const ttW = 280;
+  let left = rect.left + window.scrollX;
+  let top  = rect.top  + window.scrollY - tt.offsetHeight - 12;
+  if (left + ttW > window.innerWidth - 10) left = window.innerWidth - ttW - 10;
+  if (top < window.scrollY + 8) top = rect.bottom + window.scrollY + 8;
+  tt.style.left = left + 'px';
+  tt.style.top  = top  + 'px';
+  tt.classList.add('visible');
+}
+
+function ratioTtHide() {
+  if (_ttPinned) return;
+  const tt = document.getElementById('ratio-tt');
+  if (tt) tt.classList.remove('visible');
+}
+
+function ratioTtClick(el, name, formula) {
+  if (_ttPinned && _ttPinnedEl === el) {
+    ratioTtUnpin(); return;
+  }
+  if (_ttPinned && _ttPinnedEl !== el) {
+    // 다른 항목 클릭 → 새 항목으로 전환
+    if (_ttPinnedEl) _ttPinnedEl.classList.remove('tt-pinned');
+  }
+  _ttPinned = true;
+  _ttPinnedEl = el;
+  el.classList.add('tt-pinned');
+  const tt = document.getElementById('ratio-tt');
+  if (tt) { tt.classList.add('pinned'); ratioTtShow(el, name, formula); }
+}
+
+function ratioTtUnpin() {
+  _ttPinned = false;
+  if (_ttPinnedEl) { _ttPinnedEl.classList.remove('tt-pinned'); _ttPinnedEl = null; }
+  const tt = document.getElementById('ratio-tt');
+  if (tt) { tt.classList.remove('pinned', 'visible'); }
+}
+
+document.addEventListener('click', e => {
+  if (_ttPinned && !e.target.closest('#ratio-tt') && !e.target.closest('td.lbl')) {
+    ratioTtUnpin();
+  }
+});
+document.addEventListener('scroll', () => {
+  if (_ttPinned && _ttPinnedEl) {
+    const name    = document.getElementById('tt-name')?.textContent;
+    const formula = document.getElementById('tt-formula')?.textContent;
+    ratioTtShow(_ttPinnedEl, name, formula);
+  }
+}, true);
+
 /* ── 정규화 도움말 ──────────────────────────────────────── */
 let _normPinned = false;
 function normHelpShow() {
