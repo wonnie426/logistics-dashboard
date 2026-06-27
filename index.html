@@ -248,8 +248,14 @@ function toggleUnit() {
 let FIN = null, SEG = null, THRESH = null, IND_AVG = null;
 let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
-let fsMode = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
+let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
+let yearSel = { LGL: null, CJ: null, HJ: null }; // null = 최신연도
 const charts = {};
+
+function setYear(code, year) {
+  yearSel[code] = year;
+  renderCompanyTab(code);
+}
 
 function getYearData(co, year, fsDiv) {
   fsDiv = fsDiv || 'CFS';
@@ -435,7 +441,14 @@ function renderCompanyTab(code) {
   const fs    = fsMode[code] || 'CFS';
   const dataMap = getPeriodData(co, pMode, fs);
   const keys  = Object.keys(dataMap || {}).sort();
-  const latest = keys[keys.length - 1];
+
+  // 연도 선택기 — 연간 모드에서만 유효
+  const annualKeys = Object.keys(getPeriodData(co, 'annual', fs)).sort();
+  const sel = yearSel[code];
+  const latest = (pMode === 'annual' && sel && annualKeys.includes(sel))
+    ? sel
+    : keys[keys.length - 1];
+
   const ld    = dataMap?.[latest] || {};
   const r     = ld.ratios || {};
   const pl    = ld.pl    || {};
@@ -541,15 +554,23 @@ function renderCompanyTab(code) {
       </div>
     </div>` : '';
 
+  const yearSelectHtml = pMode === 'annual' ? `
+    <div class="fs-divider"></div>
+    ${annualKeys.map(y => `<button class="fs-btn ${y===latest?'active':''}" onclick="setYear('${code}','${y}')">${y}</button>`).join('')}
+  ` : '';
+
   $(`tab-${code}`).innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-      <div style="font-size:18px;font-weight:700;color:${color}">${co.name}</div>
+      <div style="font-size:18px;font-weight:700;color:${color}">${co.name}
+        ${pMode === 'annual' ? `<span style="font-size:14px;font-weight:400;color:var(--text-sub);margin-left:8px">${latest}년 기준</span>` : ''}
+      </div>
       <div class="fs-selector">
         <button class="fs-btn ${fs==='CFS'?'active':''}" onclick="setFs('${code}','CFS')">연결</button>
         <button class="fs-btn ${fs==='OFS'?'active':''}" onclick="setFs('${code}','OFS')">별도</button>
         <div class="fs-divider"></div>
         <button class="fs-btn ${pMode==='annual'?'active':''}" onclick="setPeriod('${code}','annual')">연간</button>
         <button class="fs-btn ${pMode==='quarterly'?'active':''}" onclick="setPeriod('${code}','quarterly')">분기</button>
+        ${yearSelectHtml}
       </div>
     </div>
     ${overviewHtml}
@@ -734,19 +755,23 @@ function renderCompareTab() {
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
   const COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087' };
 
+  // 재렌더 전 현재 선택값 보존
+  const prevYear = $('cmp-year')?.value || '2025';
+  const prevNorm = $('cmp-norm')?.value || 'none';
+
   $('tab-compare').innerHTML = `
     <div class="compare-controls">
       <label>기준연도:
         <select id="cmp-year" onchange="renderCompareTab()">
-          ${YEARS.map(y => `<option ${y==='2025'?'selected':''}>${y}</option>`).join('')}
+          ${YEARS.map(y => `<option value="${y}" ${y===prevYear?'selected':''}>${y}</option>`).join('')}
         </select>
       </label>
       <label>비교 기준 정규화:
         <select id="cmp-norm" onchange="renderCompareTab()">
-          <option value="none">정규화 없음</option>
-          <option value="LGL">롯데글로벌로지스 = 1.0</option>
-          <option value="CJ">CJ대한통운 = 1.0</option>
-          <option value="HJ">한진 = 1.0</option>
+          <option value="none" ${prevNorm==='none'?'selected':''}>정규화 없음</option>
+          <option value="LGL" ${prevNorm==='LGL'?'selected':''}>롯데글로벌로지스 = 1.0</option>
+          <option value="CJ"  ${prevNorm==='CJ'?'selected':''}>CJ대한통운 = 1.0</option>
+          <option value="HJ"  ${prevNorm==='HJ'?'selected':''}>한진 = 1.0</option>
         </select>
       </label>
     </div>
