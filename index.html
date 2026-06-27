@@ -722,15 +722,17 @@ function ratioTable(r, ld, code, period) {
       ['영업현금흐름/매출', fmt.pct(r.operating_cf_margin), 'operating_cf_margin', r.operating_cf_margin],
     ]],
   ];
-  let html = `<table class="ratio-table-v2">
-    <thead><tr><th style="width:70px">구분</th><th>항목</th><th style="font-size:11px;font-weight:400;color:var(--text-sub)">계산식 (마우스 올리면 표시)</th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
+  const srcLink = ld.report_url
+    ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${ld.source || 'DART'} <a href="${ld.report_url}" target="_blank" class="report-link">📄 원본 보고서</a></div>`
+    : '';
+  let html = srcLink + `<table class="ratio-table-v2">
+    <thead><tr><th style="width:70px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(마우스 올리면 계산식)</span></th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
   for (const [sec, items] of rows) {
     items.forEach(([lbl, val, metric, mv], i) => {
       const formula = RATIO_FORMULAS[lbl] || '';
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
         <td class="lbl" title="${formula}">${lbl}</td>
-        <td class="formula">${formula}</td>
         <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
       </tr>`;
     });
