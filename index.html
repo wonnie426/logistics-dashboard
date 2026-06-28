@@ -300,25 +300,55 @@
     .dart-co-tab:last-child { border-right: none; }
     .dart-co-tab.active { background: #fff; color: #003087; border-bottom: 2px solid #003087; }
     .dart-co-tab:hover:not(.active) { background: #e4eaf0; }
-    .dart-search-bar { display: flex; gap: 8px; padding: 12px 16px;
-                       background: var(--card-bg); border: 1px solid var(--border); border-top: none; }
-    .dart-search-bar input { flex: 1; border: 1px solid var(--border); border-radius: var(--radius);
-                              padding: 6px 12px; font-size: 13px; background: var(--bg); color: var(--text); }
-    .dart-search-bar select { border: 1px solid var(--border); border-radius: var(--radius);
-                               padding: 6px 10px; font-size: 13px; background: var(--bg); color: var(--text); }
-    .dart-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); }
+    .dart-controls { background: var(--card-bg); border: 1px solid var(--border); border-top: none;
+                     padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .dart-ctrl-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .dart-ctrl-lbl { font-size: 12px; font-weight: 600; color: var(--text-sub);
+                     white-space: nowrap; min-width: 52px; }
+    .dart-input { border: 1px solid var(--border); border-radius: var(--radius);
+                  padding: 5px 10px; font-size: 13px; background: var(--bg); color: var(--text);
+                  flex: 1; min-width: 140px; max-width: 220px; }
+    .dart-input:focus { outline: none; border-color: #003087; }
+    .dart-day-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+    .dart-day-btn { padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border);
+                    background: var(--card-bg); color: var(--text-sub); font-size: 12px; cursor: pointer; }
+    .dart-day-btn.active { background: #003087; color: #fff; border-color: #003087; }
+    .dart-day-btn:hover:not(.active) { background: #e4eaf0; }
+    .dart-type-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .dart-type-chk { display: inline-flex; align-items: center; gap: 4px;
+                     font-size: 12px; cursor: pointer; white-space: nowrap; }
+    .dart-type-chk input[type=checkbox] { cursor: pointer; accent-color: #003087; }
+    .dart-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-top: none;
+                       border-radius: 0 0 var(--radius) var(--radius); }
     .dart-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .dart-table thead th { background: #f5f7fa; color: #003087; font-weight: 700;
-                           padding: 10px 14px; border-bottom: 2px solid #003087; white-space: nowrap; text-align: left; }
+                           padding: 10px 14px; border-bottom: 2px solid #003087;
+                           white-space: nowrap; text-align: left; }
+    .dart-sort-th { cursor: pointer; user-select: none; }
+    .dart-sort-th:hover { background: #e8eef5; }
+    .dart-sort-th.active { color: #1e40af; }
+    .sort-icon { font-size: 10px; margin-left: 3px; opacity: 0.6; }
+    .dart-sort-th.active .sort-icon { opacity: 1; }
     .dart-table tbody tr { border-bottom: 1px solid var(--border); }
     .dart-table tbody tr:last-child { border-bottom: none; }
     .dart-table tbody tr:hover { background: #f0f4f8; }
     .dart-table tbody td { padding: 9px 14px; vertical-align: middle; }
     .dart-table td.dart-date { white-space: nowrap; color: var(--text-sub); font-size: 12px; width: 95px; }
+    .dart-table td.dart-ty  { width: 90px; }
     .dart-table td.dart-name { }
     .dart-table td.dart-filer { color: var(--text-sub); font-size: 12px; width: 120px; }
-    .dart-table td.dart-rm { color: #c53030; font-size: 11px; width: 60px; }
     .dart-table td.dart-link { width: 60px; text-align: center; }
+    .dart-ty-badge { display: inline-block; padding: 2px 7px; border-radius: 3px;
+                     font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .dart-ty-A { background: #dbeafe; color: #1d4ed8; }
+    .dart-ty-B { background: #fee2e2; color: #dc2626; }
+    .dart-ty-C { background: #d1fae5; color: #065f46; }
+    .dart-ty-D { background: #ede9fe; color: #6d28d9; }
+    .dart-ty-E { background: #f3f4f6; color: #374151; }
+    .dart-ty-F { background: #fef3c7; color: #92400e; }
+    .dart-ty-I { background: #cffafe; color: #0e7490; }
+    .dart-ty-J { background: #fce7f3; color: #9d174d; }
+    .dart-amend { color: #c53030; font-size: 11px; font-weight: 600; margin-left: 4px; }
     .dart-view-btn { display: inline-block; padding: 4px 12px; background: #003087; color: #fff;
                      border-radius: 3px; font-size: 12px; text-decoration: none; font-weight: 600; }
     .dart-view-btn:hover { background: #004ab3; }
@@ -1095,41 +1125,101 @@ document.addEventListener('click', e => {
 });
 
 /* ── 공시자료 탭 ────────────────────────────────────────── */
-let dartCo = 'LGL';
-let dartFilter = '';
-let dartType  = '';
+let dartCo      = 'LGL';
+let dartSearch  = '';
+let dartFiler   = '';
+let dartTypes   = new Set();
+let dartDays    = 365;
+let dartSort    = 'rcept_dt';
+let dartSortDir = 'desc';
+
+const PBLNTF_LABELS = {
+  A:'정기공시', B:'주요사항보고', C:'발행공시', D:'지분공시',
+  E:'기타공시', F:'외부감사관련', I:'거래소공시', J:'공정위공시',
+};
+const DART_MAIN_TYPES = ['A','B','C','D','E','F','I','J'];
+
+function dartSortBy(col) {
+  if (dartSort === col) dartSortDir = dartSortDir === 'desc' ? 'asc' : 'desc';
+  else { dartSort = col; dartSortDir = 'asc'; }
+  renderDartTab();
+}
+
+function dartToggleType(ty) {
+  if (dartTypes.has(ty)) dartTypes.delete(ty); else dartTypes.add(ty);
+  renderDartTab();
+}
 
 function renderDartTab() {
   const el = $('tab-dart');
   const coNames = { LGL: '롯데글로벌로지스', CJ: 'CJ대한통운', HJ: '한진' };
-  const coColors = { LGL: '#C8102E', CJ: '#00A0DC', HJ: '#003087' };
 
   const co = FIN.companies?.[dartCo];
-  const disclosures = co?.disclosures || [];
-  const updatedAt = FIN.updated_at ? FIN.updated_at.slice(0,16).replace('T',' ') : '—';
+  const allDisclosures = co?.disclosures || [];
+  const rawUpd = FIN.last_updated || FIN.updated_at || '';
+  const updatedAt = rawUpd ? rawUpd.slice(0,16).replace('T',' ') : '—';
 
-  const filtered = disclosures.filter(d => {
-    const q = dartFilter.toLowerCase();
-    const matchText = !q || d.report_nm?.toLowerCase().includes(q) || d.flr_nm?.toLowerCase().includes(q);
-    const matchType = !dartType || d.report_nm?.includes(dartType);
-    return matchText && matchType;
+  // ── 기간 필터 ──
+  const today = new Date();
+  const cutoffStr = dartDays > 0
+    ? new Date(today - dartDays * 86400000).toISOString().slice(0,10).replace(/-/g,'')
+    : '00000000';
+
+  // ── 필터링 ──
+  const searchLow = dartSearch.toLowerCase();
+  const filerLow  = dartFiler.toLowerCase();
+  const filtered = allDisclosures.filter(d => {
+    if (dartDays > 0 && (d.rcept_dt || '') < cutoffStr) return false;
+    if (searchLow && !d.report_nm?.toLowerCase().includes(searchLow)) return false;
+    if (filerLow  && !d.flr_nm?.toLowerCase().includes(filerLow))    return false;
+    if (dartTypes.size > 0 && !dartTypes.has(d.pblntf_ty))           return false;
+    return true;
   });
 
-  // type options from data
-  const types = ['사업보고서','반기보고서','분기보고서','감사보고서','기타'];
+  // ── 정렬 ──
+  const sorted = [...filtered].sort((a, b) => {
+    const av = (a[dartSort] || ''), bv = (b[dartSort] || '');
+    return dartSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
 
+  // ── 회사 탭 ──
   const coTabsHtml = Object.entries(coNames).map(([k,v]) =>
-    `<div class="dart-co-tab${dartCo===k?' active':''}" onclick="dartCo='${k}';renderDartTab()">${v}</div>`
+    `<div class="dart-co-tab${dartCo===k?' active':''}"
+      onclick="dartCo='${k}';dartSearch='';dartFiler='';dartTypes=new Set();dartDays=365;dartSort='rcept_dt';dartSortDir='desc';renderDartTab()">${v}</div>`
   ).join('');
 
-  const rowsHtml = filtered.length === 0
-    ? `<tr><td colspan="5" class="dart-empty">공시 자료가 없습니다.</td></tr>`
-    : filtered.map(d => {
-        const dt = d.rcept_dt ? d.rcept_dt.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '—';
-        const rm = d.rm === '유' ? '<span style="color:#c53030">정정</span>' : '';
+  // ── 기간 버튼 ──
+  const dayBtns = [[30,'1개월'],[180,'6개월'],[365,'1년'],[0,'전체']].map(([d,l]) =>
+    `<button class="dart-day-btn${dartDays===d?' active':''}" onclick="dartDays=${d};renderDartTab()">${l}</button>`
+  ).join('');
+
+  // ── 공시유형 체크박스 ──
+  const typeChks = DART_MAIN_TYPES.map(t =>
+    `<label class="dart-type-chk">
+      <input type="checkbox" ${dartTypes.has(t)?'checked':''}
+             onchange="dartToggleType('${t}')"> ${PBLNTF_LABELS[t]}
+    </label>`
+  ).join('');
+
+  // ── 정렬 헤더 헬퍼 ──
+  const sortTh = (col, label) => {
+    const isAct = dartSort === col;
+    const icon  = isAct ? (dartSortDir==='desc'?'▼':'▲') : '⇅';
+    return `<th class="dart-sort-th${isAct?' active':''}" onclick="dartSortBy('${col}')">${label}<span class="sort-icon">${icon}</span></th>`;
+  };
+
+  // ── 테이블 행 ──
+  const rowsHtml = sorted.length === 0
+    ? `<tr><td colspan="5" class="dart-empty">조건에 맞는 공시 자료가 없습니다.</td></tr>`
+    : sorted.map(d => {
+        const dt  = d.rcept_dt ? d.rcept_dt.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '—';
+        const ty  = d.pblntf_ty || '';
+        const tyLabel = PBLNTF_LABELS[ty] || ty || '—';
+        const amend = d.rm === '유' ? '<span class="dart-amend">[정정]</span>' : '';
         return `<tr>
           <td class="dart-date">${dt}</td>
-          <td class="dart-name">${d.report_nm || '—'} ${rm}</td>
+          <td class="dart-ty"><span class="dart-ty-badge dart-ty-${ty}">${tyLabel}</span></td>
+          <td class="dart-name">${d.report_nm || '—'}${amend}</td>
           <td class="dart-filer">${d.flr_nm || '—'}</td>
           <td class="dart-link"><a href="${d.url}" target="_blank" class="dart-view-btn">보기</a></td>
         </tr>`;
@@ -1138,22 +1228,38 @@ function renderDartTab() {
   el.innerHTML = `<div class="dart-wrap">
     <div class="dart-header">
       <span class="dart-logo">DART</span>
-      <span class="dart-header-title">전자공시 시스템 — 최근 공시 목록</span>
+      <span class="dart-header-title">전자공시 시스템 — 공시서류 검색</span>
       <span class="dart-header-update">업데이트: ${updatedAt} KST</span>
     </div>
     <div class="dart-co-tabs">${coTabsHtml}</div>
-    <div class="dart-search-bar">
-      <input type="text" placeholder="보고서명 또는 제출인 검색..." value="${dartFilter}"
-             oninput="dartFilter=this.value;renderDartTab()">
-      <select onchange="dartType=this.value;renderDartTab()">
-        <option value="">전체 유형</option>
-        ${types.map(t=>`<option value="${t}"${dartType===t?' selected':''}>${t}</option>`).join('')}
-      </select>
+    <div class="dart-controls">
+      <div class="dart-ctrl-row">
+        <span class="dart-ctrl-lbl">보고서명</span>
+        <input type="text" class="dart-input" placeholder="보고서명 검색..."
+               value="${dartSearch}" oninput="dartSearch=this.value;renderDartTab()">
+        <span class="dart-ctrl-lbl" style="min-width:auto;margin-left:8px">제출인명</span>
+        <input type="text" class="dart-input" placeholder="제출인명 검색..."
+               value="${dartFiler}" oninput="dartFiler=this.value;renderDartTab()">
+      </div>
+      <div class="dart-ctrl-row">
+        <span class="dart-ctrl-lbl">기간</span>
+        <div class="dart-day-btns">${dayBtns}</div>
+      </div>
+      <div class="dart-ctrl-row">
+        <span class="dart-ctrl-lbl">공시유형</span>
+        <div class="dart-type-list">${typeChks}</div>
+      </div>
     </div>
-    <div class="dart-count">총 <b>${filtered.length}</b>건 (전체 ${disclosures.length}건)</div>
+    <div class="dart-count">총 <b>${sorted.length}</b>건 (전체 ${allDisclosures.length}건)</div>
     <div class="dart-table-wrap">
       <table class="dart-table">
-        <thead><tr><th>공시일자</th><th>보고서명</th><th>제출인</th><th>보기</th></tr></thead>
+        <thead><tr>
+          ${sortTh('rcept_dt','접수일자')}
+          <th>공시유형</th>
+          ${sortTh('report_nm','보고서명')}
+          ${sortTh('flr_nm','제출인')}
+          <th>보기</th>
+        </tr></thead>
         <tbody>${rowsHtml}</tbody>
       </table>
     </div>

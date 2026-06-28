@@ -168,38 +168,44 @@ def dart_get(endpoint: str, params: dict, api_key: str) -> dict | None:
 
 
 def fetch_disclosures(corp_code: str, api_key: str) -> list:
-    """최근 3년치 보고서 목록 수집 (reprt_code 방식 — 이미 검증된 API 사용)"""
-    from datetime import date
-    end_year = date.today().year
+    """공시유형별 최근 1년치 수집 (pblntf_ty 방식 — 전체 공시유형 포함)"""
+    from datetime import date, timedelta
+    end_dt = date.today()
+    bgn = (end_dt - timedelta(days=365)).strftime("%Y%m%d")
+    end = end_dt.strftime("%Y%m%d")
+
     results, seen = [], set()
-    reprt_codes = ["11011", "11012", "11013", "11014"]  # 사업/반기/1분기/3분기
-    for year in range(end_year - 2, end_year + 1):
-        for reprt_code in reprt_codes:
-            data = dart_get("list.json", {
-                "corp_code":  corp_code,
-                "bgn_de":     f"{year}0101",
-                "end_de":     f"{year + 1}0101",
-                "reprt_code": reprt_code,
-            }, api_key)
-            if not data:
+    # A=정기공시, B=주요사항보고, C=발행공시, D=지분공시,
+    # E=기타공시, F=외부감사관련, I=거래소공시, J=공정위공시
+    for pblntf_ty in ['A', 'B', 'C', 'D', 'E', 'F', 'I', 'J']:
+        data = dart_get("list.json", {
+            "corp_code":  corp_code,
+            "bgn_de":     bgn,
+            "end_de":     end,
+            "pblntf_ty":  pblntf_ty,
+            "page_no":    1,
+            "page_count": 40,
+        }, api_key)
+        if not data:
+            continue
+        for item in data.get("list", []):
+            key = item.get("rcept_no", "")
+            if not key or key in seen:
                 continue
-            for item in data.get("list", []):
-                key = item.get("rcept_no", "")
-                if not key or key in seen:
-                    continue
-                seen.add(key)
-                results.append({
-                    "rcept_no":  item["rcept_no"],
-                    "rcept_dt":  item.get("rcept_dt", ""),
-                    "report_nm": item.get("report_nm", ""),
-                    "corp_name": item.get("corp_name", ""),
-                    "flr_nm":    item.get("flr_nm", ""),
-                    "rm":        item.get("rm", ""),
-                    "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={item['rcept_no']}",
-                })
+            seen.add(key)
+            results.append({
+                "rcept_no":  item["rcept_no"],
+                "rcept_dt":  item.get("rcept_dt", ""),
+                "report_nm": item.get("report_nm", ""),
+                "corp_name": item.get("corp_name", ""),
+                "flr_nm":    item.get("flr_nm", ""),
+                "rm":        item.get("rm", ""),
+                "pblntf_ty": pblntf_ty,
+                "url": f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={item['rcept_no']}",
+            })
     results.sort(key=lambda x: x["rcept_dt"], reverse=True)
     print(f"  공시목록: {len(results)}건 수집")
-    return results[:60]
+    return results[:200]
 
 
 def fetch_report_list(corp_code: str, api_key: str, year: str, reprt_code: str) -> dict | None:
