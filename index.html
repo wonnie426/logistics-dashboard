@@ -440,6 +440,20 @@
     .builder-table td:first-child { text-align: left; font-weight: 600; }
     .builder-table tr:last-child td { border-bottom: none; }
     .builder-table tr:hover td { background: var(--bg); }
+    /* 메트릭 멀티픽커 */
+    .metric-picker { position: relative; }
+    .metric-dropdown-btn { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; white-space: nowrap; }
+    .metric-dropdown-btn:hover { border-color: var(--red); color: var(--red); }
+    .metric-panel { position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; z-index: 200; min-width: 200px; max-height: 260px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+    .metric-group-label { font-size: 10px; font-weight: 700; color: var(--text-sub); padding: 6px 0 2px; letter-spacing: .05em; text-transform: uppercase; }
+    .metric-group-label:first-child { padding-top: 0; }
+    .metric-check-item { display: flex; align-items: center; gap: 7px; padding: 4px 2px; font-size: 13px; cursor: pointer; border-radius: 4px; }
+    .metric-check-item:hover { background: var(--bg); }
+    .metric-check-item input { accent-color: var(--red); cursor: pointer; }
+    .metric-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .metric-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px 3px 10px; font-size: 12px; font-weight: 600; }
+    .metric-chip-x { cursor: pointer; color: var(--text-sub); font-size: 15px; line-height: 1; padding: 0 2px; }
+    .metric-chip-x:hover { color: var(--red); }
   </style>
 </head>
 <body data-theme="light">
@@ -776,7 +790,7 @@ const lineValuePlugin = {
       meta.data.forEach((pt, i) => {
         const v = ds.data[i];
         if (v == null) return;
-        ctx.fillText(fmtFn(v), pt.x, pt.y - 6 - di * 11);  // 데이터셋별로 위로 띄워 겹침 완화
+        ctx.fillText(fmtFn(v), pt.x, pt.y - 12 - di * 14);
       });
     });
     ctx.restore();
@@ -1486,10 +1500,10 @@ const CUSTOM_METRICS = [
 ];
 
 const customBuilderState = {
-  LGL:     { metric:'pl.revenue', chartType:'bar'  },
-  CJ:      { metric:'pl.revenue', chartType:'bar'  },
-  HJ:      { metric:'pl.revenue', chartType:'bar'  },
-  compare: { metric:'pl.revenue', chartType:'line' },
+  LGL:     { metrics:['pl.revenue'], chartType:'bar'  },
+  CJ:      { metrics:['pl.revenue'], chartType:'bar'  },
+  HJ:      { metrics:['pl.revenue'], chartType:'bar'  },
+  compare: { metric:'pl.revenue',   chartType:'line' },
 };
 
 function getMetricValue(d, key) {
@@ -1528,17 +1542,44 @@ function buildMetricSelectHtml(htmlId, selectedKey, onchangeFn) {
   return html + `</select>`;
 }
 
+function buildMetricPanelHtml(code) {
+  const state = customBuilderState[code];
+  const groups = {};
+  CUSTOM_METRICS.forEach(m => { if (!groups[m.group]) groups[m.group] = []; groups[m.group].push(m); });
+  return Object.entries(groups).map(([grp, items]) =>
+    `<div class="metric-group-label">${grp}</div>` +
+    items.map(m =>
+      `<label class="metric-check-item">
+        <input type="checkbox" value="${m.key}" ${state.metrics.includes(m.key) ? 'checked' : ''}
+          onchange="toggleMetric('${code}','${m.key}')"> ${m.label}
+      </label>`
+    ).join('')
+  ).join('');
+}
+
+function buildChipsHtml(code) {
+  const state = customBuilderState[code];
+  return state.metrics.map(k => {
+    const m = CUSTOM_METRICS.find(x => x.key === k);
+    return `<span class="metric-chip">${m?.label || k}<span class="metric-chip-x" onclick="removeMetric('${code}','${k}')">×</span></span>`;
+  }).join('');
+}
+
 function customBuilderHtml(code) {
   const state = customBuilderState[code];
   return `<div class="card" style="margin-bottom:24px">
     <div class="card-title">커스텀 차트 만들기
-      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 고르면 즉시 차트가 바뀝니다</span>
+      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
     </div>
     <div class="builder-controls">
-      <label>항목 선택:
-        ${buildMetricSelectHtml(code+'-builder-metric', state.metric, "onBuilderChange('"+code+"')")}
-      </label>
-      <div class="fs-selector" style="margin-bottom:0">
+      <div class="metric-picker">
+        <button class="metric-dropdown-btn" onclick="toggleMetricPanel(event,'${code}')">항목 선택 ▾</button>
+        <div id="${code}-metric-panel" class="metric-panel" style="display:none">
+          ${buildMetricPanelHtml(code)}
+        </div>
+      </div>
+      <div id="${code}-metric-chips" class="metric-chips">${buildChipsHtml(code)}</div>
+      <div class="fs-selector" style="margin-bottom:0;margin-left:auto">
         <button class="fs-btn${state.chartType==='bar' ?' active':''}" data-code="${code}" data-type="bar"
           onclick="setBuilderChartType('${code}','bar')">막대</button>
         <button class="fs-btn${state.chartType==='line'?' active':''}" data-code="${code}" data-type="line"
@@ -1552,52 +1593,132 @@ function customBuilderHtml(code) {
 
 function buildCustomChart(code) {
   const state = customBuilderState[code];
-  const m = CUSTOM_METRICS.find(x => x.key === state.metric);
-  if (!m) return;
+  const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
+  if (!ms.length) return;
   const co = FIN.companies[code];
   const fs = fsMode[code] || 'CFS';
   const pMode = periodMode[code] || 'annual';
   const dataMap = getPeriodData(co, pMode, fs);
   const keys = Object.keys(dataMap || {}).sort();
-  const data = keys.map(k => getMetricValue(dataMap[k], m.key));
   const color = co.color;
   const canvasId = `c-${code}-custom`;
-  const isPct = m.type === 'pct';
-  const isX   = m.type === 'x';
-  const labelFmt = isPct ? (v => (typeof v==='number' ? v.toFixed(1)+'%' : v))
-                 : isX   ? (v => (typeof v==='number' ? v.toFixed(2)+'배' : v))
-                 : null;
-  const yTick = isPct ? (v => v.toFixed(1)+'%')
-              : isX   ? (v => v.toFixed(2)+'배')
-              : wonTick;
-  const ttLabel = c => `${m.label}: ${c.raw==null?'미공시':(isPct?c.raw.toFixed(1)+'%':isX?c.raw.toFixed(2)+'배':wonTooltip(c.raw))}`;
 
-  if (state.chartType === 'bar') {
-    makeBarChart(canvasId, keys, [{ label: m.label, data, backgroundColor: color }], true, labelFmt);
-  } else {
-    makeLineChart(canvasId, keys, [{ label: m.label, data, borderColor: color, backgroundColor: color+'33' }], isPct, labelFmt);
-  }
-  if (charts[canvasId]) {
-    charts[canvasId].options.plugins.tooltip.callbacks.label = ttLabel;
-    charts[canvasId].options.scales.y.ticks.callback = yTick;
-    charts[canvasId].$labelFmt = labelFmt || wonTick;
-    charts[canvasId].update();
+  const hasWon = ms.some(m => m.type === 'won');
+  const hasPct = ms.some(m => m.type === 'pct' || m.type === 'x');
+  const dual   = hasWon && hasPct;
+  const PALETTE = [color, '#10b981', '#f59e0b', '#6366f1', '#ec4899'];
+
+  const datasets = ms.map((m, i) => {
+    const data = keys.map(k => getMetricValue(dataMap[k], m.key));
+    const c = ms.length === 1 ? color : PALETTE[i % PALETTE.length];
+    const yAxisID = (dual && m.type !== 'won') ? 'y1' : 'y';
+    if (state.chartType === 'bar') {
+      return { label: m.label, data, backgroundColor: c, maxBarThickness: 48, yAxisID };
+    } else {
+      return { label: m.label, data, borderColor: c, backgroundColor: c+'22',
+               yAxisID, tension: 0.3, pointRadius: 4, spanGaps: false };
+    }
+  });
+
+  destroyChart(canvasId);
+  const ctx = document.getElementById(canvasId)?.getContext('2d');
+  if (!ctx) return;
+
+  const labelFmtFor = m => m.type==='pct' ? (v => typeof v==='number' ? v.toFixed(1)+'%' : v)
+                          : m.type==='x'  ? (v => typeof v==='number' ? v.toFixed(2)+'배' : v)
+                          : null;
+  const primaryFmt = labelFmtFor(ms[0]) || wonTick;
+
+  const scales = {
+    y: { ticks: { callback: hasWon ? wonTick : (hasPct ? v=>v.toFixed(1)+'%' : v=>v.toFixed(2)+'배') },
+         grid: { color:'rgba(0,0,0,0.05)' } }
+  };
+  if (dual) {
+    scales.y1 = { position:'right', grid:{ drawOnChartArea:false },
+      ticks:{ callback: v => ms.find(m=>m.type!=='won')?.type==='x' ? v.toFixed(2)+'배' : v.toFixed(1)+'%' } };
   }
 
+  charts[canvasId] = new Chart(ctx, {
+    type: state.chartType === 'bar' ? 'bar' : 'line',
+    data: { labels: keys, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      layout: { padding: { top: 28 } },
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          mode: 'index', intersect: false,
+          callbacks: {
+            label: c => {
+              const m = ms[c.datasetIndex]; if (!m) return '';
+              const v = c.raw; if (v == null) return `${c.dataset.label}: 미공시`;
+              return `${c.dataset.label}: ${m.type==='pct'?v.toFixed(1)+'%':m.type==='x'?v.toFixed(2)+'배':wonTooltip(v)}`;
+            }
+          }
+        }
+      },
+      scales,
+    },
+    plugins: [state.chartType === 'bar' ? barValuePlugin : lineValuePlugin]
+  });
+  charts[canvasId].$showValues = true;
+  charts[canvasId].$labelFmt = primaryFmt;
+
+  // 등간격 테이블
   const tableWrap = document.getElementById(`${code}-custom-table`);
   if (!tableWrap) return;
-  const wu = m.type === 'won' ? ' '+fmt.wonUnit() : '';
+  const colCount = keys.length + 1;
+  const colW = (100 / colCount).toFixed(1) + '%';
+  const colsHtml = Array.from({length: colCount}, () => `<col style="width:${colW}">`).join('');
   const headerCols = keys.map(k => `<th>${k}</th>`).join('');
-  const dataCols = keys.map((k, i) => `<td>${fmtBuilderVal(data[i], m.type)}</td>`).join('');
-  tableWrap.innerHTML = `<table class="builder-table">
-    <thead><tr><th>${m.label}${wu}</th>${headerCols}</tr></thead>
-    <tbody><tr><td>${co.name}</td>${dataCols}</tr></tbody>
+  const dataRows = ms.map(m => {
+    const wu = m.type === 'won' ? ' '+fmt.wonUnit() : (m.type==='pct'?' (%)':m.type==='x'?' (배)':'');
+    const dataCols = keys.map(k => `<td>${fmtBuilderVal(getMetricValue(dataMap[k], m.key), m.type)}</td>`).join('');
+    return `<tr><td>${m.label}${wu}</td>${dataCols}</tr>`;
+  }).join('');
+  tableWrap.innerHTML = `<table class="builder-table" style="table-layout:fixed">
+    <colgroup>${colsHtml}</colgroup>
+    <thead><tr><th></th>${headerCols}</tr></thead>
+    <tbody>${dataRows}</tbody>
   </table>`;
 }
 
 function onBuilderChange(code) {
   const sel = document.getElementById(`${code}-builder-metric`);
   if (sel) customBuilderState[code].metric = sel.value;
+  buildCustomChart(code);
+}
+
+function toggleMetricPanel(e, code) {
+  e.stopPropagation();
+  const panel = document.getElementById(`${code}-metric-panel`);
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  document.querySelectorAll('.metric-panel').forEach(p => { p.style.display = 'none'; });
+  if (!isOpen) panel.style.display = 'block';
+}
+
+function toggleMetric(code, key) {
+  const state = customBuilderState[code];
+  const idx = state.metrics.indexOf(key);
+  if (idx >= 0) {
+    if (state.metrics.length > 1) state.metrics.splice(idx, 1);
+    else return;
+  } else {
+    state.metrics.push(key);
+  }
+  document.getElementById(`${code}-metric-chips`).innerHTML = buildChipsHtml(code);
+  buildCustomChart(code);
+}
+
+function removeMetric(code, key) {
+  const state = customBuilderState[code];
+  if (state.metrics.length <= 1) return;
+  state.metrics = state.metrics.filter(k => k !== key);
+  // sync checkbox
+  const panel = document.getElementById(`${code}-metric-panel`);
+  if (panel) { const cb = panel.querySelector(`input[value="${key}"]`); if (cb) cb.checked = false; }
+  document.getElementById(`${code}-metric-chips`).innerHTML = buildChipsHtml(code);
   buildCustomChart(code);
 }
 
@@ -2557,6 +2678,11 @@ function initUI() {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${activeTab}`));
   }
   renderActiveTab();
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.metric-picker')) {
+      document.querySelectorAll('.metric-panel').forEach(p => { p.style.display = 'none'; });
+    }
+  });
 }
 
 loadData();
