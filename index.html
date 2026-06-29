@@ -1007,35 +1007,8 @@ function renderCompanyTab(code) {
       ${sc('부채비율', fmt.pct(r.debt_ratio), changeHtml(r.debt_ratio, prevR.debt_ratio), 'debt_ratio', r.debt_ratio, 'debt_ratio', ld)}
       ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage, 'interest_coverage', ld)}
     </div>
-    ${finTableHtml}
     ${stmtViewer(code, fs, pMode, dataMap, periodKeys, wu)}
     ${stockHtml}
-    <div class="chart-grid">
-      <div class="card">
-        <div class="chart-title">매출액 · 영업이익 추이 (억원)
-          <button class="chart-download" onclick="downloadChart('c-${code}-rev','${co.name}_매출액.png')">💾</button>
-        </div>
-        <canvas id="c-${code}-rev"></canvas>
-      </div>
-      <div class="card">
-        <div class="chart-title">영업이익률 · ROE 추이 (%)
-          <button class="chart-download" onclick="downloadChart('c-${code}-margin','${co.name}_수익성.png')">💾</button>
-        </div>
-        <canvas id="c-${code}-margin"></canvas>
-      </div>
-      <div class="card">
-        <div class="chart-title">부채비율 · 유동비율 (%)
-          <button class="chart-download" onclick="downloadChart('c-${code}-debt','${co.name}_안정성.png')">💾</button>
-        </div>
-        <canvas id="c-${code}-debt"></canvas>
-      </div>
-      <div class="card">
-        <div class="chart-title">자산 · 부채 · 자본 (억원)
-          <button class="chart-download" onclick="downloadChart('c-${code}-bs','${co.name}_재무상태.png')">💾</button>
-        </div>
-        <canvas id="c-${code}-bs"></canvas>
-      </div>
-    </div>
     <div class="card" style="margin-bottom:24px">
       <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
         <span>재무비율 상세</span>
@@ -1608,10 +1581,19 @@ function buildCustomChart(code) {
   const dual   = hasWon && hasPct;
   const PALETTE = [color, '#10b981', '#f59e0b', '#6366f1', '#ec4899'];
 
+  // dual 모드: 정수(won) → 막대+왼쪽y축, 비율(pct/x) → 꺾은선+오른쪽y축
   const datasets = ms.map((m, i) => {
     const data = keys.map(k => getMetricValue(dataMap[k], m.key));
     const c = ms.length === 1 ? color : PALETTE[i % PALETTE.length];
-    const yAxisID = (dual && m.type !== 'won') ? 'y1' : 'y';
+    if (dual) {
+      if (m.type === 'won') {
+        return { type: 'bar', label: m.label, data, backgroundColor: c, maxBarThickness: 48, yAxisID: 'y' };
+      } else {
+        return { type: 'line', label: m.label, data, borderColor: c, backgroundColor: c+'22',
+                 yAxisID: 'y1', tension: 0.3, pointRadius: 4, spanGaps: false };
+      }
+    }
+    const yAxisID = 'y';
     if (state.chartType === 'bar') {
       return { label: m.label, data, backgroundColor: c, maxBarThickness: 48, yAxisID };
     } else {
@@ -1627,19 +1609,32 @@ function buildCustomChart(code) {
   const labelFmtFor = m => m.type==='pct' ? (v => typeof v==='number' ? v.toFixed(1)+'%' : v)
                           : m.type==='x'  ? (v => typeof v==='number' ? v.toFixed(2)+'배' : v)
                           : null;
-  const primaryFmt = labelFmtFor(ms[0]) || wonTick;
+  const primaryFmt = dual ? wonTick : (labelFmtFor(ms[0]) || wonTick);
 
   const scales = {
-    y: { ticks: { callback: hasWon ? wonTick : (hasPct ? v=>v.toFixed(1)+'%' : v=>v.toFixed(2)+'배') },
-         grid: { color:'rgba(0,0,0,0.05)' } }
+    y: {
+      position: 'left',
+      ticks: { callback: hasWon ? wonTick : (hasPct ? v=>v.toFixed(1)+'%' : v=>v.toFixed(2)+'배') },
+      grid: { color:'rgba(0,0,0,0.05)' },
+      title: dual ? { display: true, text: `(${fmt.wonUnit()})`, font:{size:11}, color:'var(--text-sub)' } : undefined
+    }
   };
   if (dual) {
-    scales.y1 = { position:'right', grid:{ drawOnChartArea:false },
-      ticks:{ callback: v => ms.find(m=>m.type!=='won')?.type==='x' ? v.toFixed(2)+'배' : v.toFixed(1)+'%' } };
+    scales.y1 = {
+      position: 'right',
+      grid: { drawOnChartArea: false },
+      ticks: { callback: v => ms.find(m=>m.type!=='won')?.type==='x' ? v.toFixed(2)+'배' : v.toFixed(1)+'%' },
+      title: { display: true, text: '(%)', font:{size:11}, color:'var(--text-sub)' }
+    };
   }
 
+  // dual 모드일 때는 base type을 'bar'로 설정해야 mixed chart가 동작
+  const chartBaseType = dual ? 'bar' : (state.chartType === 'bar' ? 'bar' : 'line');
+  const pluginList = dual ? [barValuePlugin, lineValuePlugin]
+    : [state.chartType === 'bar' ? barValuePlugin : lineValuePlugin];
+
   charts[canvasId] = new Chart(ctx, {
-    type: state.chartType === 'bar' ? 'bar' : 'line',
+    type: chartBaseType,
     data: { labels: keys, datasets },
     options: {
       responsive: true, maintainAspectRatio: true,
@@ -1659,7 +1654,7 @@ function buildCustomChart(code) {
       },
       scales,
     },
-    plugins: [state.chartType === 'bar' ? barValuePlugin : lineValuePlugin]
+    plugins: pluginList
   });
   charts[canvasId].$showValues = true;
   charts[canvasId].$labelFmt = primaryFmt;
