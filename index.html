@@ -1812,13 +1812,13 @@ function renderIrEsgTab() {
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function listBlock(title, block, color) {
+  function listBlock(title, block, color, extraBtn) {
     const src = block?.source_url || '';
     const items = block?.items || [];
     let rows;
     if (!items.length) {
       const note = block?.note || '자동 수집된 목록이 없습니다.';
-      rows = `<div class="iresg-empty">${esc(note)}</div>`;
+      rows = `<div class="iresg-empty">${esc(note)}${extraBtn || ''}</div>`;
     } else {
       rows = `<ul class="iresg-list">` + items.map(it => {
         const link = it.url || src;
@@ -1845,7 +1845,9 @@ function renderIrEsgTab() {
         <div class="card-title" style="color:${color}">${esc(co.name || code)}</div>
         <div class="iresg-grid">
           ${listBlock('ESG · 지속가능경영보고서', co.esg, color)}
-          ${listBlock('IR 자료', co.ir, color)}
+          ${listBlock('IR 자료', co.ir, color, code === 'CJ'
+            ? `<div style="margin-top:10px"><button class="dart-day-btn" onclick="switchTab('dart')">📑 공시자료 탭에서 보기</button></div>`
+            : '')}
         </div>
       </div>`;
   }).join('');
