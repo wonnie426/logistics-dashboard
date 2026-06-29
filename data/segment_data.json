@@ -73,20 +73,34 @@
       "annual": {
         "2023": {
           "CFS": {
-            "source": "2023년 사업보고서",
-            "물류": { "revenue": null, "operating_income": null, "note": null },
-            "택배": { "revenue": null, "operating_income": null, "note": null },
-            "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "에너지": { "revenue": null, "operating_income": null, "note": null }
+            "source": "2024년 사업보고서 전기 (연결재무제표 주석 5 영업부문정보, 2025.03.17 제출)",
+            "물류": { "revenue": 911830000000,  "operating_income": null, "note": "연결 주석 5 영업부문정보 (전기) · 외부매출액 911,830 (영업이익 행은 캡처 미제공, 백만원)" },
+            "택배": { "revenue": 1382826000000, "operating_income": null, "note": "연결 주석 5 영업부문정보 (전기) · 외부매출액 (영업이익 행 캡처 미제공, 백만원)" },
+            "글로벌": { "revenue": 333372000000,  "operating_income": null, "note": "연결 주석 5 영업부문정보 (전기) · 외부매출액 (영업이익 행 캡처 미제공, 백만원)" },
+            "에너지": { "revenue": 179501000000,  "operating_income": null, "note": "연결 주석 5 영업부문정보 (전기) · 외부매출액 (영업이익 행 캡처 미제공, 백만원)" }
+          },
+          "SFS": {
+            "source": "2024년 사업보고서 전기 (별도 재무제표 주석 5 영업부문정보, 2025.03.17 제출)",
+            "물류": { "revenue": 647748000000,  "operating_income": 12282000000, "note": "재무제표 주석 5 영업부문정보 (별도, 전기) · 매출액/영업이익 (백만원)" },
+            "택배": { "revenue": 1382825000000, "operating_income": 26234000000, "note": "재무제표 주석 5 영업부문정보 (별도, 전기) · 매출액/영업이익 (백만원)" },
+            "글로벌": { "revenue": 189663000000,  "operating_income": 2395000000,  "note": "재무제표 주석 5 영업부문정보 (별도, 전기) · 매출액/영업이익 (백만원)" },
+            "에너지": { "revenue": 179501000000,  "operating_income": -575000000,  "note": "재무제표 주석 5 영업부문정보 (별도, 전기) · 매출액/영업이익 (백만원)" }
           }
         },
         "2024": {
           "CFS": {
-            "source": "2024년 사업보고서",
-            "물류": { "revenue": null, "operating_income": null, "note": null },
-            "택배": { "revenue": null, "operating_income": null, "note": null },
-            "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "에너지": { "revenue": null, "operating_income": null, "note": null }
+            "source": "2024년 사업보고서 (연결재무제표 주석 5 영업부문정보, 2025.03.17 제출)",
+            "물류": { "revenue": 938264000000,  "operating_income": 84476000000, "note": "연결 주석 5 · 외부매출액 938,264 / 영업이익 93,461 − 연결조정 8,985 = 84,476 (백만원)" },
+            "택배": { "revenue": 1384796000000, "operating_income": 5886000000,  "note": "연결 주석 5 영업부문정보 · 외부매출액/영업이익 (백만원)" },
+            "글로벌": { "revenue": 489340000000,  "operating_income": 10202000000, "note": "연결 주석 5 영업부문정보 · 외부매출액/영업이익 (백만원)" },
+            "에너지": { "revenue": 203079000000,  "operating_income": -476000000,  "note": "연결 주석 5 영업부문정보 · 외부매출액/영업이익 (백만원)" }
+          },
+          "SFS": {
+            "source": "2024년 사업보고서 (별도 재무제표 주석 5 영업부문정보, 2025.03.17 제출)",
+            "물류": { "revenue": 635306000000,  "operating_income": 2378000000,  "note": "재무제표 주석 5 영업부문정보 (별도) · 매출액/영업이익 (백만원)" },
+            "택배": { "revenue": 1384796000000, "operating_income": 5886000000,  "note": "재무제표 주석 5 영업부문정보 (별도) · 매출액/영업이익 (백만원)" },
+            "글로벌": { "revenue": 214289000000,  "operating_income": 4324000000,  "note": "재무제표 주석 5 영업부문정보 (별도) · 매출액/영업이익 (백만원)" },
+            "에너지": { "revenue": 203079000000,  "operating_income": -476000000,  "note": "재무제표 주석 5 영업부문정보 (별도) · 매출액/영업이익 (백만원)" }
           }
         },
         "2025": {
