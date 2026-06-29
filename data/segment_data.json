@@ -10,16 +10,16 @@
           "GBS":      { "revenue": null, "operating_income": null, "note": null }
         },
         "2024": {
-          "source": "2024년 사업보고서",
-          "TLS":      { "revenue": null, "operating_income": null, "note": null },
-          "Lastmile": { "revenue": null, "operating_income": null, "note": null },
-          "GBS":      { "revenue": null, "operating_income": null, "note": null }
+          "source": "2024년 사업보고서 (연결재무제표 주석 37)",
+          "TLS":      { "revenue": 18318.9, "operating_income": 506.2, "note": "총부문수익 기준" },
+          "Lastmile": { "revenue": 14290.7, "operating_income": 325.4, "note": "총부문수익 기준" },
+          "GBS":      { "revenue": 3123.7,  "operating_income": 70.4,  "note": "외부고객수익 기준" }
         },
         "2025": {
-          "source": "2025년 사업보고서",
-          "TLS":      { "revenue": null, "operating_income": null, "note": null },
-          "Lastmile": { "revenue": null, "operating_income": null, "note": null },
-          "GBS":      { "revenue": null, "operating_income": null, "note": null }
+          "source": "2025년 사업보고서 (연결재무제표 주석 37, 2026.03.31 제출)",
+          "TLS":      { "revenue": 17082.2, "operating_income": 586.9, "note": "총부문수익 기준" },
+          "Lastmile": { "revenue": 13919.9, "operating_income": 135.3, "note": "총부문수익 기준" },
+          "GBS":      { "revenue": 3012.9,  "operating_income": 94.9,  "note": "외부고객수익 기준" }
         }
       }
     },
