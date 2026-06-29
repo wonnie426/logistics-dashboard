@@ -1230,6 +1230,17 @@ function stmtSwitch(code, sj, btn) {
   document.querySelectorAll('#stmt-' + code + ' .stmt-panel').forEach(p => { p.style.display = (p.dataset.sj === sj) ? 'block' : 'none'; });
   btn.parentElement.querySelectorAll('.stmt-tab').forEach(b => b.classList.toggle('active', b === btn));
 }
+// 자본변동표 등 XBRL 라벨 정리 ([member]/[구성요소] 태그 제거, 차원은 최종 구성요소만)
+function cleanStmtLabel(l) {
+  let s = String(l).replace(/\s*\[(member|구성요소)\]/gi, '');
+  s = s.replace(/\(([^)]*)\)/g, (m, inner) => {
+    const parts = inner.split('|').map(x => x.trim()).filter(Boolean);
+    let last = parts.length ? parts[parts.length - 1] : inner.trim();
+    if (last === '연결재무제표' || last === '재무제표' || last === '자본') last = '합계';
+    return '(' + last + ')';
+  });
+  return s.replace(/\s{2,}/g, ' ').trim();
+}
 function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
   const miss = '<span style="color:var(--text-sub)">—</span>';
   const fsKey = fs === 'OFS' ? 'OFS' : 'CFS';
@@ -1252,7 +1263,7 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
           if (arr) { const f = arr.find(x => x.l === item.l); if (f) v = f.v; }
           return `<td>${v != null ? fmt.won(v) : miss}</td>`;
         }).join('');
-        return `<tr><td style="text-align:left;font-weight:500">${item.l}</td>${cells}</tr>`;
+        return `<tr><td style="text-align:left;font-weight:500">${cleanStmtLabel(item.l)}</td>${cells}</tr>`;
       }).join('');
     } else {
       body = rows.map(([lbl, field, grp, lvl]) => {

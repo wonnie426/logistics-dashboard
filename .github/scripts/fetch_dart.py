@@ -381,6 +381,12 @@ def parse_statements(accounts: list) -> dict:
             if not nm:
                 continue
             detail = (a.get("account_detail") or "").strip()
+            # XBRL [member]/[구성요소] 태그 제거, 차원(파이프)은 최종 구성요소만
+            detail = re.sub(r"\s*\[(member|구성요소)\]", "", detail, flags=re.I).strip()
+            if "|" in detail:
+                detail = detail.split("|")[-1].strip()
+            if detail in ("연결재무제표", "재무제표", "자본"):
+                detail = "합계"
             # 자본변동표(SCE)는 동일 계정명이 자본 구성요소별로 반복 → 구성요소를 라벨에 붙임
             label = nm if (div != "SCE" or detail in ("", "-", "－")) else f"{nm} ({detail})"
             key = (label,)
