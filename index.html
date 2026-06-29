@@ -181,9 +181,7 @@
     .ratio-table-v2 td.formula { font-size: 11px; color: var(--text-sub); font-style: italic; }
     .ratio-table-v2 tr:last-child td { border-bottom: none; }
     .ratio-table-v2 tr:hover td { background: var(--bg); }
-    .tooltip-row td.lbl { cursor: pointer; position: relative; }
-    .tooltip-row td.lbl::after { content: ' ⓘ'; font-size: 10px; color: #93c5fd; }
-    .tooltip-row td.lbl.tt-pinned::after { content: ' ⓘ'; color: #3b82f6; font-weight: 700; }
+    .tooltip-row td.lbl { position: relative; }
     /* 재무비율 팝업 */
     #ratio-tt {
       position: fixed; z-index: 9999; display: none;
@@ -254,6 +252,11 @@
     }
     .qmark:hover { background: #3b82f6; color: #fff; }
     .qmark.tt-pinned { background: #3b82f6; color: #fff; }
+    /* 전년대비(YoY) 컬럼 */
+    .ratio-table-v2 td.yoy { text-align: right; width: 96px; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .yoy-up   { color: #16a34a; }
+    .yoy-down { color: #dc2626; }
+    .yoy-flat { color: var(--text-sub); }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -902,7 +905,7 @@ function renderCompanyTab(code) {
           <button class="chart-download" onclick="downloadRatioExcel('${code}','${latest}')">📥 Excel</button>
         </div>
       </div>
-      ${ratioTable(r, ld, code, latest)}
+      ${ratioTable(code, fs, pMode, latest)}
     </div>
     <div class="card" style="margin-bottom:24px">
       <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
@@ -957,38 +960,111 @@ const RATIO_FORMULAS = {
   '영업현금흐름/매출': '영업활동현금흐름 ÷ 매출액 × 100',
 };
 
-function ratioTable(r, ld, code, period) {
-  const rows = [
-    ['수익성', [
-      ['영업이익률',       fmt.pct(r.operating_margin),    'operating_margin', r.operating_margin, 'operating_margin'],
-      ['EBITDA율',         fmt.pct(r.ebitda_margin),        null, null, 'ebitda_margin'],
-      ['순이익률',         fmt.pct(r.net_margin),            'net_margin', r.net_margin, 'net_margin'],
-      ['ROA',             fmt.pct(r.roa),                   'roa', r.roa, 'roa'],
-      ['ROE(지배)',        fmt.pct(r.roe),                   'roe', r.roe, 'roe'],
-    ]],
-    ['안정성', [
-      ['부채비율',         fmt.pct(r.debt_ratio),           'debt_ratio', r.debt_ratio, 'debt_ratio'],
-      ['부채비율(리스제외)',fmt.pct(r.debt_ratio_ex_lease),  null, null, 'debt_ratio_ex_lease'],
-      ['유동비율',         fmt.pct(r.current_ratio),        'current_ratio', r.current_ratio, 'current_ratio'],
-      ['자기자본비율',     fmt.pct(r.equity_ratio),         'equity_ratio', r.equity_ratio, 'equity_ratio'],
-      ['이자보상비율',     fmt.x(r.interest_coverage),      'interest_coverage', r.interest_coverage, 'interest_coverage'],
-      ['차입금의존도',     fmt.pct(r.borrowing_dependency),  'borrowing_dependency', r.borrowing_dependency, 'borrowing_dependency'],
-    ]],
-    ['현금창출', [
-      ['영업현금흐름/매출', fmt.pct(r.operating_cf_margin), 'operating_cf_margin', r.operating_cf_margin, 'operating_cf_margin'],
-    ]],
-  ];
-  const srcLink = ld.report_url
-    ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${ld.source || 'DART'} <a href="${ld.report_url}" target="_blank" class="report-link">📄 원본 보고서</a></div>`
-    : '';
+// 한 기간의 파생지표(수익성·성장성·안정성·활동성) 계산. prev는 성장률용 직전기.
+function computeMetrics(d, prev) {
+  if (!d) return {};
+  const pl = d.pl||{}, bs = d.bs||{}, r = d.ratios||{};
+  const ppl = prev?.pl||{}, pbs = prev?.bs||{};
+  const g  = (c,p) => (c!=null && p!=null && p!==0) ? ((c-p)/Math.abs(p))*100 : null;
+  const dv = (a,b) => (a!=null && b) ? a/b : null;
+  return {
+    operating_margin:r.operating_margin, ebitda_margin:r.ebitda_margin, net_margin:r.net_margin, roa:r.roa, roe:r.roe,
+    revenue_growth:g(pl.revenue,ppl.revenue), op_growth:g(pl.operating_income,ppl.operating_income),
+    ni_growth:g(pl.net_income,ppl.net_income), asset_growth:g(bs.total_assets,pbs.total_assets), equity_growth:g(bs.total_equity,pbs.total_equity),
+    debt_ratio:r.debt_ratio, debt_ratio_ex_lease:r.debt_ratio_ex_lease, current_ratio:r.current_ratio, equity_ratio:r.equity_ratio,
+    interest_coverage:r.interest_coverage, borrowing_dependency:r.borrowing_dependency,
+    asset_turnover:dv(pl.revenue,bs.total_assets), receivable_turnover:dv(pl.revenue,bs.trade_receivables),
+    inventory_turnover:dv(pl.revenue,bs.inventory), equity_turnover:dv(pl.revenue,bs.total_equity),
+    operating_cf_margin:r.operating_cf_margin,
+  };
+}
+
+function fmtVal(v, type) {
+  if (v == null) return '—';
+  if (type === 'pct') return fmt.pct(v);
+  if (type === 'x')   return fmt.x(v);
+  if (type === 'cnt') return v.toFixed(2) + '회';
+  return String(v);
+}
+function fmtYoY(cur, prev, type) {
+  if (cur == null || prev == null) return '<span class="yoy-flat">—</span>';
+  const d = cur - prev;
+  const cls = d > 0.0001 ? 'yoy-up' : (d < -0.0001 ? 'yoy-down' : 'yoy-flat');
+  const arrow = d > 0.0001 ? '▲' : (d < -0.0001 ? '▼' : '–');
+  const s = (type === 'pct') ? Math.abs(d).toFixed(1) + '%p'
+          : Math.abs(d).toFixed(2) + (type === 'cnt' ? '회' : '');
+  return `<span class="${cls}">${arrow} ${s}</span>`;
+}
+
+const RATIO_GROUPS = [
+  ['수익성', [
+    ['operating_margin','영업이익률','pct','operating_margin'],
+    ['ebitda_margin','EBITDA율','pct',null],
+    ['net_margin','순이익률','pct','net_margin'],
+    ['roa','ROA','pct','roa'],
+    ['roe','ROE(지배)','pct','roe'],
+  ]],
+  ['성장성', [
+    ['revenue_growth','매출액증가율','pct',null],
+    ['op_growth','영업이익증가율','pct',null],
+    ['ni_growth','순이익증가율','pct',null],
+    ['asset_growth','총자산증가율','pct',null],
+    ['equity_growth','자기자본증가율','pct',null],
+  ]],
+  ['안정성', [
+    ['debt_ratio','부채비율','pct','debt_ratio'],
+    ['debt_ratio_ex_lease','부채비율(리스제외)','pct',null],
+    ['current_ratio','유동비율','pct','current_ratio'],
+    ['equity_ratio','자기자본비율','pct','equity_ratio'],
+    ['interest_coverage','이자보상비율','x','interest_coverage'],
+    ['borrowing_dependency','차입금의존도','pct','borrowing_dependency'],
+  ]],
+  ['활동성', [
+    ['asset_turnover','총자산회전율','cnt',null],
+    ['receivable_turnover','매출채권회전율','cnt',null],
+    ['inventory_turnover','재고자산회전율','cnt',null],
+    ['equity_turnover','자기자본회전율','cnt',null],
+  ]],
+  ['현금창출', [
+    ['operating_cf_margin','영업현금흐름/매출','pct','operating_cf_margin'],
+  ]],
+];
+const GROWTH_KEYS = { revenue_growth:['pl','revenue'], op_growth:['pl','operating_income'], ni_growth:['pl','net_income'], asset_growth:['bs','total_assets'], equity_growth:['bs','total_equity'] };
+
+function ratioTable(code, fs, pMode, latest) {
+  const co = FIN.companies[code];
+  const map = getPeriodData(co, pMode === 'quarterly' ? 'quarterly' : 'annual', fs) || {};
+  const keys = Object.keys(map).sort();
+  const idx = keys.indexOf(latest);
+  const curr = map[latest] || {};
+  const prev = idx > 0 ? map[keys[idx-1]] : null;
+  const prevPrev = idx > 1 ? map[keys[idx-2]] : null;
+  const mc = computeMetrics(curr, prev);
+  const mp = computeMetrics(prev, prevPrev);
+  const yoyLabel = pMode === 'quarterly' ? '전기대비' : '전년대비';
+
+  function growthDetail(key) {
+    const m = GROWTH_KEYS[key]; if (!m || !prev) return '';
+    const c = curr?.[m[0]]?.[m[1]], p = prev?.[m[0]]?.[m[1]];
+    if (c == null || p == null) return '';
+    return `(당기 ${eok(c)} − 전기 ${eok(p)}) ÷ |전기| × 100 = ${fmt.pct(mc[key])}`;
+  }
+
+  const srcLink = curr.report_url
+    ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${curr.source || 'DART'} <a href="${curr.report_url}" target="_blank" class="report-link">📄 원본 보고서</a></div>`
+    : (curr.source ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${curr.source}</div>` : '');
+
   let html = srcLink + `<table class="ratio-table-v2">
-    <thead><tr><th style="width:70px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 클릭 시 설명 고정)</span></th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
-  for (const [sec, items] of rows) {
-    items.forEach(([lbl, val, metric, mv, key], i) => {
+    <thead><tr><th style="width:60px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 설명)</span></th><th class="num" style="width:90px">값</th><th class="yoy">${yoyLabel}</th></tr></thead><tbody>`;
+  for (const [sec, items] of RATIO_GROUPS) {
+    items.forEach(([key, lbl, type, ragMetric], i) => {
+      const v = mc[key], pv = mp[key];
+      const icon = GROWTH_KEYS[key] ? qmark(key, curr, growthDetail(key)) : qmark(key, curr);
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
-        <td class="lbl">${lbl}${qmark(key, ld)}</td>
-        <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
+        <td class="lbl">${lbl}${icon}</td>
+        <td class="num">${fmtVal(v, type)} ${ragMetric ? ragDot(ragMetric, v) : ''}</td>
+        <td class="yoy">${fmtYoY(v, pv, type)}</td>
       </tr>`;
     });
   }
@@ -1172,15 +1248,31 @@ const METRIC_META = {
                        detail:d => `(단기 ${eok(d?.bs?.short_term_borrowings)} + 유동성장기 ${eok(d?.bs?.current_portion_lt_debt)} + 장기 ${eok(d?.bs?.long_term_borrowings)} + 사채 ${eok(d?.bs?.bonds_payable)}) ÷ ${eok(d?.bs?.total_assets)} × 100 = ${fmt.pct(d?.ratios?.borrowing_dependency)}` },
   operating_cf_margin:{ name:'영업현금흐름/매출', desc:'매출 대비 실제 현금이 얼마나 들어오는지. 이익 대비 현금창출 질을 확인', formula:'영업활동현금흐름 ÷ 매출액 × 100', source:'현금흐름표·손익계산서',
                        detail:d => `${eok(d?.cf?.operating_cf)} ÷ ${eok(d?.pl?.revenue)} × 100 = ${fmt.pct(d?.ratios?.operating_cf_margin)}` },
+  // 성장성 (전기 대비 증가율)
+  revenue_growth:    { name:'매출액증가율', desc:'전기 대비 매출이 얼마나 늘었는지', formula:'(당기매출 − 전기매출) ÷ 전기매출 × 100', source:'손익계산서' },
+  op_growth:         { name:'영업이익증가율', desc:'전기 대비 영업이익 성장률', formula:'(당기 − 전기) ÷ |전기| × 100', source:'손익계산서' },
+  ni_growth:         { name:'순이익증가율', desc:'전기 대비 당기순이익 성장률', formula:'(당기 − 전기) ÷ |전기| × 100', source:'손익계산서' },
+  asset_growth:      { name:'총자산증가율', desc:'전기 대비 총자산 성장률', formula:'(당기총자산 − 전기) ÷ 전기 × 100', source:'재무상태표' },
+  equity_growth:     { name:'자기자본증가율', desc:'전기 대비 자기자본 성장률', formula:'(당기자기자본 − 전기) ÷ 전기 × 100', source:'재무상태표' },
+  // 활동성 (회전율, 단위: 회)
+  asset_turnover:    { name:'총자산회전율', desc:'자산을 매출로 얼마나 회전시켰는지. 높을수록 자산활용 효율적', formula:'매출액 ÷ 총자산', source:'손익계산서·재무상태표',
+                       detail:d => `매출 ${eok(d?.pl?.revenue)} ÷ 총자산 ${eok(d?.bs?.total_assets)} = ${(d?.pl?.revenue/d?.bs?.total_assets||0).toFixed(2)}회` },
+  receivable_turnover:{ name:'매출채권회전율', desc:'매출채권 회수 속도. 높을수록 빠르게 현금화', formula:'매출액 ÷ 매출채권', source:'손익계산서·재무상태표',
+                       detail:d => `매출 ${eok(d?.pl?.revenue)} ÷ 매출채권 ${eok(d?.bs?.trade_receivables)} = ${(d?.pl?.revenue/d?.bs?.trade_receivables||0).toFixed(2)}회` },
+  inventory_turnover:{ name:'재고자산회전율', desc:'재고 소진 속도. 높을수록 재고가 빠르게 매출로 전환', formula:'매출액 ÷ 재고자산', source:'손익계산서·재무상태표',
+                       detail:d => `매출 ${eok(d?.pl?.revenue)} ÷ 재고 ${eok(d?.bs?.inventory)} = ${(d?.pl?.revenue/d?.bs?.inventory||0).toFixed(2)}회` },
+  equity_turnover:   { name:'자기자본회전율', desc:'자기자본 대비 매출 창출 정도', formula:'매출액 ÷ 자기자본', source:'손익계산서·재무상태표',
+                       detail:d => `매출 ${eok(d?.pl?.revenue)} ÷ 자기자본 ${eok(d?.bs?.total_equity)} = ${(d?.pl?.revenue/d?.bs?.total_equity||0).toFixed(2)}회` },
 };
 
 // ? 아이콘 생성 — 페이로드(설명/계산식/상세값/출처)를 data 속성에 담아 hover/click 동작
-function qmark(key, d) {
+function qmark(key, d, detailOverride) {
   const m = METRIC_META[key];
   if (!m) return '';
   const payload = {
     name: m.name, desc: m.desc || '', formula: m.formula || '',
-    source: m.source || '', detail: (m.detail && d) ? m.detail(d) : '',
+    source: m.source || '',
+    detail: (detailOverride != null) ? detailOverride : ((m.detail && d) ? m.detail(d) : ''),
   };
   const json = JSON.stringify(payload).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   return `<span class="qmark" data-tt="${json}" onmouseenter="tipShow(this)" onmouseleave="tipHide()" onclick="tipClick(event,this)">?</span>`;
@@ -1797,18 +1889,14 @@ async function exportPPT() {
   const prs = new PptxGenJS();
   prs.layout = 'LAYOUT_WIDE';
   prs.author = 'LOTTE';
+  const periodLabel = isQ ? '기준분기' : '기준연도';
 
-  // 슬라이드 1: 표지
+  // ── 슬라이드 1: 주요 지표 비교 ──
   const s1 = prs.addSlide();
-  s1.background = { color: 'C8102E' };
-  s1.addText('물류 3사 주요 재무비율 정리', { x:0.5, y:1.4, w:12, h:1.2, fontSize:34, bold:true, color:'FFFFFF' });
-  s1.addText(`${isQ?'기준분기':'기준연도'}: ${selYear}${sfx} (${fsLabel}재무제표) | 작성일: ${dateStr}`, { x:0.5, y:2.8, w:12, h:0.5, fontSize:15, color:'FFD0D0' });
-  s1.addText('롯데글로벌로지스 · CJ대한통운 · 한진', { x:0.5, y:3.5, w:12, h:0.5, fontSize:13, color:'FFFFFF' });
-  s1.addText('출처: DART 공시 데이터', { x:0.5, y:4.3, w:12, h:0.4, fontSize:11, color:'FFB0B0' });
-
-  // 슬라이드 2: 주요 지표 비교
-  const s2 = prs.addSlide();
-  s2.addText(`${selYear}${sfx} 주요 지표 비교 (${fsLabel})`, { x:0.4, y:0.15, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
+  s1.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:1.05, fill:{ color:'C8102E' } });
+  s1.addText('물류 3사 주요 재무비율 정리', { x:0.4, y:0.12, w:9, h:0.5, fontSize:24, bold:true, color:'FFFFFF' });
+  s1.addText(`${periodLabel}: ${selYear}${sfx}  ·  ${fsLabel}재무제표  ·  작성일 ${dateStr}  ·  출처 DART`,
+    { x:0.4, y:0.64, w:12.5, h:0.3, fontSize:11, color:'FFE0E0' });
 
   const metricsDef = [
     ['매출액 (억원)',    d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—'],
@@ -1822,7 +1910,7 @@ async function exportPPT() {
     ['이자보상비율 (배)',d => d?.ratios?.interest_coverage != null ? d.ratios.interest_coverage.toFixed(2)+'배' : '—'],
     ['차입금의존도 (%)', d => d?.ratios?.borrowing_dependency != null ? d.ratios.borrowing_dependency.toFixed(1)+'%' : '—'],
   ];
-
+  s1.addText(`${selYear}${sfx} 주요 지표 비교 (${fsLabel})`, { x:0.4, y:1.2, w:12, h:0.35, fontSize:15, bold:true, color:'C8102E' });
   const tblRows = [[
     { text:'항목', options:{ bold:true, color:'FFFFFF', fill:'8B0000', align:'left' } },
     ...CODES.map(c => ({ text:NAMES[c], options:{ bold:true, color:'FFFFFF', fill:'C8102E', align:'center' } })),
@@ -1833,30 +1921,36 @@ async function exportPPT() {
       ...CODES.map(c => ({ text:getter(getReportData(FIN.companies[c], selYear, fsDiv)), options:{ align:'center' } })),
     ]);
   });
-  s2.addTable(tblRows, { x:0.4, y:0.75, w:12.2, colW:[3.2,3,3,3], fontSize:11,
+  s1.addTable(tblRows, { x:0.4, y:1.6, w:12.5, colW:[3.5,3,3,3], rowH:0.5, fontSize:12, valign:'middle',
     border:{ type:'solid', pt:0.5, color:'DDDDDD' } });
 
-  // 슬라이드 3~6: 추이
+  // ── 슬라이드 2: 연도별 추이 (2×2) ──
+  const s2 = prs.addSlide();
+  s2.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:0.7, fill:{ color:'C8102E' } });
+  s2.addText(`${isQ ? '분기별' : '연도별'} 추이 (${fsLabel})`, { x:0.4, y:0.12, w:12, h:0.45, fontSize:18, bold:true, color:'FFFFFF' });
+
   const trendDefs = [
-    { title:'매출액 추이 (억원)', get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—' },
-    { title:'영업이익률 추이 (%)', get: d => d?.ratios?.operating_margin != null ? d.ratios.operating_margin.toFixed(1)+'%' : '—' },
-    { title:'ROE(지배) 추이 (%)', get: d => d?.ratios?.roe != null ? d.ratios.roe.toFixed(1)+'%' : '—' },
-    { title:'부채비율 추이 (%)', get: d => d?.ratios?.debt_ratio != null ? d.ratios.debt_ratio.toFixed(1)+'%' : '—' },
+    { title:'매출액 (억원)',   get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—' },
+    { title:'영업이익률 (%)',  get: d => d?.ratios?.operating_margin != null ? d.ratios.operating_margin.toFixed(1) : '—' },
+    { title:'ROE(지배) (%)',   get: d => d?.ratios?.roe != null ? d.ratios.roe.toFixed(1) : '—' },
+    { title:'부채비율 (%)',    get: d => d?.ratios?.debt_ratio != null ? d.ratios.debt_ratio.toFixed(1) : '—' },
   ];
-  trendDefs.forEach(({ title, get: getter }) => {
-    const sl = prs.addSlide();
-    sl.addText(`${title} (${fsLabel})`, { x:0.4, y:0.15, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
+  const pos = [ {x:0.35,y:1.0}, {x:6.95,y:1.0}, {x:0.35,y:4.15}, {x:6.95,y:4.15} ];
+  trendDefs.forEach(({ title, get: getter }, qi) => {
+    const { x, y } = pos[qi];
+    s2.addText(title, { x, y, w:6.2, h:0.3, fontSize:13, bold:true, color:'333333' });
     const hdr = [
       { text:'회사', options:{ bold:true, color:'FFFFFF', fill:'8B0000', align:'left' } },
-      ...YEARS.map(y => ({ text:y, options:{ bold:true, color:'FFFFFF', fill:'C8102E', align:'center' } })),
+      ...YEARS.map(yr => ({ text:yr.replace('20',"'"), options:{ bold:true, color:'FFFFFF', fill:'C8102E', align:'center' } })),
     ];
     const dataRows = CODES.map(c => [
-      { text:NAMES[c], options:{ bold:true, fill:'F5F5F5', align:'left' } },
-      ...YEARS.map(y => ({ text:getter(getReportData(FIN.companies[c], y, fsDiv)), options:{ align:'center' } })),
+      { text:NAMES[c].replace('롯데글로벌로지스','롯데글로벌').replace('CJ대한통운','CJ대한통운'), options:{ bold:true, fill:'F5F5F5', align:'left' } },
+      ...YEARS.map(yr => ({ text:getter(getReportData(FIN.companies[c], yr, fsDiv)), options:{ align:'center' } })),
     ]);
-    sl.addTable([hdr, ...dataRows], { x:0.4, y:0.75, w:12.2, fontSize:12,
+    s2.addTable([hdr, ...dataRows], { x, y:y+0.35, w:6.2, rowH:0.42, fontSize:9, valign:'middle',
       border:{ type:'solid', pt:0.5, color:'DDDDDD' } });
   });
+  s2.addText('※ 단위: 매출액 억원, 비율 %  ·  출처: DART 공시', { x:0.35, y:7.0, w:12, h:0.3, fontSize:9, color:'888888' });
 
   try {
     await prs.writeFile({ fileName:`물류3사_재무비율_${selYear}_${fsLabel}.pptx` });
