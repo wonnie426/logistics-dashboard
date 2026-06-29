@@ -1469,28 +1469,60 @@ LGL 매출 34,015 → 0.28배<br>
 
 // ── 보고서 탭 ──────────────────────────────────────────────────────────────
 let rptFsMode = 'CFS';
+let rptPeriod = 'annual'; // 'annual' | 'quarterly'
+
+// 보고서 기간 목록 (연간: 연도, 분기: 3사 분기 키 합집합)
+function rptPeriodList() {
+  if (rptPeriod === 'annual') return ['2021','2022','2023','2024','2025'];
+  const set = new Set();
+  ['LGL','CJ','HJ'].forEach(c => Object.keys(FIN.companies[c]?.quarterly || {}).forEach(k => set.add(k)));
+  return [...set].sort();
+}
+
+// 단일 기간(연도/분기) 데이터 — fs 해석
+function getReportData(co, period, fsDiv) {
+  fsDiv = fsDiv || 'CFS';
+  const v = (rptPeriod === 'annual' ? co?.annual : co?.quarterly)?.[period];
+  if (!v) return null;
+  if (v._default || v.CFS || v.OFS) {
+    const def = v._default || 'CFS';
+    return v[fsDiv] || v[def] || v['CFS'] || v['OFS'] || null;
+  }
+  return v;
+}
 
 function setRptFs(div) {
   rptFsMode = div;
-  const selYear = $('rpt-year')?.value || '2025';
+  const selYear = $('rpt-year')?.value || rptPeriodList().slice(-1)[0];
   document.querySelectorAll('.rpt-fs-btn').forEach(b => b.classList.toggle('active', b.dataset.fs === div));
   buildReportBody(selYear, div);
 }
 
+function setRptPeriod(p) {
+  rptPeriod = p;
+  renderReportTab();
+}
+
 function renderReportTab() {
-  const YEARS = ['2021','2022','2023','2024','2025'];
+  const periods = rptPeriodList();
+  const defaultSel = rptPeriod === 'annual' ? '2025' : periods[periods.length - 1];
+  const periodLabel = rptPeriod === 'annual' ? '기준연도' : '기준분기';
 
   $('tab-report').innerHTML = `
     <div class="report-wrap">
       <div class="report-toolbar">
-        <label>기준연도:
+        <label>${periodLabel}:
           <select id="rpt-year" onchange="buildReportBody(this.value, rptFsMode)">
-            ${YEARS.map(y=>`<option ${y==='2025'?'selected':''}>${y}</option>`).join('')}
+            ${periods.map(y=>`<option ${y===defaultSel?'selected':''}>${y}</option>`).join('')}
           </select>
         </label>
         <div class="fs-selector" style="margin-bottom:0">
-          <button class="fs-btn rpt-fs-btn active" data-fs="CFS" onclick="setRptFs('CFS')">연결</button>
-          <button class="fs-btn rpt-fs-btn" data-fs="OFS" onclick="setRptFs('OFS')">별도</button>
+          <button class="fs-btn rpt-fs-btn ${rptFsMode==='CFS'?'active':''}" data-fs="CFS" onclick="setRptFs('CFS')">연결</button>
+          <button class="fs-btn rpt-fs-btn ${rptFsMode==='OFS'?'active':''}" data-fs="OFS" onclick="setRptFs('OFS')">별도</button>
+        </div>
+        <div class="fs-selector" style="margin-bottom:0">
+          <button class="fs-btn ${rptPeriod==='annual'?'active':''}" onclick="setRptPeriod('annual')">연간</button>
+          <button class="fs-btn ${rptPeriod==='quarterly'?'active':''}" onclick="setRptPeriod('quarterly')">분기</button>
         </div>
         <button class="export-btn ppt"  onclick="exportPPT()">📊 PPT 저장</button>
         <button class="export-btn xlsx" onclick="exportExcel()">📋 Excel 저장</button>
@@ -1499,14 +1531,16 @@ function renderReportTab() {
       <div id="rpt-body"></div>
     </div>`;
 
-  buildReportBody($('rpt-year').value, rptFsMode);
+  buildReportBody(defaultSel, rptFsMode);
 }
 
 function buildReportBody(selYear, fsDiv) {
   fsDiv = fsDiv || rptFsMode || 'CFS';
   const CODES = ['LGL','CJ','HJ'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
-  const YEARS = ['2021','2022','2023','2024','2025'];
+  const YEARS = rptPeriodList();
+  const isQ = rptPeriod === 'quarterly';
+  const sfx = isQ ? '' : '년';
   const now = new Date();
   const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
   const fsLabel = fsDiv === 'CFS' ? '연결' : '별도';
@@ -1537,7 +1571,7 @@ function buildReportBody(selYear, fsDiv) {
     { label:'차입금의존도 (%)', get: d => d?.ratios?.borrowing_dependency, metric:'borrowing_dependency', rag: true },
   ];
 
-  const datas = CODES.map(c => getYearData(FIN.companies[c], selYear, fsDiv));
+  const datas = CODES.map(c => getReportData(FIN.companies[c], selYear, fsDiv));
 
   let summaryRows = '';
   metrics.forEach(m => {
@@ -1553,7 +1587,7 @@ function buildReportBody(selYear, fsDiv) {
   function trendTable(title, getter, isPct) {
     const rows = CODES.map(code => {
       const cells = YEARS.map(y => {
-        const v = getter(getYearData(FIN.companies[code], y, fsDiv));
+        const v = getter(getReportData(FIN.companies[code], y, fsDiv));
         if (v == null) return '<td style="color:var(--text-sub)">—</td>';
         return `<td>${isPct ? fmt.pct(v) : (typeof v === 'number' ? Math.round(v/1e8).toLocaleString('ko-KR') : v)}</td>`;
       }).join('');
@@ -1574,9 +1608,9 @@ function buildReportBody(selYear, fsDiv) {
   $('rpt-body').innerHTML = `
     <div class="rpt-cover">
       <div class="rpt-cover-title">물류 3사 주요 재무비율 정리</div>
-      <div class="rpt-cover-sub">기준연도: ${selYear}년 | 재무제표 기준: ${fsLabel} | 작성일: ${dateStr} | 출처: DART 공시</div>
+      <div class="rpt-cover-sub">${isQ ? '기준분기' : '기준연도'}: ${selYear}${sfx} | 재무제표 기준: ${fsLabel} | 작성일: ${dateStr} | 출처: DART 공시</div>
     </div>
-    <div class="rpt-section-title">${selYear}년 주요 지표 비교 (${fsLabel})</div>
+    <div class="rpt-section-title">${selYear}${sfx} 주요 지표 비교 (${fsLabel})</div>
     <div class="card" style="margin-bottom:20px;padding:16px">
       <div class="fin-table-wrap">
         <table class="rpt-table">
@@ -1598,8 +1632,9 @@ function buildReportBody(selYear, fsDiv) {
 function exportExcel() {
   const CODES = ['LGL','CJ','HJ'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
-  const YEARS = ['2021','2022','2023','2024','2025'];
-  const selYear = $('rpt-year')?.value || '2025';
+  const YEARS = rptPeriodList();
+  const isQ = rptPeriod === 'quarterly';
+  const selYear = $('rpt-year')?.value || YEARS[YEARS.length - 1];
   const fsDiv = rptFsMode;
 
   const wb = XLSX.utils.book_new();
@@ -1620,19 +1655,19 @@ function exportExcel() {
   const rows1 = [header];
   metrics.forEach(([label, getter]) => {
     rows1.push([label, ...CODES.map(c => {
-      const v = getter(getYearData(FIN.companies[c], selYear, fsDiv));
+      const v = getter(getReportData(FIN.companies[c], selYear, fsDiv));
       return v != null ? +v.toFixed(2) : '—';
     })]);
   });
   const ws1 = XLSX.utils.aoa_to_sheet(rows1);
   ws1['!cols'] = [{ wch:20 },{ wch:18 },{ wch:14 },{ wch:10 }];
-  XLSX.utils.book_append_sheet(wb, ws1, `${selYear}년 비교`);
+  XLSX.utils.book_append_sheet(wb, ws1, `${selYear}${isQ?'':'년'} 비교`);
 
   CODES.forEach(code => {
-    const hdr = ['연도','매출액(억)','영업이익(억)','영업이익률(%)','ROE(%)','부채비율(%)','유동비율(%)','이자보상비율(배)'];
+    const hdr = [isQ?'분기':'연도','매출액(억)','영업이익(억)','영업이익률(%)','ROE(%)','부채비율(%)','유동비율(%)','이자보상비율(배)'];
     const yearRows = [hdr];
     YEARS.forEach(y => {
-      const d = getYearData(FIN.companies[code], y, fsDiv);
+      const d = getReportData(FIN.companies[code], y, fsDiv);
       yearRows.push([
         y,
         d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8) : '—',
@@ -1659,8 +1694,10 @@ function exportPDF() {
 async function exportPPT() {
   const CODES = ['LGL','CJ','HJ'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
-  const YEARS = ['2021','2022','2023','2024','2025'];
-  const selYear = $('rpt-year')?.value || '2025';
+  const YEARS = rptPeriodList();
+  const isQ = rptPeriod === 'quarterly';
+  const sfx = isQ ? '' : '년';
+  const selYear = $('rpt-year')?.value || YEARS[YEARS.length - 1];
   const fsDiv = rptFsMode;
   const fsLabel = fsDiv === 'CFS' ? '연결' : '별도';
   const now = new Date();
@@ -1674,13 +1711,13 @@ async function exportPPT() {
   const s1 = prs.addSlide();
   s1.background = { color: 'C8102E' };
   s1.addText('물류 3사 주요 재무비율 정리', { x:0.5, y:1.4, w:12, h:1.2, fontSize:34, bold:true, color:'FFFFFF' });
-  s1.addText(`기준연도: ${selYear}년 (${fsLabel}재무제표) | 작성일: ${dateStr}`, { x:0.5, y:2.8, w:12, h:0.5, fontSize:15, color:'FFD0D0' });
+  s1.addText(`${isQ?'기준분기':'기준연도'}: ${selYear}${sfx} (${fsLabel}재무제표) | 작성일: ${dateStr}`, { x:0.5, y:2.8, w:12, h:0.5, fontSize:15, color:'FFD0D0' });
   s1.addText('롯데글로벌로지스 · CJ대한통운 · 한진', { x:0.5, y:3.5, w:12, h:0.5, fontSize:13, color:'FFFFFF' });
   s1.addText('출처: DART 공시 데이터', { x:0.5, y:4.3, w:12, h:0.4, fontSize:11, color:'FFB0B0' });
 
   // 슬라이드 2: 주요 지표 비교
   const s2 = prs.addSlide();
-  s2.addText(`${selYear}년 주요 지표 비교 (${fsLabel})`, { x:0.4, y:0.15, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
+  s2.addText(`${selYear}${sfx} 주요 지표 비교 (${fsLabel})`, { x:0.4, y:0.15, w:12, h:0.5, fontSize:18, bold:true, color:'C8102E' });
 
   const metricsDef = [
     ['매출액 (억원)',    d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—'],
@@ -1702,7 +1739,7 @@ async function exportPPT() {
   metricsDef.forEach(([label, getter]) => {
     tblRows.push([
       { text:label, options:{ bold:true, fill:'F5F5F5', align:'left' } },
-      ...CODES.map(c => ({ text:getter(getYearData(FIN.companies[c], selYear, fsDiv)), options:{ align:'center' } })),
+      ...CODES.map(c => ({ text:getter(getReportData(FIN.companies[c], selYear, fsDiv)), options:{ align:'center' } })),
     ]);
   });
   s2.addTable(tblRows, { x:0.4, y:0.75, w:12.2, colW:[3.2,3,3,3], fontSize:11,
@@ -1724,7 +1761,7 @@ async function exportPPT() {
     ];
     const dataRows = CODES.map(c => [
       { text:NAMES[c], options:{ bold:true, fill:'F5F5F5', align:'left' } },
-      ...YEARS.map(y => ({ text:getter(getYearData(FIN.companies[c], y, fsDiv)), options:{ align:'center' } })),
+      ...YEARS.map(y => ({ text:getter(getReportData(FIN.companies[c], y, fsDiv)), options:{ align:'center' } })),
     ]);
     sl.addTable([hdr, ...dataRows], { x:0.4, y:0.75, w:12.2, fontSize:12,
       border:{ type:'solid', pt:0.5, color:'DDDDDD' } });
