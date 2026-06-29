@@ -1061,7 +1061,7 @@ function renderCompanyTab(code) {
   `;
 
   renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode);
-  buildCustomChart(code);
+  requestAnimationFrame(() => buildCustomChart(code));
 }
 
 function sc(label, value, chgHtml, metric, val, infoKey, d) {
@@ -2162,7 +2162,7 @@ LGL 매출 34,015 → 0.28배<br>
   makeLineChart('c-cmp-debt',   YEARS, ds('debt_ratio'),  true);
   makeLineChart('c-cmp-roe',    YEARS, ds('roe'),         true);
   $('tab-compare').insertAdjacentHTML('beforeend', cmpBuilderHtml());
-  buildCustomChartCompare();
+  requestAnimationFrame(() => buildCustomChartCompare());
 }
 
 // ── 보고서 탭 ──────────────────────────────────────────────────────────────
