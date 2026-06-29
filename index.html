@@ -2813,7 +2813,7 @@ function renderActiveTab() {
   if (activeTab === 'compare') renderCompareTab();
   else if (activeTab === 'report') renderReportTab();
   else if (activeTab === 'dart') renderDartTab();
-  else if (activeTab === 'iresg') renderIrEsgTab();
+  else if (activeTab === 'iresg') { activeTab = 'compare'; renderCompareTab(); }
   else renderCompanyTab(activeTab);
 }
 
