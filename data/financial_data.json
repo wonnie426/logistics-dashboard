@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-29T18:39:17.450093+09:00",
+  "last_updated": "2026-06-29T20:00:00.000000+09:00",
   "latest_report": {
     "LGL": {
       "year": "2025",
@@ -21,6 +21,13 @@
       "report_type": "사업보고서",
       "filing_date": "20260316",
       "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260316001427"
+    },
+    "HGL": {
+      "year": "2025",
+      "period": "annual",
+      "report_type": "사업보고서",
+      "filing_date": "20260318",
+      "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001695"
     }
   },
   "companies": {
@@ -7251,12 +7258,12 @@
       "corp_code": "00164742",
       "listed": true,
       "annual": {
-        "2023": {
+        "2021": {
           "CFS": {
-            "source": "2023년 사업보고서 (연결기준)",
+            "source": "2021년 (데이터 미확보 — DART 자동 수집 예정)",
             "report_type": "사업보고서",
-            "filing_date": "20240315",
-            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "filing_date": null,
+            "report_url": null,
             "bs": {
               "total_assets": null, "current_assets": null, "non_current_assets": null,
               "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
@@ -7270,77 +7277,268 @@
               "sga": null, "operating_income": null, "interest_expense": null,
               "net_income": null, "controlling_net_income": null, "depreciation": null
             },
-            "cf": {
-              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
-            },
+            "cf": { "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null },
             "ratios": {
               "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
               "net_margin": null, "roa": null, "roe": null,
               "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+            }
+          }
+        },
+        "2022": {
+          "CFS": {
+            "source": "2022년 사업보고서 (연결기준, DART KIND 공시자료 기준)",
+            "report_type": "사업보고서",
+            "filing_date": "20230317",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230317004467",
+            "bs": {
+              "total_assets":           13877784500296,
+              "current_assets":          8181858080896,
+              "non_current_assets":      5695926419400,
+              "total_liabilities":       6998172212338,
+              "current_liabilities":     4343758217774,
+              "non_current_liabilities": 2654413994564,
+              "total_equity":            6879612287958,
+              "controlling_equity":      null,
+              "cash_and_equivalents":    null,
+              "trade_receivables":       null,
+              "inventory":               null,
+              "short_term_borrowings":   null,
+              "current_portion_lt_debt": null,
+              "long_term_borrowings":    null,
+              "bonds_payable":           null,
+              "lease_liabilities":       null
+            },
+            "pl": {
+              "revenue":               26981880971123,
+              "cost_of_revenue":       null,
+              "gross_profit":          null,
+              "sga":                   null,
+              "operating_income":       1798516596130,
+              "interest_expense":       null,
+              "net_income":             1189821184515,
+              "controlling_net_income": 1189821184515,
+              "depreciation":           null
+            },
+            "cf": { "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null },
+            "ratios": {
+              "gross_margin":      null,
+              "operating_margin":  6.67,
+              "ebitda_margin":     null,
+              "net_margin":        4.41,
+              "roa":               8.57,
+              "roe":               17.29,
+              "debt_ratio":       101.72,
+              "current_ratio":    188.34,
+              "interest_coverage": null
+            }
+          }
+        },
+        "2023": {
+          "CFS": {
+            "source": "2023년 사업보고서 (연결기준, DART KIND 공시자료 기준, 2024.03.15 제출)",
+            "report_type": "사업보고서",
+            "filing_date": "20240315",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240315001419",
+            "bs": {
+              "total_assets":           14725019903938,
+              "current_assets":          8771518130998,
+              "non_current_assets":      5953501772940,
+              "total_liabilities":       6941096283685,
+              "current_liabilities":     4467588471380,
+              "non_current_liabilities": 2473507812305,
+              "total_equity":            7783923620253,
+              "controlling_equity":      null,
+              "cash_and_equivalents":    null,
+              "trade_receivables":       3039600000000,
+              "inventory":               1347600000000,
+              "short_term_borrowings":   1047200000000,
+              "current_portion_lt_debt": null,
+              "long_term_borrowings":     559400000000,
+              "bonds_payable":            299600000000,
+              "lease_liabilities":       null
+            },
+            "pl": {
+              "revenue":               25683197164064,
+              "cost_of_revenue":       null,
+              "gross_profit":          null,
+              "sga":                   null,
+              "operating_income":       1554032510087,
+              "interest_expense":        169700000000,
+              "net_income":             1061133294855,
+              "controlling_net_income": 1061133294855,
+              "depreciation":            538200000000
+            },
+            "cf": {
+              "operating_cf":  2242300000000,
+              "investing_cf": -1007200000000,
+              "financing_cf":  -700900000000,
+              "interest_paid": null
+            },
+            "ratios": {
+              "gross_margin":      null,
+              "operating_margin":  6.05,
+              "ebitda_margin":     null,
+              "net_margin":        4.13,
+              "roa":               7.21,
+              "roe":              13.64,
+              "debt_ratio":       89.18,
+              "current_ratio":   196.36,
+              "interest_coverage": 9.16
             }
           }
         },
         "2024": {
           "CFS": {
-            "source": "2024년 사업보고서 (연결기준)",
+            "source": "2024년 사업보고서 (연결기준, DART KIND 공시자료 기준, 2025.03.17 제출)",
             "report_type": "사업보고서",
-            "filing_date": "20250314",
-            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "filing_date": "20250317",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317001419",
             "bs": {
-              "total_assets": null, "current_assets": null, "non_current_assets": null,
-              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
-              "total_equity": null, "controlling_equity": null,
-              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
-              "short_term_borrowings": null, "current_portion_lt_debt": null,
-              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+              "total_assets":           16849145438725,
+              "current_assets":          9861432178173,
+              "non_current_assets":      6987713260552,
+              "total_liabilities":       8039781176784,
+              "current_liabilities":     5310609012498,
+              "non_current_liabilities": 2729172164286,
+              "total_equity":            8809364261941,
+              "controlling_equity":      null,
+              "cash_and_equivalents":    null,
+              "trade_receivables":       3261000000000,
+              "inventory":               1724300000000,
+              "short_term_borrowings":   1058600000000,
+              "current_portion_lt_debt": null,
+              "long_term_borrowings":     583800000000,
+              "bonds_payable":            109900000000,
+              "lease_liabilities":       null
             },
             "pl": {
-              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
-              "sga": null, "operating_income": null, "interest_expense": null,
-              "net_income": null, "controlling_net_income": null, "depreciation": null
+              "revenue":               28407374301315,
+              "cost_of_revenue":       null,
+              "gross_profit":          null,
+              "sga":                   null,
+              "operating_income":       1752867442226,
+              "interest_expense":        189200000000,
+              "net_income":             1093860048142,
+              "controlling_net_income": 1093860048142,
+              "depreciation":            655000000000
             },
             "cf": {
-              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
+              "operating_cf":  2122400000000,
+              "investing_cf":  -489000000000,
+              "financing_cf":  -703500000000,
+              "interest_paid": null
             },
             "ratios": {
-              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
-              "net_margin": null, "roa": null, "roe": null,
-              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+              "gross_margin":      null,
+              "operating_margin":  6.17,
+              "ebitda_margin":     null,
+              "net_margin":        3.85,
+              "roa":               6.49,
+              "roe":              12.42,
+              "debt_ratio":       91.26,
+              "current_ratio":   185.70,
+              "interest_coverage": 9.26
             }
           }
         },
         "2025": {
           "CFS": {
-            "source": "2025년 사업보고서 (연결기준)",
+            "source": "2025년 사업보고서 (연결기준, FnGuide·KIND 공시자료 기준, 2026.03.18 제출)",
             "report_type": "사업보고서",
-            "filing_date": "20260313",
-            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "filing_date": "20260318",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001695",
             "bs": {
-              "total_assets": null, "current_assets": null, "non_current_assets": null,
-              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
-              "total_equity": null, "controlling_equity": null,
-              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
-              "short_term_borrowings": null, "current_portion_lt_debt": null,
-              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+              "total_assets":           18587200000000,
+              "current_assets":         10338700000000,
+              "non_current_assets":      8248500000000,
+              "total_liabilities":       8198800000000,
+              "current_liabilities":     5158200000000,
+              "non_current_liabilities": 3040600000000,
+              "total_equity":           10388500000000,
+              "controlling_equity":      null,
+              "cash_and_equivalents":    null,
+              "trade_receivables":       3800000000000,
+              "inventory":               1750300000000,
+              "short_term_borrowings":    703500000000,
+              "current_portion_lt_debt": null,
+              "long_term_borrowings":     189700000000,
+              "bonds_payable":            409100000000,
+              "lease_liabilities":       null
             },
             "pl": {
-              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
-              "sga": null, "operating_income": null, "interest_expense": null,
-              "net_income": null, "controlling_net_income": null, "depreciation": null
+              "revenue":               29566400000000,
+              "cost_of_revenue":       null,
+              "gross_profit":          null,
+              "sga":                   null,
+              "operating_income":       2073000000000,
+              "interest_expense":        171800000000,
+              "net_income":             1734700000000,
+              "controlling_net_income": 1734700000000,
+              "depreciation":            754500000000
             },
             "cf": {
-              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
+              "operating_cf":  2500800000000,
+              "investing_cf": -1543500000000,
+              "financing_cf": -1625100000000,
+              "interest_paid": null
             },
             "ratios": {
-              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
-              "net_margin": null, "roa": null, "roe": null,
-              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+              "gross_margin":      null,
+              "operating_margin":  7.01,
+              "ebitda_margin":     null,
+              "net_margin":        5.87,
+              "roa":               9.33,
+              "roe":              16.70,
+              "debt_ratio":       78.92,
+              "current_ratio":   200.43,
+              "interest_coverage": 12.07
             }
           }
         }
       },
-      "quarterly": {},
-      "dart_disclosures": []
+      "quarterly": {
+        "2025Q2": {
+          "CFS": {
+            "source": "2025년 반기보고서 (연결기준, FnGuide 단일분기 기준)",
+            "revenue": 7516000000000, "operating_income": 538900000000, "net_income": 503400000000
+          }
+        },
+        "2025Q3": {
+          "CFS": {
+            "source": "2025년 3분기보고서 (연결기준, FnGuide 단일분기 기준)",
+            "revenue": 7355100000000, "operating_income": 524000000000, "net_income": 392600000000
+          }
+        },
+        "2026Q1": {
+          "CFS": {
+            "source": "2026년 1분기보고서 (연결기준, FnGuide 단일분기 기준)",
+            "revenue": 7812700000000, "operating_income": 521500000000, "net_income": 341000000000
+          }
+        }
+      },
+      "dart_disclosures": [
+        {
+          "rcept_no": "20260318001695",
+          "rcept_dt": "20260318",
+          "report_nm": "사업보고서",
+          "corp_name": "현대글로비스",
+          "flr_nm": "현대글로비스",
+          "rm": "유",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001695"
+        },
+        {
+          "rcept_no": "20250317001419",
+          "rcept_dt": "20250317",
+          "report_nm": "사업보고서",
+          "corp_name": "현대글로비스",
+          "flr_nm": "현대글로비스",
+          "rm": "유",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317001419"
+        }
+      ]
     }
   }
 }
