@@ -7393,6 +7393,17 @@
       "color": "#002C5F",
       "corp_code": "00164742",
       "listed": true,
+      "info": {
+        "ceo": "이규복",
+        "established": "20010118",
+        "employees": null,
+        "industry": "5222",
+        "address": "서울특별시 강남구 영동대로 511 (삼성동, 현대글로벌센터)",
+        "homepage": "https://www.hyundaiglovis.com",
+        "phone": "02-6138-2114",
+        "fiscal_month": "12",
+        "auditor": "삼일회계법인"
+      },
       "annual": {
         "2021": {
           "CFS": {
