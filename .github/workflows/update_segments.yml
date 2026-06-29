@@ -1,0 +1,112 @@
+name: Auto-Parse Segment Data
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 실행 조건
+# ──────────────────────────────────────────────────────────────────────────────
+on:
+  schedule:
+    # 분기보고서 공시 기간에 집중 실행 (KST 오전 9시 = UTC 00:00)
+    # - 1분기(Q1): 5월 중순 ~ 6월 초  → 5월 15일~31일 매일
+    # - 반기(Q2):  8월 중순 ~ 9월 초  → 8월 15일~31일 매일
+    # - 3분기(Q3): 11월 중순 ~ 12월 초 → 11월 15일~30일 매일
+    # - 사업보고서: 3월 ~ 4월          → 3월 15일~31일 매일
+    # 공시 시즌 외에는 주 1회 (월요일) 감시
+    - cron: '0 0 15-31 3 *'    # 3월 15-31일 (사업보고서 시즌)
+    - cron: '0 0 15-31 5 *'    # 5월 15-31일 (Q1 시즌)
+    - cron: '0 0 15-31 8 *'    # 8월 15-31일 (반기 시즌)
+    - cron: '0 0 15-30 11 *'   # 11월 15-30일 (Q3 시즌)
+    - cron: '0 0 * * 1'        # 매주 월요일 (상시 감시)
+  workflow_dispatch:             # 수동 실행 버튼
+    inputs:
+      years:
+        description: '수집 연도 (쉼표 구분, 예: 2026,2025)'
+        required: false
+        default: '2026,2025'
+      dry_run:
+        description: 'dry-run (파일 변경/Issue 생성 없이 파싱만)'
+        required: false
+        type: boolean
+        default: false
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 권한
+# ──────────────────────────────────────────────────────────────────────────────
+permissions:
+  contents: write   # segment_data.json, segment_parse_log.json 커밋용
+  issues: write     # 파싱 실패 시 GitHub Issue 생성용
+
+jobs:
+  parse-segments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r .github/scripts/requirements.txt
+
+      # ── 파싱 실행 ────────────────────────────────────────────────────────────
+      - name: Run segment parser
+        id: parse
+        env:
+          DART_API_KEY:   ${{ secrets.DART_API_KEY }}
+          GITHUB_TOKEN:   ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          YEARS="${{ github.event.inputs.years || '2026,2025' }}"
+          DRY_RUN_FLAG=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+          python .github/scripts/fetch_segments.py \
+            --api-key "$DART_API_KEY" \
+            --github-token "$GITHUB_TOKEN" \
+            --repo "${{ github.repository }}" \
+            --years "$YEARS" \
+            $DRY_RUN_FLAG
+
+      # ── 변경사항 커밋 ─────────────────────────────────────────────────────────
+      - name: Commit if changed
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/segment_data.json data/segment_parse_log.json
+
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 스킵"
+          else
+            # 변경된 부문/기간을 커밋 메시지에 포함
+            CHANGED=$(git diff --staged --name-only)
+            git commit -m "data(auto): 사업부문 실적 자동 업데이트 $(date +'%Y-%m-%d')
+
+자동 파싱 결과 반영. 불확실한 항목은 GitHub Issue 참조.
+변경 파일: $CHANGED"
+            git push
+          fi
+
+      # ── 실행 요약 출력 ────────────────────────────────────────────────────────
+      - name: Summary
+        if: always()
+        run: |
+          echo "### 사업부문 파싱 결과" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/segment_parse_log.json ]; then
+            echo "최근 처리 기록:" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            python3 -c "
+import json, sys
+d = json.load(open('data/segment_parse_log.json'))
+recent = sorted(d.get('processed', {}).items(), key=lambda x: x[1].get('timestamp',''), reverse=True)[:10]
+for rcept_no, info in recent:
+    print(f\"{info.get('timestamp','?')[:10]}  {info.get('code','?')} {info.get('period_key','?')}  {info.get('status','?')}  (신뢰도: {info.get('confidence','?')})\")
+" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
