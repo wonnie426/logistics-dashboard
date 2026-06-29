@@ -498,7 +498,7 @@ function toggleUnit() {
   renderActiveTab();
 }
 
-let FIN = null, SEG = null, THRESH = null, IND_AVG = null, IRESG = null;
+let FIN = null, SEG = null, THRESH = null, IND_AVG = null, IRESG = null, STMT = null;
 let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
 let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
@@ -576,6 +576,7 @@ async function loadData() {
       fetch('data/industry_avg.json' + cb).then(r => r.json()),
       fetch('data/ir_esg.json' + cb).then(r => r.json()).catch(() => null),
     ]);
+    STMT = await fetch('data/statements.json' + cb).then(r => r.json()).catch(() => null);
     initUI();
   } catch (e) {
     document.querySelector('main').innerHTML =
@@ -911,7 +912,7 @@ function renderCompanyTab(code) {
       ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage, 'interest_coverage', ld)}
     </div>
     ${finTableHtml}
-    ${stmtViewer(code, dataMap, periodKeys, wu)}
+    ${stmtViewer(code, fs, pMode, dataMap, periodKeys, wu)}
     ${stockHtml}
     <div class="chart-grid">
       <div class="card">
@@ -1166,18 +1167,33 @@ function stmtSwitch(code, sj, btn) {
   document.querySelectorAll('#stmt-' + code + ' .stmt-panel').forEach(p => { p.style.display = (p.dataset.sj === sj) ? 'block' : 'none'; });
   btn.parentElement.querySelectorAll('.stmt-tab').forEach(b => b.classList.toggle('active', b === btn));
 }
-function stmtViewer(code, dataMap, periodKeys, wu) {
+function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
   const miss = '<span style="color:var(--text-sub)">—</span>';
+  const fsKey = fs === 'OFS' ? 'OFS' : 'CFS';
+  const pKey  = pMode === 'quarterly' ? 'quarterly' : 'annual';
   const panels = STMT_DEFS.map(([sj, title, rows, note], pi) => {
-    const body = rows.map(([lbl, field, grp, lvl]) => {
-      const cells = periodKeys.map(k => { const v = dataMap[k]?.[grp]?.[field]; return `<td>${v != null ? fmt.won(v) : miss}</td>`; }).join('');
-      return `<tr><td class="${lvl ? 'stmt-sub' : ''}">${lbl}</td>${cells}</tr>`;
-    }).join('');
+    const custom = STMT?.[code]?.[fsKey]?.[pKey]?.[sj];
+    let body, srcNote = note;
+    if (custom && custom.rows && custom.rows.length) {
+      // DART 원문 라인(캡처) 우선
+      srcNote = custom.source || null;
+      body = custom.rows.map((r, j) => {
+        const cells = periodKeys.map(k => { const arr = custom.values?.[k]; const v = (arr && arr[j] != null) ? arr[j] : null; return `<td>${v != null ? fmt.won(v) : miss}</td>`; }).join('');
+        const pad = 12 + (r.i || 0) * 16;
+        const style = `text-align:left;padding-left:${pad}px;${r.i ? 'color:var(--text-sub);font-weight:400' : 'font-weight:600'}`;
+        return `<tr><td style="${style}">${r.l}</td>${cells}</tr>`;
+      }).join('');
+    } else {
+      body = rows.map(([lbl, field, grp, lvl]) => {
+        const cells = periodKeys.map(k => { const v = dataMap[k]?.[grp]?.[field]; return `<td>${v != null ? fmt.won(v) : miss}</td>`; }).join('');
+        return `<tr><td class="${lvl ? 'stmt-sub' : ''}">${lbl}</td>${cells}</tr>`;
+      }).join('');
+    }
     return `<div class="stmt-panel" data-sj="${sj}" style="display:${pi === 0 ? 'block' : 'none'}">
       <div class="fin-table-wrap"><table class="fin-table">
         <thead><tr><th>항목 (${wu})</th>${periodKeys.map(k => `<th>${k}</th>`).join('')}</tr></thead>
         <tbody>${body}</tbody></table></div>
-      ${note ? `<div class="source-label" style="margin-top:8px">※ ${note}</div>` : ''}
+      ${srcNote ? `<div class="source-label" style="margin-top:8px">※ ${srcNote}</div>` : ''}
     </div>`;
   }).join('');
   return `<div class="card" id="stmt-${code}" style="margin-bottom:24px">
