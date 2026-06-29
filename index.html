@@ -441,6 +441,7 @@ let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
 let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
 let yearSel = { LGL: null, CJ: null, HJ: null }; // null = 최신연도
+let segQMode = { LGL:'cumulative', CJ:'cumulative', HJ:'cumulative' }; // 분기 부문: cumulative(누적)/single(단일분기)
 const charts = {};
 
 function setYear(code, year) {
@@ -481,6 +482,26 @@ function getPeriodData(co, periodKey, fsDiv) {
 function setFs(code, div) {
   fsMode[code] = div;
   renderCompanyTab(code);
+}
+
+function setSegQMode(code, mode) {
+  segQMode[code] = mode;
+  renderCompanyTab(code);
+}
+
+// 분기 부문값 — 누적(cumulative) 또는 단일분기(single) 반환
+// single = 당분기 누적 − 직전 분기 누적(같은 연도). Q1은 누적=단일. 직전 누적 없으면 null.
+function segQuarterVal(segMap, fs, period, segName, field, qMode) {
+  const cur = segMap[period]?.[fs]?.[segName]?.[field];
+  if (cur == null) return null;
+  if (qMode !== 'single') return cur;
+  const m = period.match(/^(\d{4})Q([1-4])$/);
+  if (!m) return cur;
+  const year = m[1], q = +m[2];
+  if (q === 1) return cur; // 1분기는 누적=단일
+  const prev = segMap[`${year}Q${q-1}`]?.[fs]?.[segName]?.[field];
+  if (prev == null) return null; // 직전 분기 누적 없음 → 단일 산출 불가
+  return cur - prev;
 }
 
 async function loadData() {
@@ -840,7 +861,14 @@ function renderCompanyTab(code) {
       ${ratioTable(r, ld, code, latest)}
     </div>
     <div class="card" style="margin-bottom:24px">
-      <div class="card-title">사업부문별 실적</div>
+      <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>사업부문별 실적</span>
+        ${pMode === 'quarterly' ? `
+        <div class="fs-selector">
+          <button class="fs-btn ${segQMode[code]==='cumulative'?'active':''}" onclick="setSegQMode('${code}','cumulative')">누적</button>
+          <button class="fs-btn ${segQMode[code]==='single'?'active':''}" onclick="setSegQMode('${code}','single')">단일분기</button>
+        </div>` : ''}
+      </div>
       <div class="chart-grid">
         <div>
           <div class="chart-title">부문별 매출액 (억원)
@@ -969,7 +997,7 @@ function downloadRatioExcel(code, period) {
 function segTable(code, fs, pMode) {
   fs = fs || 'CFS';
   const isQ = pMode === 'quarterly';
-  const fsLabel = fs === 'SFS' ? '별도기준' : '연결기준';
+  const fsLabel = fs === 'OFS' ? '별도기준' : '연결기준';
   const seg = SEG.companies[code];
   if (!seg) return '<p style="color:var(--text-sub);font-size:13px">사업부문 데이터 없음</p>';
   // 기간(연간/분기) + 기준(fs) 데이터가 있는 항목만
@@ -979,18 +1007,22 @@ function segTable(code, fs, pMode) {
   const latest = periods[periods.length - 1];
   const data   = segMap[latest]?.[fs] || {};
   const u      = fmt.wonUnit();
+  const qMode  = isQ ? (segQMode[code] || 'cumulative') : 'cumulative';
+  const modeLabel = isQ ? (qMode === 'single' ? ' · 단일분기' : ' · 누적') : '';
   const latestLbl = isQ ? latest : (latest + '년');
-  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}] ${latestLbl} 기준</b> · 출처: ${data.source || '—'}</div>`;
+  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}] ${latestLbl} 기준${modeLabel}</b> · 출처: ${data.source || '—'}</div>`;
   html += `<table class="ratio-table seg-table">
     <colgroup><col class="c-seg"><col class="c-num"><col class="c-num"><col class="c-note"></colgroup>
     <thead><tr><th>부문</th><th class="num">매출액 ${u}</th><th class="num">영업이익 ${u}</th><th>주석 (출처)</th></tr></thead><tbody>`;
   const miss = '<span style="color:var(--text-sub)">미공시</span>';
   for (const name of seg.segments) {
     const d = data[name] || {};
+    const rev = segQuarterVal(segMap, fs, latest, name, 'revenue', qMode);
+    const oi  = segQuarterVal(segMap, fs, latest, name, 'operating_income', qMode);
     html += `<tr>
       <td class="seg-name">${name}</td>
-      <td class="num">${d.revenue != null ? fmt.won(d.revenue) : miss}</td>
-      <td class="num">${d.operating_income != null ? fmt.won(d.operating_income) : miss}</td>
+      <td class="num">${rev != null ? fmt.won(rev) : miss}</td>
+      <td class="num">${oi != null ? fmt.won(oi) : miss}</td>
       <td class="seg-note">${d.note || '—'}</td>
     </tr>`;
   }
@@ -1027,16 +1059,17 @@ function renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode) {
 
   const segSrc = isQ ? (seg?.quarterly || {}) : (seg?.annual || {});
   if (seg) {
+    const qMode = isQ ? (segQMode[code] || 'cumulative') : 'cumulative';
     const segPeriods = Object.keys(segSrc).filter(p => segSrc[p]?.[fs]).sort();
     const palette  = segPalette(color, (seg.segments||[]).length);
     makeBarChart(`c-${code}-seg-r`, segPeriods, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segPeriods.map(p => segSrc[p]?.[fs]?.[n]?.revenue ?? null),
+      data: segPeriods.map(p => segQuarterVal(segSrc, fs, p, n, 'revenue', qMode)),
       backgroundColor: palette[i % palette.length],
     })));
     makeBarChart(`c-${code}-seg-o`, segPeriods, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segPeriods.map(p => segSrc[p]?.[fs]?.[n]?.operating_income ?? null),
+      data: segPeriods.map(p => segQuarterVal(segSrc, fs, p, n, 'operating_income', qMode)),
       backgroundColor: palette[i % palette.length],
     })));
   }
