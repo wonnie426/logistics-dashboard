@@ -125,11 +125,11 @@
     .ratio-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
     .ratio-table tr:last-child td { border-bottom: none; }
     .ratio-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
-    /* 사업부문 실적 표 — 전체 폭, 숫자 컬럼만 폭 고정해 정렬 안정화 */
-    .seg-table { width: 100%; }
-    .seg-table col.c-seg  { width: 110px; }
-    .seg-table col.c-num  { width: 140px; }
-    .seg-table col.c-note { width: auto; }
+    /* 사업부문 실적 표 — 전체 폭, 컬럼을 퍼센트로 고르게 분배 */
+    .seg-table { width: 100%; table-layout: fixed; }
+    .seg-table col.c-seg  { width: 18%; }
+    .seg-table col.c-num  { width: 19%; }
+    .seg-table col.c-note { width: 44%; }
     .seg-table td.seg-name { font-weight: 600; }
     .seg-table td.seg-note { font-size: 11px; color: var(--text-sub); white-space: normal; word-break: keep-all; }
     .source-label { font-size: 11px; color: var(--text-sub); }
