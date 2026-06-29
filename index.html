@@ -1527,7 +1527,7 @@ const customBuilderState = {
   CJ:      { metrics:['pl.revenue'], chartType:'bar'  },
   HJ:      { metrics:['pl.revenue'], chartType:'bar'  },
   HGL:     { metrics:['pl.revenue'], chartType:'bar'  },
-  compare: { metrics:['pl.revenue'], chartType:'line' },
+  compare: { metrics:['pl.revenue'], chartType:'line', companies:['LGL','CJ','HJ','HGL'] },
 };
 
 function getMetricValue(d, key) {
@@ -1909,11 +1909,17 @@ const CMP_NAMES  = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'�
 
 function cmpBuilderHtml() {
   const state = customBuilderState.compare;
-  const legendHtml = ['LGL','CJ','HJ','HGL'].map(c =>
-    `<span class="builder-legend-item"><span class="builder-dot" style="background:${CMP_COLORS[c]}"></span>${CMP_NAMES[c]}</span>`
-  ).join('');
+  const coSel = state.companies;
+  const companyToggleHtml = ['LGL','CJ','HJ','HGL'].map(c => {
+    const checked = coSel.includes(c) ? 'checked' : '';
+    const color = CMP_COLORS[c];
+    return `<label style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;cursor:pointer;padding:3px 8px;border:1px solid ${checked?color:'var(--border)'};border-radius:20px;background:${checked?color+'18':'transparent'};color:${checked?color:'var(--text-sub)'};transition:all .15s">
+      <input type="checkbox" ${checked} onchange="toggleCmpCompany('${c}',this.checked)" style="display:none">
+      <span class="builder-dot" style="background:${color}"></span>${CMP_NAMES[c]}
+    </label>`;
+  }).join('');
   return `<div class="card" style="margin-top:20px;margin-bottom:24px">
-    <div class="card-title">4사 커스텀 비교 차트
+    <div class="card-title">커스텀 비교 차트
       <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
     </div>
     <div class="builder-controls">
@@ -1924,17 +1930,32 @@ function cmpBuilderHtml() {
         </div>
       </div>
       <div id="compare-metric-chips" class="metric-chips">${buildChipsHtml('compare')}</div>
-      <div class="fs-selector" style="margin-bottom:0;margin-left:auto">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-left:auto">
+        ${companyToggleHtml}
+      </div>
+      <div class="fs-selector" style="margin-bottom:0">
         <button class="fs-btn${state.chartType==='bar' ?' active':''}" data-code="compare" data-type="bar"
           onclick="setBuilderChartType('compare','bar')">막대</button>
         <button class="fs-btn${state.chartType==='line'?' active':''}" data-code="compare" data-type="line"
           onclick="setBuilderChartType('compare','line')">꺾은선</button>
       </div>
-      <div class="builder-legend">${legendHtml}</div>
     </div>
     <canvas id="c-cmp-custom" style="max-height:340px"></canvas>
     <div id="cmp-custom-table" style="margin-top:14px;overflow-x:auto"></div>
   </div>`;
+}
+
+function toggleCmpCompany(code, checked) {
+  const state = customBuilderState.compare;
+  if (checked) {
+    if (!state.companies.includes(code)) state.companies.push(code);
+  } else {
+    state.companies = state.companies.filter(c => c !== code);
+  }
+  if (!state.companies.length) { state.companies.push(code); return; } // 최소 1개
+  const wrap = document.getElementById('cmp-builder-wrap');
+  if (wrap) wrap.innerHTML = cmpBuilderHtml();
+  buildCustomChartCompare();
 }
 
 function buildCustomChartCompare() {
@@ -1942,7 +1963,7 @@ function buildCustomChartCompare() {
   const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
   if (!ms.length) return;
 
-  const CODES = ['LGL','CJ','HJ','HGL'];
+  const CODES = state.companies.length ? state.companies : ['LGL','CJ','HJ','HGL'];
   const periods = getCmpPeriods();
 
   const hasWon = ms.some(m => m.type === 'won');
@@ -2496,7 +2517,7 @@ function renderCompareTab() {
     ${unifiedTableHtml}
   `;
 
-  $('tab-compare').insertAdjacentHTML('beforeend', cmpBuilderHtml());
+  $('tab-compare').insertAdjacentHTML('beforeend', `<div id="cmp-builder-wrap">${cmpBuilderHtml()}</div>`);
   requestAnimationFrame(() => buildCustomChartCompare());
 }
 
