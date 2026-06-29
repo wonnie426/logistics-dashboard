@@ -421,6 +421,25 @@
     .dart-empty { text-align: center; padding: 48px; color: var(--text-sub); font-size: 14px; }
     .dart-count { font-size: 12px; color: var(--text-sub); padding: 6px 16px;
                   background: var(--card-bg); border: 1px solid var(--border); border-top: none; }
+    /* 커스텀 차트 빌더 */
+    .builder-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .builder-controls label { display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: var(--text-sub); }
+    .builder-controls select { border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 6px 10px; background: var(--card-bg); color: var(--text); font-size: 13px; max-width: 230px; }
+    .builder-legend { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .builder-legend-item { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; }
+    .builder-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+    .builder-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .builder-table th { padding: 7px 12px; background: var(--bg); font-weight: 600;
+      color: var(--text-sub); border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+    .builder-table th:first-child { text-align: left; }
+    .builder-table td { padding: 7px 12px; border-bottom: 1px solid var(--border);
+      text-align: right; font-variant-numeric: tabular-nums; }
+    .builder-table td:first-child { text-align: left; font-weight: 600; }
+    .builder-table tr:last-child td { border-bottom: none; }
+    .builder-table tr:hover td { background: var(--bg); }
   </style>
 </head>
 <body data-theme="light">
@@ -1038,9 +1057,11 @@ function renderCompanyTab(code) {
       </div>
       ${segTable(code, fs, pMode)}
     </div>
+    ${customBuilderHtml(code)}
   `;
 
   renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode);
+  buildCustomChart(code);
 }
 
 function sc(label, value, chgHtml, metric, val, infoKey, d) {
@@ -1427,6 +1448,262 @@ function renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode) {
 function setPeriod(code, type) {
   periodMode[code] = type;
   renderCompanyTab(code);
+}
+
+/* ── 커스텀 차트 빌더 ────────────────────────────────────── */
+const CUSTOM_METRICS = [
+  { key:'pl.revenue',               label:'매출액',           group:'손익(PL)',     type:'won' },
+  { key:'pl.operating_income',      label:'영업이익',         group:'손익(PL)',     type:'won' },
+  { key:'pl.net_income',            label:'당기순이익',       group:'손익(PL)',     type:'won' },
+  { key:'pl.gross_profit',          label:'매출총이익',       group:'손익(PL)',     type:'won' },
+  { key:'pl.cost_of_revenue',       label:'매출원가',         group:'손익(PL)',     type:'won' },
+  { key:'pl.sga',                   label:'판매관리비',       group:'손익(PL)',     type:'won' },
+  { key:'pl.controlling_net_income',label:'지배주주순이익',   group:'손익(PL)',     type:'won' },
+  { key:'_ebitda',                  label:'EBITDA',           group:'손익(PL)',     type:'won' },
+  { key:'bs.total_assets',          label:'자산총계',         group:'재무상태(BS)', type:'won' },
+  { key:'bs.total_liabilities',     label:'부채총계',         group:'재무상태(BS)', type:'won' },
+  { key:'bs.total_equity',          label:'자본총계',         group:'재무상태(BS)', type:'won' },
+  { key:'bs.current_assets',        label:'유동자산',         group:'재무상태(BS)', type:'won' },
+  { key:'bs.non_current_assets',    label:'비유동자산',       group:'재무상태(BS)', type:'won' },
+  { key:'bs.cash_and_equivalents',  label:'현금및현금성자산', group:'재무상태(BS)', type:'won' },
+  { key:'bs.trade_receivables',     label:'매출채권',         group:'재무상태(BS)', type:'won' },
+  { key:'bs.lease_liabilities',     label:'리스부채',         group:'재무상태(BS)', type:'won' },
+  { key:'_total_borrowings',        label:'차입금합계',       group:'재무상태(BS)', type:'won' },
+  { key:'ratios.operating_margin',  label:'영업이익률',       group:'재무비율',     type:'pct' },
+  { key:'ratios.ebitda_margin',     label:'EBITDA율',         group:'재무비율',     type:'pct' },
+  { key:'ratios.net_margin',        label:'순이익률',         group:'재무비율',     type:'pct' },
+  { key:'ratios.roa',               label:'ROA',              group:'재무비율',     type:'pct' },
+  { key:'ratios.roe',               label:'ROE(지배)',        group:'재무비율',     type:'pct' },
+  { key:'ratios.debt_ratio',        label:'부채비율',         group:'재무비율',     type:'pct' },
+  { key:'ratios.current_ratio',     label:'유동비율',         group:'재무비율',     type:'pct' },
+  { key:'ratios.equity_ratio',      label:'자기자본비율',     group:'재무비율',     type:'pct' },
+  { key:'ratios.interest_coverage', label:'이자보상비율',     group:'재무비율',     type:'x'   },
+  { key:'ratios.borrowing_dependency',label:'차입금의존도',   group:'재무비율',     type:'pct' },
+  { key:'ratios.operating_cf_margin', label:'영업CF/매출',    group:'재무비율',     type:'pct' },
+  { key:'cf.operating_cf',          label:'영업활동CF',       group:'현금흐름(CF)', type:'won' },
+  { key:'cf.investing_cf',          label:'투자활동CF',       group:'현금흐름(CF)', type:'won' },
+  { key:'cf.financing_cf',          label:'재무활동CF',       group:'현금흐름(CF)', type:'won' },
+];
+
+const customBuilderState = {
+  LGL:     { metric:'pl.revenue', chartType:'bar'  },
+  CJ:      { metric:'pl.revenue', chartType:'bar'  },
+  HJ:      { metric:'pl.revenue', chartType:'bar'  },
+  compare: { metric:'pl.revenue', chartType:'line' },
+};
+
+function getMetricValue(d, key) {
+  if (!d) return null;
+  if (key === '_ebitda') {
+    const oi = d?.pl?.operating_income, dep = d?.pl?.depreciation;
+    return (oi != null && dep != null) ? oi + dep : null;
+  }
+  if (key === '_total_borrowings') {
+    const b = [d?.bs?.short_term_borrowings, d?.bs?.current_portion_lt_debt,
+               d?.bs?.long_term_borrowings, d?.bs?.bonds_payable];
+    return b.some(x => x != null) ? b.reduce((s, x) => s + (x || 0), 0) : null;
+  }
+  const parts = key.split('.');
+  let v = d;
+  for (const p of parts) { v = v?.[p]; }
+  return (v !== undefined && v !== null) ? v : null;
+}
+
+function fmtBuilderVal(v, type) {
+  if (v == null) return '—';
+  if (type === 'pct') return fmt.pct(v);
+  if (type === 'x')   return fmt.x(v);
+  return fmt.won(v);
+}
+
+function buildMetricSelectHtml(htmlId, selectedKey, onchangeFn) {
+  const groups = {};
+  CUSTOM_METRICS.forEach(m => { if (!groups[m.group]) groups[m.group] = []; groups[m.group].push(m); });
+  let html = `<select id="${htmlId}" onchange="${onchangeFn}">`;
+  for (const [grp, items] of Object.entries(groups)) {
+    html += `<optgroup label="${grp}">`;
+    items.forEach(m => { html += `<option value="${m.key}"${m.key === selectedKey ? ' selected' : ''}>${m.label}</option>`; });
+    html += `</optgroup>`;
+  }
+  return html + `</select>`;
+}
+
+function customBuilderHtml(code) {
+  const state = customBuilderState[code];
+  return `<div class="card" style="margin-bottom:24px">
+    <div class="card-title">커스텀 차트 만들기
+      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 고르면 즉시 차트가 바뀝니다</span>
+    </div>
+    <div class="builder-controls">
+      <label>항목 선택:
+        ${buildMetricSelectHtml(code+'-builder-metric', state.metric, "onBuilderChange('"+code+"')")}
+      </label>
+      <div class="fs-selector" style="margin-bottom:0">
+        <button class="fs-btn${state.chartType==='bar' ?' active':''}" data-code="${code}" data-type="bar"
+          onclick="setBuilderChartType('${code}','bar')">막대</button>
+        <button class="fs-btn${state.chartType==='line'?' active':''}" data-code="${code}" data-type="line"
+          onclick="setBuilderChartType('${code}','line')">꺾은선</button>
+      </div>
+    </div>
+    <canvas id="c-${code}-custom" style="max-height:300px"></canvas>
+    <div id="${code}-custom-table" style="margin-top:14px;overflow-x:auto"></div>
+  </div>`;
+}
+
+function buildCustomChart(code) {
+  const state = customBuilderState[code];
+  const m = CUSTOM_METRICS.find(x => x.key === state.metric);
+  if (!m) return;
+  const co = FIN.companies[code];
+  const fs = fsMode[code] || 'CFS';
+  const pMode = periodMode[code] || 'annual';
+  const dataMap = getPeriodData(co, pMode, fs);
+  const keys = Object.keys(dataMap || {}).sort();
+  const data = keys.map(k => getMetricValue(dataMap[k], m.key));
+  const color = co.color;
+  const canvasId = `c-${code}-custom`;
+  const isPct = m.type === 'pct';
+  const isX   = m.type === 'x';
+  const labelFmt = isPct ? (v => (typeof v==='number' ? v.toFixed(1)+'%' : v))
+                 : isX   ? (v => (typeof v==='number' ? v.toFixed(2)+'배' : v))
+                 : null;
+  const yTick = isPct ? (v => v.toFixed(1)+'%')
+              : isX   ? (v => v.toFixed(2)+'배')
+              : wonTick;
+  const ttLabel = c => `${m.label}: ${c.raw==null?'미공시':(isPct?c.raw.toFixed(1)+'%':isX?c.raw.toFixed(2)+'배':wonTooltip(c.raw))}`;
+
+  if (state.chartType === 'bar') {
+    makeBarChart(canvasId, keys, [{ label: m.label, data, backgroundColor: color }], true, labelFmt);
+  } else {
+    makeLineChart(canvasId, keys, [{ label: m.label, data, borderColor: color, backgroundColor: color+'33' }], isPct, labelFmt);
+  }
+  if (charts[canvasId]) {
+    charts[canvasId].options.plugins.tooltip.callbacks.label = ttLabel;
+    charts[canvasId].options.scales.y.ticks.callback = yTick;
+    charts[canvasId].$labelFmt = labelFmt || wonTick;
+    charts[canvasId].update();
+  }
+
+  const tableWrap = document.getElementById(`${code}-custom-table`);
+  if (!tableWrap) return;
+  const wu = m.type === 'won' ? ' '+fmt.wonUnit() : '';
+  const headerCols = keys.map(k => `<th>${k}</th>`).join('');
+  const dataCols = keys.map((k, i) => `<td>${fmtBuilderVal(data[i], m.type)}</td>`).join('');
+  tableWrap.innerHTML = `<table class="builder-table">
+    <thead><tr><th>${m.label}${wu}</th>${headerCols}</tr></thead>
+    <tbody><tr><td>${co.name}</td>${dataCols}</tr></tbody>
+  </table>`;
+}
+
+function onBuilderChange(code) {
+  const sel = document.getElementById(`${code}-builder-metric`);
+  if (sel) customBuilderState[code].metric = sel.value;
+  buildCustomChart(code);
+}
+
+function setBuilderChartType(code, type) {
+  customBuilderState[code].chartType = type;
+  document.querySelectorAll(`.fs-btn[data-code="${code}"]`).forEach(b => {
+    b.classList.toggle('active', b.dataset.type === type);
+  });
+  buildCustomChart(code);
+}
+
+// ── 비교 탭 커스텀 빌더 ──────────────────────────────────
+const CMP_COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087' };
+const CMP_NAMES  = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+
+function cmpBuilderHtml() {
+  const state = customBuilderState.compare;
+  const legendHtml = ['LGL','CJ','HJ'].map(c =>
+    `<span class="builder-legend-item"><span class="builder-dot" style="background:${CMP_COLORS[c]}"></span>${CMP_NAMES[c]}</span>`
+  ).join('');
+  return `<div class="card" style="margin-top:20px;margin-bottom:24px">
+    <div class="card-title">3사 커스텀 비교 차트
+      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목 선택 시 즉시 3사 비교</span>
+    </div>
+    <div class="builder-controls">
+      <label>항목 선택:
+        ${buildMetricSelectHtml('cmp-builder-metric', state.metric, 'onBuilderCompareChange()')}
+      </label>
+      <div class="fs-selector" style="margin-bottom:0">
+        <button class="fs-btn${state.chartType==='bar' ?' active':''}" data-code="compare" data-type="bar"
+          onclick="setBuilderChartTypeCompare('bar')">막대</button>
+        <button class="fs-btn${state.chartType==='line'?' active':''}" data-code="compare" data-type="line"
+          onclick="setBuilderChartTypeCompare('line')">꺾은선</button>
+      </div>
+      <div class="builder-legend">${legendHtml}</div>
+    </div>
+    <canvas id="c-cmp-custom" style="max-height:320px"></canvas>
+    <div id="cmp-custom-table" style="margin-top:14px;overflow-x:auto"></div>
+  </div>`;
+}
+
+function buildCustomChartCompare() {
+  const state = customBuilderState.compare;
+  const m = CUSTOM_METRICS.find(x => x.key === state.metric);
+  if (!m) return;
+  const CODES = ['LGL','CJ','HJ'];
+  const YEARS = ['2021','2022','2023','2024','2025'];
+  const isPct = m.type === 'pct';
+  const isX   = m.type === 'x';
+  const labelFmt = isPct ? (v => (typeof v==='number' ? v.toFixed(1)+'%' : v))
+                 : isX   ? (v => (typeof v==='number' ? v.toFixed(2)+'배' : v))
+                 : null;
+  const yTick = isPct ? (v => v.toFixed(1)+'%')
+              : isX   ? (v => v.toFixed(2)+'배')
+              : wonTick;
+
+  const datasets = CODES.map(code => ({
+    label: CMP_NAMES[code],
+    data: YEARS.map(y => getMetricValue(getYearData(FIN.companies[code], y), m.key)),
+    borderColor: CMP_COLORS[code],
+    backgroundColor: CMP_COLORS[code] + (state.chartType === 'bar' ? '99' : '33'),
+    tension: 0.3, pointRadius: 4, spanGaps: false,
+  }));
+
+  const canvasId = 'c-cmp-custom';
+  if (state.chartType === 'bar') {
+    makeBarChart(canvasId, YEARS, datasets, true, labelFmt);
+  } else {
+    makeLineChart(canvasId, YEARS, datasets, isPct, labelFmt);
+  }
+  if (charts[canvasId]) {
+    charts[canvasId].options.plugins.tooltip.callbacks.label = c =>
+      `${c.dataset.label}: ${c.raw==null?'미공시':(isPct?c.raw.toFixed(1)+'%':isX?c.raw.toFixed(2)+'배':wonTooltip(c.raw))}`;
+    charts[canvasId].options.scales.y.ticks.callback = yTick;
+    charts[canvasId].$labelFmt = labelFmt || wonTick;
+    charts[canvasId].update();
+  }
+
+  const tableWrap = document.getElementById('cmp-custom-table');
+  if (!tableWrap) return;
+  const wu = m.type === 'won' ? ' '+fmt.wonUnit() : '';
+  const headerCols = YEARS.map(y => `<th>${y}</th>`).join('');
+  const dataRows = CODES.map(code => {
+    const cells = YEARS.map(y =>
+      `<td>${fmtBuilderVal(getMetricValue(getYearData(FIN.companies[code], y), m.key), m.type)}</td>`
+    ).join('');
+    return `<tr><td style="color:${CMP_COLORS[code]}">${CMP_NAMES[code]}</td>${cells}</tr>`;
+  }).join('');
+  tableWrap.innerHTML = `<table class="builder-table">
+    <thead><tr><th>${m.label}${wu}</th>${headerCols}</tr></thead>
+    <tbody>${dataRows}</tbody>
+  </table>`;
+}
+
+function onBuilderCompareChange() {
+  const sel = document.getElementById('cmp-builder-metric');
+  if (sel) customBuilderState.compare.metric = sel.value;
+  buildCustomChartCompare();
+}
+
+function setBuilderChartTypeCompare(type) {
+  customBuilderState.compare.chartType = type;
+  document.querySelectorAll('.fs-btn[data-code="compare"]').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === type);
+  });
+  buildCustomChartCompare();
 }
 
 // ── 종합 비교 탭 ──────────────────────────────────────────────────────────
@@ -1884,6 +2161,8 @@ LGL 매출 34,015 → 0.28배<br>
   makeLineChart('c-cmp-margin', YEARS, ds('operating_margin'), true);
   makeLineChart('c-cmp-debt',   YEARS, ds('debt_ratio'),  true);
   makeLineChart('c-cmp-roe',    YEARS, ds('roe'),         true);
+  $('tab-compare').insertAdjacentHTML('beforeend', cmpBuilderHtml());
+  buildCustomChartCompare();
 }
 
 // ── 보고서 탭 ──────────────────────────────────────────────────────────────
