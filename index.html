@@ -13,6 +13,7 @@
       --lgl: #C8102E;
       --cj:  #00A0DC;
       --hj:  #003087;
+      --hgl: #002C5F;
       --bg:  #f5f7fa;
       --card-bg: #ffffff;
       --border:  #e2e8f0;
@@ -62,6 +63,7 @@
     .tab-btn[data-company="LGL"].active { color: var(--lgl); }
     .tab-btn[data-company="CJ"].active  { color: var(--cj);  }
     .tab-btn[data-company="HJ"].active  { color: var(--hj);  }
+    .tab-btn[data-company="HGL"].active { color: var(--hgl); }
     .content { padding: 24px; max-width: 1400px; margin: 0 auto; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
@@ -165,6 +167,50 @@
     @media (max-width: 768px) { .iresg-grid { grid-template-columns: 1fr; } }
     .report-link { color: var(--text-sub); text-decoration: none; font-size: 11px; margin-left: 4px; }
     .report-link:hover { color: var(--text); }
+    /* ── Excel 업로드 모달 ── */
+    .data-modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 9000; align-items: center; justify-content: center;
+    }
+    .data-modal-overlay.open { display: flex; }
+    .data-modal {
+      background: var(--card-bg); border-radius: 12px; width: 560px; max-width: 95vw;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      padding: 28px 28px 24px;
+    }
+    .data-modal h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .data-modal-sub { font-size: 12px; color: var(--text-sub); margin-bottom: 20px; }
+    .data-modal-section { margin-bottom: 20px; }
+    .data-modal-section h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-sub);
+      text-transform: uppercase; letter-spacing: 0.05em; }
+    .data-modal .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+      background: var(--lgl); color: #fff; border: none; border-radius: 6px;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s;
+    }
+    .data-modal .btn-primary:hover { opacity: .85; }
+    .data-modal .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+      background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; font-size: 13px; cursor: pointer;
+    }
+    .data-modal .btn-secondary:hover { background: var(--bg); }
+    .upload-drop-zone {
+      border: 2px dashed var(--border); border-radius: 8px; padding: 24px;
+      text-align: center; cursor: pointer; transition: border-color .15s;
+      color: var(--text-sub); font-size: 13px;
+    }
+    .upload-drop-zone:hover, .upload-drop-zone.drag-over { border-color: var(--lgl); color: var(--text); }
+    .upload-drop-zone input[type=file] { display: none; }
+    .upload-preview { margin-top: 14px; overflow-x: auto; max-height: 260px; }
+    .upload-preview table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .upload-preview th { background: var(--bg); padding: 5px 8px; border-bottom: 1px solid var(--border);
+      font-weight: 600; white-space: nowrap; }
+    .upload-preview td { padding: 4px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .upload-preview .changed { background: #fef9c3; }
+    .upload-preview .new-row  { background: #dcfce7; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid var(--border); }
     .compare-controls { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
     .compare-controls label { font-size: 13px; font-weight: 500; }
     .compare-controls select { border: 1px solid var(--border); border-radius: var(--radius);
@@ -470,6 +516,7 @@
   <div class="header-right">
     <span id="last-updated" style="font-size:12px;color:var(--text-sub)"></span>
     <button id="unit-toggle" class="theme-toggle" onclick="toggleUnit()">단위: 억원</button>
+    <button class="theme-toggle" onclick="openDataModal()">📊 데이터 관리</button>
     <button class="theme-toggle" onclick="toggleTheme()">🌙 다크모드</button>
   </div>
 </header>
@@ -479,7 +526,8 @@
   <button class="tab-btn" data-tab="report">보고서</button>
   <button class="tab-btn" data-tab="LGL" data-company="LGL">롯데글로벌로지스</button>
   <button class="tab-btn" data-tab="CJ"  data-company="CJ">CJ대한통운</button>
-  <button class="tab-btn" data-tab="HJ"   data-company="HJ">한진</button>
+  <button class="tab-btn" data-tab="HJ"  data-company="HJ">한진</button>
+  <button class="tab-btn" data-tab="HGL" data-company="HGL">현대글로비스</button>
   <button class="tab-btn" data-tab="dart">공시자료</button>
   <button class="tab-btn" data-tab="iresg">IR/ESG</button>
 </nav>
@@ -490,6 +538,7 @@
   <div id="tab-LGL"     class="tab-panel"></div>
   <div id="tab-CJ"      class="tab-panel"></div>
   <div id="tab-HJ"      class="tab-panel"></div>
+  <div id="tab-HGL"     class="tab-panel"></div>
   <div id="tab-dart"    class="tab-panel"></div>
   <div id="tab-iresg"   class="tab-panel"></div>
 </main>
@@ -1476,6 +1525,7 @@ const customBuilderState = {
   LGL:     { metrics:['pl.revenue'], chartType:'bar'  },
   CJ:      { metrics:['pl.revenue'], chartType:'bar'  },
   HJ:      { metrics:['pl.revenue'], chartType:'bar'  },
+  HGL:     { metrics:['pl.revenue'], chartType:'bar'  },
   compare: { metric:'pl.revenue',   chartType:'line' },
 };
 
@@ -1541,8 +1591,14 @@ function buildChipsHtml(code) {
 function customBuilderHtml(code) {
   const state = customBuilderState[code];
   return `<div class="card" style="margin-bottom:24px">
-    <div class="card-title">커스텀 차트 만들기
-      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>커스텀 차트 만들기
+        <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
+      </span>
+      <div style="display:flex;gap:6px">
+        <button class="chart-download" onclick="downloadChart('c-${code}-custom','${code}_커스텀차트.png')" title="PNG 이미지 저장">💾 PNG</button>
+        <button class="chart-download" onclick="downloadCustomChartPptx('${code}')" title="PowerPoint 편집 가능 차트로 저장">📊 PPT</button>
+      </div>
     </div>
     <div class="builder-controls">
       <div class="metric-picker">
@@ -1725,9 +1781,129 @@ function setBuilderChartType(code, type) {
   buildCustomChart(code);
 }
 
+// ── 커스텀 차트 PPT 내보내기 (편집 가능 네이티브 차트) ──────────────
+async function downloadCustomChartPptx(code) {
+  const state = customBuilderState[code];
+  const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
+  if (!ms.length) { alert('항목을 선택해주세요.'); return; }
+
+  const co     = FIN.companies[code];
+  const fs     = fsMode[code] || 'CFS';
+  const pMode  = periodMode[code] || 'annual';
+  const dataMap = getPeriodData(co, pMode, fs);
+  const keys   = Object.keys(dataMap || {}).sort();
+  const PALETTE = [co.color, '#10b981', '#f59e0b', '#6366f1', '#ec4899'];
+
+  const hasWon = ms.some(m => m.type === 'won');
+  const hasPct = ms.some(m => m.type !== 'won');
+  const dual   = hasWon && hasPct;
+  const wonMs  = ms.filter(m => m.type === 'won');
+  const pctMs  = ms.filter(m => m.type !== 'won');
+
+  // 단위 정규화 (억원 / % / 배)
+  function norm(v, m) {
+    if (v == null) return 0;
+    if (m.type === 'won') return Math.round(v / 1e8);
+    return Math.round(v * 100) / 100;
+  }
+  function makeChartData(metricList) {
+    return metricList.map(m => ({
+      name: m.label + (m.type === 'won' ? ' (억원)' : m.type === 'pct' ? ' (%)' : ' (배)'),
+      labels: keys,
+      values: keys.map(k => norm(getMetricValue(dataMap[k], m.key), m))
+    }));
+  }
+
+  const prs = new PptxGenJS();
+  prs.layout = 'LAYOUT_WIDE';
+  const hexColor = co.color.replace('#', '');
+
+  // ── 슬라이드 1: 네이티브 차트 (더블클릭 → Edit Data로 수치 편집 가능) ──
+  const s1 = prs.addSlide();
+  s1.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:0.65, fill:{ color: hexColor } });
+  s1.addText(`${co.name} — 커스텀 차트`, { x:0.4, y:0.1, w:10, h:0.45, fontSize:18, bold:true, color:'FFFFFF' });
+  s1.addText(`${pMode==='annual'?'연간':'분기'} · ${fs} · ${new Date().toLocaleDateString('ko-KR')} 기준`, {
+    x:0.4, y:0.52, w:12, h:0.25, fontSize:9, color:'FFEEEE'
+  });
+
+  const baseOpts = {
+    x:0.4, y:0.85, w:12.5, h:5.6,
+    showLegend: true, legendPos: 'b', legendFontSize: 10,
+    showValue: true, dataLabelFontSize: 9,
+  };
+
+  if (dual) {
+    // 혼합: 막대(won, 왼쪽y) + 꺾은선(pct/x, 오른쪽y)
+    const barColors  = wonMs.map((_, i) => (i === 0 ? co.color : PALETTE[i]).replace('#',''));
+    const lineColors = pctMs.map((_, i) => PALETTE[(wonMs.length + i) % PALETTE.length].replace('#',''));
+    s1.addChart(
+      [
+        { type: prs.ChartType.bar,  data: makeChartData(wonMs),
+          options: { chartColors: barColors, barGrouping: 'clustered' } },
+        { type: prs.ChartType.line, data: makeChartData(pctMs),
+          options: { chartColors: lineColors, secondaryValAxis: true, secondaryCatAxis: true, lineSize: 2 } },
+      ],
+      { ...baseOpts,
+        valAxisTitle: '억원', valAxisTitleShow: true,
+        val2AxisTitle: '(%)', val2AxisTitleShow: true }
+    );
+  } else if (state.chartType === 'bar') {
+    s1.addChart(prs.ChartType.bar, makeChartData(ms), {
+      ...baseOpts, barGrouping: 'clustered',
+      chartColors: ms.map((_, i) => (ms.length===1 ? co.color : PALETTE[i%PALETTE.length]).replace('#',''))
+    });
+  } else {
+    s1.addChart(prs.ChartType.line, makeChartData(ms), {
+      ...baseOpts, lineSize: 2, lineDataSymbol: 'circle',
+      chartColors: ms.map((_, i) => (ms.length===1 ? co.color : PALETTE[i%PALETTE.length]).replace('#',''))
+    });
+  }
+  s1.addText('※ 차트 더블클릭 → [데이터 편집]으로 수치 수정 가능', {
+    x:0.4, y:6.55, w:12, h:0.25, fontSize:8.5, color:'888888', italic:true
+  });
+
+  // ── 슬라이드 2: 데이터 테이블 (수치 직접 확인용) ──────────────────────
+  const s2 = prs.addSlide();
+  s2.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:0.65, fill:{ color: hexColor } });
+  s2.addText(`${co.name} — 차트 데이터`, { x:0.4, y:0.1, w:12, h:0.45, fontSize:18, bold:true, color:'FFFFFF' });
+
+  const colW  = 12.5 / (keys.length + 1);
+  const hdrRow = [
+    { text:'항목', options:{ bold:true, fill:'1E2D4F', color:'FFFFFF', align:'left', valign:'middle' } },
+    ...keys.map(k => ({ text:k, options:{ bold:true, fill:'1E2D4F', color:'FFFFFF', align:'center', valign:'middle' } }))
+  ];
+  const dataRows = ms.map((m, ri) => {
+    const unitSfx = m.type==='won' ? ' (억원)' : m.type==='pct' ? ' (%)' : ' (배)';
+    const rowFill = ri % 2 === 0 ? 'F4F7FB' : 'FFFFFF';
+    return [
+      { text: m.label + unitSfx, options:{ bold:true, fill: rowFill, align:'left', valign:'middle' } },
+      ...keys.map(k => {
+        const v = getMetricValue(dataMap[k], m.key);
+        let txt = '—';
+        if (v != null) {
+          if (m.type==='won') txt = Math.round(v/1e8).toLocaleString('ko-KR');
+          else if (m.type==='pct') txt = v.toFixed(1);
+          else txt = v.toFixed(2);
+        }
+        return { text: txt, options:{ fill: rowFill, align:'center', valign:'middle' } };
+      })
+    ];
+  });
+
+  s2.addTable([hdrRow, ...dataRows], {
+    x:0.4, y:0.85, w:12.5,
+    colW: Array(keys.length+1).fill(colW),
+    rowH: 0.45, fontSize:11, border:{ type:'solid', pt:0.5, color:'CCCCCC' }
+  });
+
+  try {
+    await prs.writeFile({ fileName:`${co.name}_커스텀차트.pptx` });
+  } catch(e) { alert('PPT 저장 오류: ' + e.message); }
+}
+
 // ── 비교 탭 커스텀 빌더 ──────────────────────────────────
-const CMP_COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087' };
-const CMP_NAMES  = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
+const CMP_COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087', HGL:'#002C5F' };
+const CMP_NAMES  = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진', HGL:'현대글로비스' };
 
 function cmpBuilderHtml() {
   const state = customBuilderState.compare;
@@ -1759,7 +1935,7 @@ function buildCustomChartCompare() {
   const state = customBuilderState.compare;
   const m = CUSTOM_METRICS.find(x => x.key === state.metric);
   if (!m) return;
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
   const YEARS = ['2021','2022','2023','2024','2025'];
   const isPct = m.type === 'pct';
   const isX   = m.type === 'x';
@@ -2146,7 +2322,7 @@ function renderDartTab() {
 
 function renderCompareTab() {
   const YEARS = ['2021','2022','2023','2024','2025'];
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
   const COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087' };
 
@@ -2350,7 +2526,7 @@ function renderReportTab() {
 
 function buildReportBody(selYear, fsDiv) {
   fsDiv = fsDiv || rptFsMode || 'CFS';
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
   const YEARS = rptPeriodList();
   const isQ = rptPeriod === 'quarterly';
@@ -2444,7 +2620,7 @@ function buildReportBody(selYear, fsDiv) {
 
 // ── 내보내기 ──────────────────────────────────────────────────────────────
 function exportExcel() {
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
   const YEARS = rptPeriodList();
   const isQ = rptPeriod === 'quarterly';
@@ -2506,7 +2682,7 @@ function exportPDF() {
 }
 
 async function exportPPT() {
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
   const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
   const YEARS = rptPeriodList();
   const isQ = rptPeriod === 'quarterly';
@@ -2605,7 +2781,7 @@ function renderIrEsgTab() {
     el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-sub)">IR/ESG 자료를 불러오지 못했습니다.</div>';
     return;
   }
-  const CODES = ['LGL','CJ','HJ'];
+  const CODES = ['LGL','CJ','HJ','HGL'];
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -2680,7 +2856,256 @@ function initUI() {
   });
 }
 
+// ── Excel 업로드로 segment_data.json 수정 ───────────────────────────────────
+
+let _excelParsedRows = [];   // 파싱된 행 캐시
+
+function openDataModal() {
+  document.getElementById('data-modal-overlay').classList.add('open');
+  _excelParsedRows = [];
+  document.getElementById('upload-preview-wrap').innerHTML = '';
+  document.getElementById('apply-excel-btn').style.display = 'none';
+  document.getElementById('dl-json-btn').style.display = 'none';
+  const inp = document.getElementById('excel-file-input');
+  if (inp) inp.value = '';
+}
+function closeDataModal() {
+  document.getElementById('data-modal-overlay').classList.remove('open');
+}
+
+// 템플릿 Excel 생성 — 현재 SEG 구조 기반
+function downloadSegmentTemplate() {
+  const wb = XLSX.utils.book_new();
+
+  // 안내 시트
+  const guide = [
+    ['사업부문 실적 입력 양식'],
+    [''],
+    ['【작성 방법】'],
+    ['1. "데이터입력" 시트에서 매출액(원), 영업이익(원) 열만 수정하세요.'],
+    ['2. 기존 행을 수정하거나, 새 기간(2026Q2 등)을 추가할 수 있습니다.'],
+    ['3. 금액 단위: 원 (억원 × 100,000,000)'],
+    ['4. 영업손실은 음수로 입력 (예: -1500000000)'],
+    ['5. 모르는 값은 비워두세요 (null 처리됨).'],
+    ['6. 작성 후 이 사이트의 "데이터 관리 > Excel 업로드" 메뉴에서 파일을 올리세요.'],
+    [''],
+    ['기간 표기 형식:'],
+    ['  연간보고서 → 2025, 2026 등'],
+    ['  1분기     → 2026Q1'],
+    ['  반기      → 2026Q2'],
+    ['  3분기     → 2026Q3'],
+  ];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(guide), '작성안내');
+
+  // 데이터 입력 시트
+  const header = ['회사코드','회사명','기간','재무제표','부문','매출액(원)','영업이익(원)','비고(자동생성)'];
+  const rows = [header];
+
+  if (SEG && SEG.companies) {
+    Object.entries(SEG.companies).forEach(([code, co]) => {
+      const coName = FIN?.companies?.[code]?.name || code;
+      ['annual','quarterly'].forEach(pType => {
+        const periods = co[pType] || {};
+        Object.entries(periods).sort().forEach(([pKey, fsMap]) => {
+          Object.entries(fsMap).forEach(([fs, entry]) => {
+            if (typeof entry !== 'object' || Array.isArray(entry)) return;
+            const segments = co.segments || [];
+            segments.forEach(seg => {
+              const d = entry[seg] || {};
+              rows.push([
+                code, coName, pKey, fs, seg,
+                d.revenue ?? '', d.operating_income ?? '',
+                d.note || ''
+              ]);
+            });
+          });
+        });
+      });
+    });
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [8,12,8,6,10,18,18,30].map(w => ({ wch: w }));
+  // 헤더 행 고정
+  ws['!freeze'] = { xSplit: 0, ySplit: 1 };
+  XLSX.utils.book_append_sheet(wb, ws, '데이터입력');
+
+  XLSX.writeFile(wb, `사업부문_입력양식_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// Excel 파일 파싱
+function handleSegmentExcelUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const wb = XLSX.read(e.target.result, { type:'array' });
+      // "데이터입력" 시트 우선, 없으면 첫 번째 시트
+      const sheetName = wb.SheetNames.includes('데이터입력') ? '데이터입력' : wb.SheetNames[0];
+      const ws = wb.Sheets[sheetName];
+      const raw = XLSX.utils.sheet_to_json(ws, { defval: '' });
+
+      // 컬럼명 유연하게 매핑
+      const colAlias = (row, ...names) => {
+        for (const n of names) {
+          const k = Object.keys(row).find(k => k.replace(/\s/g,'').toLowerCase().includes(n.toLowerCase().replace(/\s/g,'')));
+          if (k !== undefined && row[k] !== '') return row[k];
+        }
+        return null;
+      };
+
+      _excelParsedRows = raw.map(row => ({
+        code:  String(colAlias(row, '회사코드', 'code') || '').trim().toUpperCase(),
+        pKey:  String(colAlias(row, '기간', 'period', 'pKey') || '').trim(),
+        fs:    String(colAlias(row, '재무제표', 'fs', 'FS') || 'CFS').trim().toUpperCase() || 'CFS',
+        seg:   String(colAlias(row, '부문', 'segment', 'seg') || '').trim(),
+        rev:   colAlias(row, '매출액', 'revenue') !== null ? Number(colAlias(row, '매출액', 'revenue')) : null,
+        op:    colAlias(row, '영업이익', 'operating_income') !== null ? Number(colAlias(row, '영업이익', 'operating_income')) : null,
+      })).filter(r => r.code && r.pKey && r.seg);
+
+      renderExcelPreview(_excelParsedRows);
+    } catch(err) {
+      document.getElementById('upload-preview-wrap').innerHTML =
+        `<p style="color:var(--red);font-size:13px">파일 파싱 오류: ${err.message}</p>`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function renderExcelPreview(rows) {
+  if (!rows.length) {
+    document.getElementById('upload-preview-wrap').innerHTML =
+      '<p style="color:var(--text-sub);font-size:13px">데이터 행이 없습니다.</p>';
+    return;
+  }
+  let changed = 0;
+  const trs = rows.map(r => {
+    const existing = SEG?.companies?.[r.code]?.[r.pKey?.match(/Q/) ? 'quarterly' : 'annual']?.[r.pKey]?.[r.fs]?.[r.seg];
+    const isNew = !existing;
+    const revChanged = existing && existing.revenue !== r.rev && r.rev !== null;
+    const opChanged  = existing && existing.operating_income !== r.op && r.op !== null;
+    const rowClass   = isNew ? 'new-row' : (revChanged || opChanged) ? 'changed' : '';
+    if (rowClass) changed++;
+    const fmtNum = v => v === null || v === '' ? '—' : Number(v).toLocaleString('ko-KR');
+    return `<tr class="${rowClass}">
+      <td>${r.code}</td><td>${r.pKey}</td><td>${r.fs}</td><td>${r.seg}</td>
+      <td style="text-align:right">${fmtNum(r.rev)}</td>
+      <td style="text-align:right">${fmtNum(r.op)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('upload-preview-wrap').innerHTML = `
+    <p style="font-size:12px;color:var(--text-sub);margin-bottom:6px">
+      총 ${rows.length}행 — <span style="background:#dcfce7;padding:1px 5px;border-radius:3px">신규</span>
+      <span style="background:#fef9c3;padding:1px 5px;border-radius:3px;margin-left:4px">변경</span>
+      (변경/신규: ${changed}행)
+    </p>
+    <div class="upload-preview">
+      <table><thead><tr>
+        <th>회사</th><th>기간</th><th>FS</th><th>부문</th><th>매출액(원)</th><th>영업이익(원)</th>
+      </tr></thead><tbody>${trs}</tbody></table>
+    </div>`;
+
+  document.getElementById('apply-excel-btn').style.display = 'inline-flex';
+}
+
+// 메모리에 반영 + 화면 새로고침 + JSON 다운로드 버튼 노출
+function applySegmentExcel() {
+  if (!_excelParsedRows.length) return;
+  let count = 0;
+  _excelParsedRows.forEach(r => {
+    if (!SEG.companies[r.code]) return;
+    const pType = r.pKey.match(/Q\d$/) ? 'quarterly' : 'annual';
+    const co    = SEG.companies[r.code];
+    co[pType]          = co[pType] || {};
+    co[pType][r.pKey]  = co[pType][r.pKey] || {};
+    const entry = co[pType][r.pKey];
+    entry[r.fs]        = entry[r.fs] || {};
+    const fsEntry = entry[r.fs];
+    fsEntry[r.seg]     = fsEntry[r.seg] || {};
+    if (r.rev !== null && !isNaN(r.rev)) { fsEntry[r.seg].revenue = r.rev; count++; }
+    if (r.op  !== null && !isNaN(r.op))  { fsEntry[r.seg].operating_income = r.op; }
+    if (!fsEntry[r.seg].note) fsEntry[r.seg].note = 'Excel 업로드로 입력';
+    if (!fsEntry.source) fsEntry.source = `${r.pKey} (Excel 업로드 ${new Date().toISOString().slice(0,10)})`;
+  });
+
+  // 화면 새로고침
+  if (activeTab && !['compare','report','dart','iresg'].includes(activeTab)) {
+    renderCompanyTab(activeTab);
+  }
+
+  document.getElementById('apply-excel-btn').style.display = 'none';
+  document.getElementById('dl-json-btn').style.display = 'inline-flex';
+  document.getElementById('upload-preview-wrap').insertAdjacentHTML('afterbegin',
+    `<p style="color:var(--green);font-weight:600;font-size:13px;margin-bottom:8px">
+      ✅ ${count}개 항목 반영 완료. JSON 파일을 다운로드해서 저장소에 커밋하면 영구 저장됩니다.</p>`);
+}
+
+// 업데이트된 segment_data.json 다운로드
+function downloadUpdatedSegmentJson() {
+  const blob = new Blob([JSON.stringify(SEG, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'segment_data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 loadData();
 </script>
+
+<!-- ── 데이터 관리 모달 ─────────────────────────────────────── -->
+<div id="data-modal-overlay" class="data-modal-overlay" onclick="if(event.target===this)closeDataModal()">
+  <div class="data-modal">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+      <h2>📊 데이터 관리</h2>
+      <button onclick="closeDataModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-sub)">✕</button>
+    </div>
+    <p class="data-modal-sub">Excel로 사업부문 실적을 수정하고 업데이트된 JSON을 다운로드합니다.</p>
+
+    <div class="data-modal-section">
+      <h3>1단계 — 템플릿 다운로드</h3>
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:10px">
+        현재 데이터 기반 양식을 받아 매출액·영업이익 칸을 채워주세요.
+      </p>
+      <button class="btn-primary" onclick="downloadSegmentTemplate()">⬇ 양식 다운로드 (.xlsx)</button>
+    </div>
+
+    <div class="data-modal-section">
+      <h3>2단계 — 작성 후 업로드</h3>
+      <div class="upload-drop-zone" onclick="document.getElementById('excel-file-input').click()"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="event.preventDefault();this.classList.remove('drag-over');
+                   const f=event.dataTransfer.files[0];
+                   if(f){const inp=document.getElementById('excel-file-input');
+                   const dt=new DataTransfer();dt.items.add(f);inp.files=dt.files;
+                   handleSegmentExcelUpload({target:inp});}">
+        <input type="file" id="excel-file-input" accept=".xlsx,.xls"
+               onchange="handleSegmentExcelUpload(event)">
+        <div style="font-size:24px;margin-bottom:6px">📂</div>
+        <div>클릭하거나 파일을 드래그해서 업로드</div>
+        <div style="font-size:11px;margin-top:4px">.xlsx / .xls 지원</div>
+      </div>
+      <div id="upload-preview-wrap"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button id="dl-json-btn" class="btn-primary" style="display:none;background:#16a34a"
+              onclick="downloadUpdatedSegmentJson()">⬇ segment_data.json 다운로드</button>
+      <button id="apply-excel-btn" class="btn-primary" style="display:none"
+              onclick="applySegmentExcel()">✅ 화면에 반영하기</button>
+      <button class="btn-secondary" onclick="closeDataModal()">닫기</button>
+    </div>
+
+    <div style="margin-top:14px;padding:10px;background:var(--bg);border-radius:6px;font-size:11px;color:var(--text-sub);line-height:1.6">
+      💡 <strong>영구 저장 방법:</strong> 다운로드한 <code>segment_data.json</code>을
+      <code>data/segment_data.json</code>으로 교체 후 GitHub에 커밋하면
+      사이트에 영구 반영됩니다.
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

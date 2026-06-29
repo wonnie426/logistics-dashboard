@@ -161,6 +161,36 @@
           }
         }
       }
+    },
+    "HGL": {
+      "segments": ["물류사업", "유통사업", "해운사업"],
+      "annual": {
+        "2023": {
+          "CFS": {
+            "source": "2023년 사업보고서 (연결재무제표 주석 영업부문정보, 2024년 제출)",
+            "물류사업": { "revenue": null, "operating_income": null, "note": "미입력 — 수동 입력 또는 자동 파싱 필요" },
+            "유통사업": { "revenue": null, "operating_income": null, "note": "미입력 — 수동 입력 또는 자동 파싱 필요" },
+            "해운사업": { "revenue": null, "operating_income": null, "note": "미입력 — 수동 입력 또는 자동 파싱 필요" }
+          }
+        },
+        "2024": {
+          "CFS": {
+            "source": "2024년 사업보고서 (연결재무제표 주석 영업부문정보, 2025년 제출)",
+            "물류사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" },
+            "유통사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" },
+            "해운사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" }
+          }
+        },
+        "2025": {
+          "CFS": {
+            "source": "2025년 사업보고서 (연결재무제표 주석 영업부문정보, 2026.03 제출)",
+            "물류사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" },
+            "유통사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" },
+            "해운사업": { "revenue": null, "operating_income": null, "note": "미입력 — DART 자동 파싱 또는 Excel 업로드로 입력" }
+          }
+        }
+      },
+      "quarterly": {}
     }
   }
 }

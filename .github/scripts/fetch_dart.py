@@ -27,6 +27,8 @@ COMPANIES = {
             "stock_type": "krx",  "stock_code": "000120"},
     "HJ":  {"corp_code": "00163512", "name": "한진",             "color": "#003087", "listed": True,
             "stock_type": "krx",  "stock_code": "002320"},
+    "HGL": {"corp_code": "00164742", "name": "현대글로비스",      "color": "#002C5F", "listed": True,
+            "stock_type": "krx",  "stock_code": "086280"},
 }
 
 # 기간별 종가 기준일 (최근 거래일 기준)

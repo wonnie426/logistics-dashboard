@@ -139,6 +139,35 @@ SEGMENT_CONFIG = {
         ],
         "fs_div": "CFS",
     },
+    "HGL": {
+        "corp_code": "00164742",
+        "name": "현대글로비스",
+        "note_keywords": ["영업부문정보", "영업부문", "사업부문별 정보", "부문별 영업실적"],
+        "segments": {
+            "물류사업": {
+                "aliases": ["물류사업", "물류", "Logistics", "물류부문", "완성차물류"],
+                "priority": 1,
+            },
+            "유통사업": {
+                "aliases": ["유통사업", "유통", "Distribution", "유통부문"],
+                "priority": 2,
+            },
+            "해운사업": {
+                "aliases": ["해운사업", "해운", "Shipping", "해운부문", "선박"],
+                "priority": 3,
+            },
+        },
+        "unit": 1000000,       # 백만원 → 원
+        "unit_label": "백만원",
+        "revenue_row_aliases": [
+            "수익", "매출액", "외부매출액", "외부고객으로부터의 수익",
+            "외부고객매출액", "외부고객 매출액",
+        ],
+        "op_income_row_aliases": [
+            "영업이익", "영업손익", "영업이익(손실)",
+        ],
+        "fs_div": "CFS",
+    },
 }
 
 REPORT_CODE_MAP = {

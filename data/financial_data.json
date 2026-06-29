@@ -7244,6 +7244,103 @@
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250702800568"
         }
       ]
+    },
+    "HGL": {
+      "name": "현대글로비스",
+      "color": "#002C5F",
+      "corp_code": "00164742",
+      "listed": true,
+      "annual": {
+        "2023": {
+          "CFS": {
+            "source": "2023년 사업보고서 (연결기준)",
+            "report_type": "사업보고서",
+            "filing_date": "20240315",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "bs": {
+              "total_assets": null, "current_assets": null, "non_current_assets": null,
+              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
+              "total_equity": null, "controlling_equity": null,
+              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
+              "short_term_borrowings": null, "current_portion_lt_debt": null,
+              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+            },
+            "pl": {
+              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
+              "sga": null, "operating_income": null, "interest_expense": null,
+              "net_income": null, "controlling_net_income": null, "depreciation": null
+            },
+            "cf": {
+              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
+            },
+            "ratios": {
+              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
+              "net_margin": null, "roa": null, "roe": null,
+              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+            }
+          }
+        },
+        "2024": {
+          "CFS": {
+            "source": "2024년 사업보고서 (연결기준)",
+            "report_type": "사업보고서",
+            "filing_date": "20250314",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "bs": {
+              "total_assets": null, "current_assets": null, "non_current_assets": null,
+              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
+              "total_equity": null, "controlling_equity": null,
+              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
+              "short_term_borrowings": null, "current_portion_lt_debt": null,
+              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+            },
+            "pl": {
+              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
+              "sga": null, "operating_income": null, "interest_expense": null,
+              "net_income": null, "controlling_net_income": null, "depreciation": null
+            },
+            "cf": {
+              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
+            },
+            "ratios": {
+              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
+              "net_margin": null, "roa": null, "roe": null,
+              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+            }
+          }
+        },
+        "2025": {
+          "CFS": {
+            "source": "2025년 사업보고서 (연결기준)",
+            "report_type": "사업보고서",
+            "filing_date": "20260313",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do",
+            "bs": {
+              "total_assets": null, "current_assets": null, "non_current_assets": null,
+              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
+              "total_equity": null, "controlling_equity": null,
+              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
+              "short_term_borrowings": null, "current_portion_lt_debt": null,
+              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+            },
+            "pl": {
+              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
+              "sga": null, "operating_income": null, "interest_expense": null,
+              "net_income": null, "controlling_net_income": null, "depreciation": null
+            },
+            "cf": {
+              "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null
+            },
+            "ratios": {
+              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
+              "net_margin": null, "roa": null, "roe": null,
+              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+            }
+          }
+        }
+      },
+      "quarterly": {},
+      "dart_disclosures": []
     }
   }
 }
