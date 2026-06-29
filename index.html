@@ -234,6 +234,26 @@
       content: ''; position: absolute; top: 100%; left: 20px;
       border: 7px solid transparent; border-top-color: #0f172a;
     }
+    #ratio-tt .tt-detail-label, #ratio-tt .tt-source-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+      color: #64748b; margin: 10px 0 4px;
+    }
+    #ratio-tt .tt-detail {
+      background: rgba(255,255,255,0.05); border: 1px dashed rgba(148,163,184,0.25);
+      border-radius: 6px; padding: 6px 10px; font-size: 11.5px; color: #bae6fd;
+      font-family: 'Consolas','D2Coding',monospace; line-height: 1.5; word-break: break-all;
+    }
+    #ratio-tt .tt-source { font-size: 11px; color: #94a3b8; margin-top: 8px; }
+    /* ? 도움말 아이콘 */
+    .qmark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 15px; height: 15px; margin-left: 5px; border-radius: 50%;
+      background: var(--border); color: var(--text-sub);
+      font-size: 10px; font-weight: 700; cursor: pointer; vertical-align: middle;
+      user-select: none; transition: background 0.12s, color 0.12s; line-height: 1;
+    }
+    .qmark:hover { background: #3b82f6; color: #fff; }
+    .qmark.tt-pinned { background: #3b82f6; color: #fff; }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -428,6 +448,11 @@
     <div class="tt-formula-label">계산식</div>
     <div class="tt-formula" id="tt-formula"></div>
     <div class="tt-desc" id="tt-desc"></div>
+    <div id="tt-detail-wrap">
+      <div class="tt-detail-label">상세값</div>
+      <div class="tt-detail" id="tt-detail"></div>
+    </div>
+    <div class="tt-source" id="tt-source"></div>
     <div class="tt-close" onclick="ratioTtUnpin()">✕ 닫기</div>
   </div>
 </div>
@@ -835,11 +860,11 @@ function renderCompanyTab(code) {
       ${periodBadge}
     </div>
     <div class="summary-grid" style="margin-bottom:20px">
-      ${sc('매출액', fmt.won(pl.revenue), changeHtml(pl.revenue, prevPl.revenue), null, null)}
-      ${sc('영업이익률', fmt.pct(r.operating_margin), changeHtml(r.operating_margin, prevR.operating_margin), 'operating_margin', r.operating_margin)}
-      ${sc('ROE(지배)', fmt.pct(r.roe), changeHtml(r.roe, prevR.roe), 'roe', r.roe)}
-      ${sc('부채비율', fmt.pct(r.debt_ratio), changeHtml(r.debt_ratio, prevR.debt_ratio), 'debt_ratio', r.debt_ratio)}
-      ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage)}
+      ${sc('매출액', fmt.won(pl.revenue), changeHtml(pl.revenue, prevPl.revenue), null, null, 'revenue', ld)}
+      ${sc('영업이익률', fmt.pct(r.operating_margin), changeHtml(r.operating_margin, prevR.operating_margin), 'operating_margin', r.operating_margin, 'operating_margin', ld)}
+      ${sc('ROE(지배)', fmt.pct(r.roe), changeHtml(r.roe, prevR.roe), 'roe', r.roe, 'roe', ld)}
+      ${sc('부채비율', fmt.pct(r.debt_ratio), changeHtml(r.debt_ratio, prevR.debt_ratio), 'debt_ratio', r.debt_ratio, 'debt_ratio', ld)}
+      ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage, 'interest_coverage', ld)}
     </div>
     ${finTableHtml}
     ${stockHtml}
@@ -909,9 +934,9 @@ function renderCompanyTab(code) {
   renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode);
 }
 
-function sc(label, value, chgHtml, metric, val) {
+function sc(label, value, chgHtml, metric, val, infoKey, d) {
   return `<div class="summary-card">
-    <div class="summary-label">${label}</div>
+    <div class="summary-label">${label}${infoKey ? qmark(infoKey, d) : ''}</div>
     <div class="summary-value">${value}${metric ? ragDot(metric, val) : ''}</div>
     ${chgHtml}
   </div>`;
@@ -935,39 +960,34 @@ const RATIO_FORMULAS = {
 function ratioTable(r, ld, code, period) {
   const rows = [
     ['수익성', [
-      ['영업이익률',       fmt.pct(r.operating_margin),    'operating_margin', r.operating_margin],
-      ['EBITDA율',         fmt.pct(r.ebitda_margin),        null, null],
-      ['순이익률',         fmt.pct(r.net_margin),            'net_margin', r.net_margin],
-      ['ROA',             fmt.pct(r.roa),                   'roa', r.roa],
-      ['ROE(지배)',        fmt.pct(r.roe),                   'roe', r.roe],
+      ['영업이익률',       fmt.pct(r.operating_margin),    'operating_margin', r.operating_margin, 'operating_margin'],
+      ['EBITDA율',         fmt.pct(r.ebitda_margin),        null, null, 'ebitda_margin'],
+      ['순이익률',         fmt.pct(r.net_margin),            'net_margin', r.net_margin, 'net_margin'],
+      ['ROA',             fmt.pct(r.roa),                   'roa', r.roa, 'roa'],
+      ['ROE(지배)',        fmt.pct(r.roe),                   'roe', r.roe, 'roe'],
     ]],
     ['안정성', [
-      ['부채비율',         fmt.pct(r.debt_ratio),           'debt_ratio', r.debt_ratio],
-      ['부채비율(리스제외)',fmt.pct(r.debt_ratio_ex_lease),  null, null],
-      ['유동비율',         fmt.pct(r.current_ratio),        'current_ratio', r.current_ratio],
-      ['자기자본비율',     fmt.pct(r.equity_ratio),         'equity_ratio', r.equity_ratio],
-      ['이자보상비율',     fmt.x(r.interest_coverage),      'interest_coverage', r.interest_coverage],
-      ['차입금의존도',     fmt.pct(r.borrowing_dependency),  'borrowing_dependency', r.borrowing_dependency],
+      ['부채비율',         fmt.pct(r.debt_ratio),           'debt_ratio', r.debt_ratio, 'debt_ratio'],
+      ['부채비율(리스제외)',fmt.pct(r.debt_ratio_ex_lease),  null, null, 'debt_ratio_ex_lease'],
+      ['유동비율',         fmt.pct(r.current_ratio),        'current_ratio', r.current_ratio, 'current_ratio'],
+      ['자기자본비율',     fmt.pct(r.equity_ratio),         'equity_ratio', r.equity_ratio, 'equity_ratio'],
+      ['이자보상비율',     fmt.x(r.interest_coverage),      'interest_coverage', r.interest_coverage, 'interest_coverage'],
+      ['차입금의존도',     fmt.pct(r.borrowing_dependency),  'borrowing_dependency', r.borrowing_dependency, 'borrowing_dependency'],
     ]],
     ['현금창출', [
-      ['영업현금흐름/매출', fmt.pct(r.operating_cf_margin), 'operating_cf_margin', r.operating_cf_margin],
+      ['영업현금흐름/매출', fmt.pct(r.operating_cf_margin), 'operating_cf_margin', r.operating_cf_margin, 'operating_cf_margin'],
     ]],
   ];
   const srcLink = ld.report_url
     ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${ld.source || 'DART'} <a href="${ld.report_url}" target="_blank" class="report-link">📄 원본 보고서</a></div>`
     : '';
   let html = srcLink + `<table class="ratio-table-v2">
-    <thead><tr><th style="width:70px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(마우스 올리면 계산식)</span></th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
+    <thead><tr><th style="width:70px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 클릭 시 설명 고정)</span></th><th class="num" style="width:110px">값</th></tr></thead><tbody>`;
   for (const [sec, items] of rows) {
-    items.forEach(([lbl, val, metric, mv], i) => {
-      const formula = RATIO_FORMULAS[lbl] || '';
+    items.forEach(([lbl, val, metric, mv, key], i) => {
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
-        <td class="lbl"
-          onmouseenter="ratioTtShow(this,'${lbl.replace(/'/g,"\\'")}','${formula.replace(/'/g,"\\'")}${formula?'':'—'}')"
-          onmouseleave="ratioTtHide()"
-          onclick="ratioTtClick(this,'${lbl.replace(/'/g,"\\'")}','${formula.replace(/'/g,"\\'")}${formula?'':'—'}')"
-        >${lbl}</td>
+        <td class="lbl">${lbl}${qmark(key, ld)}</td>
         <td class="num">${val} ${metric ? ragDot(metric, mv) : ''}</td>
       </tr>`;
     });
@@ -1119,66 +1139,118 @@ const RATIO_DESCS = {
 let _ttPinned = false;
 let _ttPinnedEl = null;
 
-function ratioTtShow(el, name, formula) {
-  const tt = document.getElementById('ratio-tt');
-  if (!tt) return;
-  document.getElementById('tt-name').textContent = name;
-  document.getElementById('tt-formula').textContent = formula || '—';
-  const desc = RATIO_DESCS[name] || '';
-  const descEl = document.getElementById('tt-desc');
-  descEl.textContent = desc;
-  descEl.style.display = desc ? 'block' : 'none';
+// 억원 환산 헬퍼
+function eok(v) { return (v == null) ? '—' : Math.round(v / 1e8).toLocaleString('ko-KR') + '억'; }
 
+// 지표 메타 카탈로그 — 설명/계산식/출처/상세값(데이터 기반)
+const METRIC_META = {
+  revenue:           { name:'매출액', desc:'기업이 영업활동으로 벌어들인 총수익', formula:'손익계산서상 매출액', source:'손익계산서',
+                       detail:d => `매출액 ${eok(d?.pl?.revenue)}` },
+  operating_income:  { name:'영업이익', desc:'매출에서 매출원가·판매관리비를 차감한 본업 이익', formula:'매출액 − 매출원가 − 판매관리비', source:'손익계산서',
+                       detail:d => `${eok(d?.pl?.revenue)} − 매출원가 ${eok(d?.pl?.cost_of_revenue)} − 판관비 ${eok(d?.pl?.sga)} = ${eok(d?.pl?.operating_income)}` },
+  operating_margin:  { name:'영업이익률', desc:'본업에서 매출 대비 얼마나 이익을 냈는지 보여주는 핵심 수익성 지표', formula:'영업이익 ÷ 매출액 × 100', source:'손익계산서',
+                       detail:d => `${eok(d?.pl?.operating_income)} ÷ ${eok(d?.pl?.revenue)} × 100 = ${fmt.pct(d?.ratios?.operating_margin)}` },
+  ebitda_margin:     { name:'EBITDA율', desc:'감가상각을 제외한 실질 영업창출력. 설비투자가 많은 물류업에서 특히 중요', formula:'(영업이익 + 감가상각비) ÷ 매출액 × 100', source:'손익계산서',
+                       detail:d => `(${eok(d?.pl?.operating_income)} + 감가상각 ${eok(d?.pl?.depreciation)}) ÷ ${eok(d?.pl?.revenue)} × 100 = ${fmt.pct(d?.ratios?.ebitda_margin)}` },
+  net_margin:        { name:'순이익률', desc:'모든 비용과 세금을 제한 후 최종 남은 이익 비율', formula:'당기순이익 ÷ 매출액 × 100', source:'손익계산서',
+                       detail:d => `${eok(d?.pl?.net_income)} ÷ ${eok(d?.pl?.revenue)} × 100 = ${fmt.pct(d?.ratios?.net_margin)}` },
+  roa:               { name:'ROA', desc:'보유한 전체 자산을 얼마나 효율적으로 활용해 이익을 냈는지 측정', formula:'당기순이익 ÷ 총자산 × 100', source:'손익계산서·재무상태표',
+                       detail:d => `${eok(d?.pl?.net_income)} ÷ ${eok(d?.bs?.total_assets)} × 100 = ${fmt.pct(d?.ratios?.roa)}` },
+  roe:               { name:'ROE(지배)', desc:'지배주주 자본 대비 수익률. 주주 관점에서 가장 중요한 수익성 지표', formula:'지배주주귀속 순이익 ÷ 지배주주 지분 × 100', source:'손익계산서·재무상태표',
+                       detail:d => `${eok(d?.pl?.controlling_net_income)} ÷ ${eok(d?.bs?.controlling_equity)} × 100 = ${fmt.pct(d?.ratios?.roe)}` },
+  debt_ratio:        { name:'부채비율', desc:'자기자본 대비 부채 규모. 낮을수록 재무 안정성이 높음', formula:'총부채 ÷ 자기자본 × 100', source:'재무상태표',
+                       detail:d => `${eok(d?.bs?.total_liabilities)} ÷ ${eok(d?.bs?.total_equity)} × 100 = ${fmt.pct(d?.ratios?.debt_ratio)}` },
+  debt_ratio_ex_lease:{ name:'부채비율(리스제외)', desc:'리스부채(물류 차량·창고 임차 등)를 제외한 실질 차입 수준', formula:'(총부채 − 리스부채) ÷ 자기자본 × 100', source:'재무상태표',
+                       detail:d => `(${eok(d?.bs?.total_liabilities)} − 리스 ${eok(d?.bs?.lease_liabilities)}) ÷ ${eok(d?.bs?.total_equity)} × 100 = ${fmt.pct(d?.ratios?.debt_ratio_ex_lease)}` },
+  current_ratio:     { name:'유동비율', desc:'1년 내 갚아야 할 부채 대비 유동자산 비율. 100% 이상이면 단기 상환 여력 있음', formula:'유동자산 ÷ 유동부채 × 100', source:'재무상태표',
+                       detail:d => `${eok(d?.bs?.current_assets)} ÷ ${eok(d?.bs?.current_liabilities)} × 100 = ${fmt.pct(d?.ratios?.current_ratio)}` },
+  equity_ratio:      { name:'자기자본비율', desc:'전체 자산 중 자기자본 비중. 높을수록 부채 의존도가 낮아 안정적', formula:'자기자본 ÷ 총자산 × 100', source:'재무상태표',
+                       detail:d => `${eok(d?.bs?.total_equity)} ÷ ${eok(d?.bs?.total_assets)} × 100 = ${fmt.pct(d?.ratios?.equity_ratio)}` },
+  interest_coverage: { name:'이자보상비율', desc:'영업이익으로 이자를 몇 배 감당할 수 있는지. 1배 미만이면 이자도 못 내는 수준', formula:'영업이익 ÷ 이자비용', source:'손익계산서',
+                       detail:d => `${eok(d?.pl?.operating_income)} ÷ 이자비용 ${eok(d?.pl?.interest_expense)} = ${fmt.x(d?.ratios?.interest_coverage)}` },
+  borrowing_dependency:{ name:'차입금의존도', desc:'총자산 중 차입금 비중. 낮을수록 외부 자금 의존도가 낮음', formula:'(단기·장기차입금 + 유동성장기부채 + 사채) ÷ 총자산 × 100', source:'재무상태표',
+                       detail:d => `(단기 ${eok(d?.bs?.short_term_borrowings)} + 유동성장기 ${eok(d?.bs?.current_portion_lt_debt)} + 장기 ${eok(d?.bs?.long_term_borrowings)} + 사채 ${eok(d?.bs?.bonds_payable)}) ÷ ${eok(d?.bs?.total_assets)} × 100 = ${fmt.pct(d?.ratios?.borrowing_dependency)}` },
+  operating_cf_margin:{ name:'영업현금흐름/매출', desc:'매출 대비 실제 현금이 얼마나 들어오는지. 이익 대비 현금창출 질을 확인', formula:'영업활동현금흐름 ÷ 매출액 × 100', source:'현금흐름표·손익계산서',
+                       detail:d => `${eok(d?.cf?.operating_cf)} ÷ ${eok(d?.pl?.revenue)} × 100 = ${fmt.pct(d?.ratios?.operating_cf_margin)}` },
+};
+
+// ? 아이콘 생성 — 페이로드(설명/계산식/상세값/출처)를 data 속성에 담아 hover/click 동작
+function qmark(key, d) {
+  const m = METRIC_META[key];
+  if (!m) return '';
+  const payload = {
+    name: m.name, desc: m.desc || '', formula: m.formula || '',
+    source: m.source || '', detail: (m.detail && d) ? m.detail(d) : '',
+  };
+  const json = JSON.stringify(payload).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  return `<span class="qmark" data-tt="${json}" onmouseenter="tipShow(this)" onmouseleave="tipHide()" onclick="tipClick(event,this)">?</span>`;
+}
+
+function tipRender(p) {
+  document.getElementById('tt-name').textContent = p.name || '';
+  document.getElementById('tt-formula').textContent = p.formula || '—';
+  const descEl = document.getElementById('tt-desc');
+  descEl.textContent = p.desc || ''; descEl.style.display = p.desc ? 'block' : 'none';
+  document.getElementById('tt-detail').textContent = p.detail || '';
+  document.getElementById('tt-detail-wrap').style.display = p.detail ? 'block' : 'none';
+  const srcEl = document.getElementById('tt-source');
+  srcEl.textContent = p.source ? ('출처: ' + p.source) : '';
+  srcEl.style.display = p.source ? 'block' : 'none';
+}
+
+function tipPosition(el) {
+  const tt = document.getElementById('ratio-tt');
   const rect = el.getBoundingClientRect();
-  const ttW = 280;
+  const ttW = tt.offsetWidth || 280;
   let left = rect.left + window.scrollX;
   let top  = rect.top  + window.scrollY - tt.offsetHeight - 12;
   if (left + ttW > window.innerWidth - 10) left = window.innerWidth - ttW - 10;
+  if (left < 8) left = 8;
   if (top < window.scrollY + 8) top = rect.bottom + window.scrollY + 8;
   tt.style.left = left + 'px';
-  tt.style.top  = top  + 'px';
-  tt.classList.add('visible');
+  tt.style.top  = top + 'px';
 }
 
-function ratioTtHide() {
+function tipShow(el) {
+  const tt = document.getElementById('ratio-tt');
+  if (!tt) return;
+  if (_ttPinned && _ttPinnedEl !== el) return; // 고정 중이면 다른 아이콘 hover 무시
+  let p; try { p = JSON.parse(el.dataset.tt); } catch (e) { return; }
+  tipRender(p);
+  tt.classList.add('visible');
+  tipPosition(el);
+}
+
+function tipHide() {
   if (_ttPinned) return;
   const tt = document.getElementById('ratio-tt');
   if (tt) tt.classList.remove('visible');
 }
 
-function ratioTtClick(el, name, formula) {
-  if (_ttPinned && _ttPinnedEl === el) {
-    ratioTtUnpin(); return;
-  }
-  if (_ttPinned && _ttPinnedEl !== el) {
-    // 다른 항목 클릭 → 새 항목으로 전환
-    if (_ttPinnedEl) _ttPinnedEl.classList.remove('tt-pinned');
-  }
-  _ttPinned = true;
-  _ttPinnedEl = el;
-  el.classList.add('tt-pinned');
+function tipClick(ev, el) {
+  ev.stopPropagation();
+  if (_ttPinned && _ttPinnedEl === el) { ratioTtUnpin(); return; }
+  if (_ttPinnedEl) _ttPinnedEl.classList.remove('tt-pinned');
+  _ttPinned = true; _ttPinnedEl = el; el.classList.add('tt-pinned');
   const tt = document.getElementById('ratio-tt');
-  if (tt) { tt.classList.add('pinned'); ratioTtShow(el, name, formula); }
+  let p; try { p = JSON.parse(el.dataset.tt); } catch (e) { return; }
+  tipRender(p);
+  tt.classList.add('pinned', 'visible');
+  tipPosition(el);
 }
 
 function ratioTtUnpin() {
   _ttPinned = false;
   if (_ttPinnedEl) { _ttPinnedEl.classList.remove('tt-pinned'); _ttPinnedEl = null; }
   const tt = document.getElementById('ratio-tt');
-  if (tt) { tt.classList.remove('pinned', 'visible'); }
+  if (tt) tt.classList.remove('pinned', 'visible');
 }
 
 document.addEventListener('click', e => {
-  if (_ttPinned && !e.target.closest('#ratio-tt') && !e.target.closest('td.lbl')) {
-    ratioTtUnpin();
-  }
+  if (_ttPinned && !e.target.closest('#ratio-tt') && !e.target.closest('.qmark')) ratioTtUnpin();
 });
 document.addEventListener('scroll', () => {
-  if (_ttPinned && _ttPinnedEl) {
-    const name    = document.getElementById('tt-name')?.textContent;
-    const formula = document.getElementById('tt-formula')?.textContent;
-    ratioTtShow(_ttPinnedEl, name, formula);
-  }
+  if (_ttPinned && _ttPinnedEl) tipPosition(_ttPinnedEl);
 }, true);
 
 /* ── 정규화 도움말 ──────────────────────────────────────── */
@@ -1437,11 +1509,11 @@ LGL 매출 34,015 → 0.28배<br>
     div.innerHTML = `
       <div style="font-size:15px;font-weight:700;color:${co.color};margin-bottom:12px">${co.name}</div>
       <table class="ratio-table">
-        <tr><td>매출액 ${fmt.wonUnit()}</td><td class="num">${fmt.won(p.revenue)}</td></tr>
-        <tr><td>영업이익률</td><td class="num">${fmt.pct(r.operating_margin)} ${ragDot('operating_margin', r.operating_margin)}</td></tr>
-        <tr><td>ROE(지배)</td><td class="num">${fmt.pct(r.roe)} ${ragDot('roe', r.roe)}</td></tr>
-        <tr><td>부채비율</td><td class="num">${fmt.pct(r.debt_ratio)} ${ragDot('debt_ratio', r.debt_ratio)}</td></tr>
-        <tr><td>이자보상비율</td><td class="num">${fmt.x(r.interest_coverage)} ${ragDot('interest_coverage', r.interest_coverage)}</td></tr>
+        <tr><td>매출액 ${fmt.wonUnit()}${qmark('revenue', d)}</td><td class="num">${fmt.won(p.revenue)}</td></tr>
+        <tr><td>영업이익률${qmark('operating_margin', d)}</td><td class="num">${fmt.pct(r.operating_margin)} ${ragDot('operating_margin', r.operating_margin)}</td></tr>
+        <tr><td>ROE(지배)${qmark('roe', d)}</td><td class="num">${fmt.pct(r.roe)} ${ragDot('roe', r.roe)}</td></tr>
+        <tr><td>부채비율${qmark('debt_ratio', d)}</td><td class="num">${fmt.pct(r.debt_ratio)} ${ragDot('debt_ratio', r.debt_ratio)}</td></tr>
+        <tr><td>이자보상비율${qmark('interest_coverage', d)}</td><td class="num">${fmt.x(r.interest_coverage)} ${ragDot('interest_coverage', r.interest_coverage)}</td></tr>
       </table>
       ${d?.report_url ? `<div style="margin-top:8px"><a href="${d.report_url}" target="_blank" class="report-link">📄 ${d.source || ''}</a></div>` : ''}
     `;
@@ -1578,16 +1650,16 @@ function buildReportBody(selYear, fsDiv) {
   }
 
   const metrics = [
-    { label:'매출액 (억원)',    get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—', rag: false },
-    { label:'영업이익 (억원)',  get: d => d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8).toLocaleString('ko-KR') : '—', rag: false },
-    { label:'영업이익률 (%)',   get: d => d?.ratios?.operating_margin, metric:'operating_margin', rag: true },
-    { label:'순이익률 (%)',     get: d => d?.ratios?.net_margin,        metric:'net_margin',       rag: true },
-    { label:'ROE(지배) (%)',    get: d => d?.ratios?.roe,               metric:'roe',              rag: true },
-    { label:'ROA (%)',          get: d => d?.ratios?.roa,               metric:'roa',              rag: true },
-    { label:'부채비율 (%)',     get: d => d?.ratios?.debt_ratio,        metric:'debt_ratio',       rag: true },
-    { label:'유동비율 (%)',     get: d => d?.ratios?.current_ratio,     metric:'current_ratio',    rag: true },
-    { label:'이자보상비율 (배)', get: d => d?.ratios?.interest_coverage, metric:'interest_coverage', ragX: true },
-    { label:'차입금의존도 (%)', get: d => d?.ratios?.borrowing_dependency, metric:'borrowing_dependency', rag: true },
+    { label:'매출액 (억원)',    key:'revenue',          get: d => d?.pl?.revenue != null ? Math.round(d.pl.revenue/1e8).toLocaleString('ko-KR') : '—', rag: false },
+    { label:'영업이익 (억원)',  key:'operating_income', get: d => d?.pl?.operating_income != null ? Math.round(d.pl.operating_income/1e8).toLocaleString('ko-KR') : '—', rag: false },
+    { label:'영업이익률 (%)',   key:'operating_margin', get: d => d?.ratios?.operating_margin, metric:'operating_margin', rag: true },
+    { label:'순이익률 (%)',     key:'net_margin',       get: d => d?.ratios?.net_margin,        metric:'net_margin',       rag: true },
+    { label:'ROE(지배) (%)',    key:'roe',              get: d => d?.ratios?.roe,               metric:'roe',              rag: true },
+    { label:'ROA (%)',          key:'roa',              get: d => d?.ratios?.roa,               metric:'roa',              rag: true },
+    { label:'부채비율 (%)',     key:'debt_ratio',       get: d => d?.ratios?.debt_ratio,        metric:'debt_ratio',       rag: true },
+    { label:'유동비율 (%)',     key:'current_ratio',    get: d => d?.ratios?.current_ratio,     metric:'current_ratio',    rag: true },
+    { label:'이자보상비율 (배)', key:'interest_coverage', get: d => d?.ratios?.interest_coverage, metric:'interest_coverage', ragX: true },
+    { label:'차입금의존도 (%)', key:'borrowing_dependency', get: d => d?.ratios?.borrowing_dependency, metric:'borrowing_dependency', rag: true },
   ];
 
   const datas = CODES.map(c => getReportData(FIN.companies[c], selYear, fsDiv));
@@ -1600,7 +1672,7 @@ function buildReportBody(selYear, fsDiv) {
       if (m.ragX) return ragCellX(m.metric, val);
       return ragCell(m.metric, val);
     }).join('');
-    summaryRows += `<tr><td>${m.label}</td>${cells}</tr>`;
+    summaryRows += `<tr><td>${m.label}${qmark(m.key)}</td>${cells}</tr>`;
   });
 
   function trendTable(title, getter, isPct) {
