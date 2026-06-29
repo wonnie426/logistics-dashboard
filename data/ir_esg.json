@@ -1,0 +1,80 @@
+{
+  "updated_at": "2026-06-29",
+  "note": "각 사 홈페이지 IR/ESG 자료실에서 수집한 스냅샷. 직링크가 없는 항목은 회사 원본 페이지로 연결됩니다.",
+  "companies": {
+    "LGL": {
+      "name": "롯데글로벌로지스",
+      "esg": {
+        "source_url": "https://www.lotteglogis.com/home/csm/sustainability/report",
+        "items": [
+          { "title": "2025 지속가능경영보고서 (국문)", "date": "2025", "url": "https://www.lotteglogis.com/home/csm/sustainability/view?no=SR2026062983708" },
+          { "title": "2024 지속가능경영보고서 (국문)", "date": "2024", "url": "https://www.lotteglogis.com/home/csm/sustainability/view?no=SR2025062537962" },
+          { "title": "2024 Sustainability Report (ENG)", "date": "2024", "url": "https://www.lotteglogis.com/home/csm/sustainability/view?no=SR2025072851303" },
+          { "title": "2023 지속가능경영보고서 (국문)", "date": "2023", "url": "https://www.lotteglogis.com/home/csm/sustainability/view?no=SR2024062676178" }
+        ]
+      },
+      "ir": {
+        "source_url": "https://www.lotteglogis.com/home/company/invest/noticeList",
+        "items": [
+          { "title": "2026년 1분기 이사회·위원회 및 제38기 정기주주총회 개최 현황", "date": "2026.04.01", "url": "" },
+          { "title": "롯데글로벌로지스 제38기 결산공고(2025년)", "date": "2026.03.20", "url": "" },
+          { "title": "제38기 결산배당 기준일 공고", "date": "2026.03.06", "url": "" },
+          { "title": "2025년 4분기 이사회 및 위원회 개최 현황", "date": "2026.01.02", "url": "" }
+        ]
+      }
+    },
+    "CJ": {
+      "name": "CJ대한통운",
+      "esg": {
+        "source_url": "https://www.cjlogistics.com/ko/sustainability/report",
+        "items": [
+          { "title": "2024 지속가능경영보고서", "date": "2024", "url": "" },
+          { "title": "2023 지속가능경영보고서", "date": "2023", "url": "" },
+          { "title": "2022 지속가능경영보고서", "date": "2022", "url": "" },
+          { "title": "2022 기후변화대응보고서", "date": "2022", "url": "" },
+          { "title": "2021 지속가능경영보고서", "date": "2021", "url": "" },
+          { "title": "2019-2020 지속가능경영보고서", "date": "2020", "url": "" },
+          { "title": "2018-2019 지속가능경영보고서", "date": "2019", "url": "" },
+          { "title": "2017-2018 지속가능경영보고서", "date": "2018", "url": "" },
+          { "title": "2016-2017 지속가능경영보고서", "date": "2017", "url": "" }
+        ]
+      },
+      "ir": {
+        "source_url": "https://www.cjlogistics.com/ko/investment/disclosure-data",
+        "note": "이 페이지는 동적(SPA) 방식이라 목록 자동수집이 불가합니다. 아래 버튼으로 직접 확인하세요.",
+        "items": []
+      }
+    },
+    "HJ": {
+      "name": "한진",
+      "esg": {
+        "source_url": "https://www.hanjin.com/kor/CMS/Board/Board.do?mCode=MN153",
+        "items": [
+          { "title": "2025 Hanjin ESG Report (ENG)", "date": "2025.07.31", "url": "" },
+          { "title": "2025 Hanjin ESG Report (KOR)", "date": "2025.06.30", "url": "" },
+          { "title": "2024 Hanjin ESG Report (ENG)", "date": "2024.07.03", "url": "" },
+          { "title": "2024 Hanjin ESG Report (KOR)", "date": "2024.05.30", "url": "" },
+          { "title": "2023 Hanjin ESG Report (ENG)", "date": "2023.08.01", "url": "" },
+          { "title": "2023 Hanjin ESG Report (KOR)", "date": "2023.06.29", "url": "" },
+          { "title": "2022 Hanjin ESG Report (ENG)", "date": "2022.06.29", "url": "" },
+          { "title": "2022 Hanjin ESG Report (KOR)", "date": "2022.06.29", "url": "" }
+        ]
+      },
+      "ir": {
+        "source_url": "https://www.hanjin.com/kor/CMS/Board/Board.do?mCode=MN068",
+        "items": [
+          { "title": "2026년 1분기 IR Report", "date": "2026.05.21", "url": "" },
+          { "title": "2025년 4분기 IR Report", "date": "2026.03.25", "url": "" },
+          { "title": "2025년 3분기 IR Report", "date": "2026.03.25", "url": "" },
+          { "title": "2025년 2분기 IR Report", "date": "2025.08.26", "url": "" },
+          { "title": "2025년 1분기 IR Report", "date": "2025.05.23", "url": "" },
+          { "title": "2024년 4분기 IR Report", "date": "2025.03.31", "url": "" },
+          { "title": "2024년 3분기 IR Report", "date": "2025.03.31", "url": "" },
+          { "title": "2024년 2분기 IR Report", "date": "2025.03.31", "url": "" },
+          { "title": "2024년 1분기 IR Report", "date": "2024.05.16", "url": "" },
+          { "title": "2023년 4분기 IR Report", "date": "2024.03.20", "url": "" }
+        ]
+      }
+    }
+  }
+}

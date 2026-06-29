@@ -133,6 +133,22 @@
     .seg-table td.seg-name { font-weight: 600; }
     .seg-table td.seg-note { font-size: 11px; color: var(--text-sub); white-space: normal; word-break: keep-all; }
     .source-label { font-size: 11px; color: var(--text-sub); }
+    /* IR/ESG 탭 */
+    .iresg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .iresg-col-head { display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 14px; padding-bottom: 8px; margin-bottom: 10px;
+      border-bottom: 2px solid var(--border); }
+    .iresg-src { font-size: 11px; font-weight: 500; color: var(--text-sub); text-decoration: none; white-space: nowrap; }
+    .iresg-src:hover { text-decoration: underline; }
+    .iresg-list { list-style: none; margin: 0; padding: 0; }
+    .iresg-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+      padding: 8px 4px; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .iresg-list li:last-child { border-bottom: none; }
+    .iresg-list a { color: var(--text); text-decoration: none; }
+    .iresg-list a:hover { text-decoration: underline; }
+    .iresg-date { color: var(--text-sub); font-size: 12px; white-space: nowrap; }
+    .iresg-empty { font-size: 12px; color: var(--text-sub); padding: 8px 4px; line-height: 1.5; }
+    @media (max-width: 768px) { .iresg-grid { grid-template-columns: 1fr; } }
     .report-link { color: var(--text-sub); text-decoration: none; font-size: 11px; margin-left: 4px; }
     .report-link:hover { color: var(--text); }
     .compare-controls { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
@@ -389,6 +405,7 @@
   <button class="tab-btn" data-tab="CJ"  data-company="CJ">CJ대한통운</button>
   <button class="tab-btn" data-tab="HJ"   data-company="HJ">한진</button>
   <button class="tab-btn" data-tab="dart">공시자료</button>
+  <button class="tab-btn" data-tab="iresg">IR/ESG</button>
 </nav>
 
 <main class="content">
@@ -398,6 +415,7 @@
   <div id="tab-CJ"      class="tab-panel"></div>
   <div id="tab-HJ"      class="tab-panel"></div>
   <div id="tab-dart"    class="tab-panel"></div>
+  <div id="tab-iresg"   class="tab-panel"></div>
 </main>
 
 <!-- 재무비율 팝업 -->
@@ -436,7 +454,7 @@ function toggleUnit() {
   renderActiveTab();
 }
 
-let FIN = null, SEG = null, THRESH = null, IND_AVG = null;
+let FIN = null, SEG = null, THRESH = null, IND_AVG = null, IRESG = null;
 let activeTab = 'compare';
 let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
 let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
@@ -507,11 +525,12 @@ function segQuarterVal(segMap, fs, period, segName, field, qMode) {
 async function loadData() {
   try {
     const cb = '?v=' + Date.now();
-    [FIN, SEG, THRESH, IND_AVG] = await Promise.all([
+    [FIN, SEG, THRESH, IND_AVG, IRESG] = await Promise.all([
       fetch('data/financial_data.json' + cb).then(r => r.json()),
       fetch('data/segment_data.json' + cb).then(r => r.json()),
       fetch('data/thresholds.json' + cb).then(r => r.json()),
       fetch('data/industry_avg.json' + cb).then(r => r.json()),
+      fetch('data/ir_esg.json' + cb).then(r => r.json()).catch(() => null),
     ]);
     initUI();
   } catch (e) {
@@ -1778,7 +1797,65 @@ function renderActiveTab() {
   if (activeTab === 'compare') renderCompareTab();
   else if (activeTab === 'report') renderReportTab();
   else if (activeTab === 'dart') renderDartTab();
+  else if (activeTab === 'iresg') renderIrEsgTab();
   else renderCompanyTab(activeTab);
+}
+
+// ── IR/ESG 탭 ──────────────────────────────────────────────────────────────
+function renderIrEsgTab() {
+  const el = $('tab-iresg');
+  if (!IRESG || !IRESG.companies) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-sub)">IR/ESG 자료를 불러오지 못했습니다.</div>';
+    return;
+  }
+  const CODES = ['LGL','CJ','HJ'];
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function listBlock(title, block, color) {
+    const src = block?.source_url || '';
+    const items = block?.items || [];
+    let rows;
+    if (!items.length) {
+      const note = block?.note || '자동 수집된 목록이 없습니다.';
+      rows = `<div class="iresg-empty">${esc(note)}</div>`;
+    } else {
+      rows = `<ul class="iresg-list">` + items.map(it => {
+        const link = it.url || src;
+        const dt = it.date ? `<span class="iresg-date">${esc(it.date)}</span>` : '';
+        return `<li><a href="${esc(link)}" target="_blank" rel="noopener">${esc(it.title)}</a>${dt}</li>`;
+      }).join('') + `</ul>`;
+    }
+    return `
+      <div class="iresg-col">
+        <div class="iresg-col-head" style="border-color:${color}">
+          <span>${title}</span>
+          ${src ? `<a class="iresg-src" href="${esc(src)}" target="_blank" rel="noopener">사이트 바로가기 ↗</a>` : ''}
+        </div>
+        ${rows}
+      </div>`;
+  }
+
+  const cards = CODES.map(code => {
+    const co = IRESG.companies[code];
+    if (!co) return '';
+    const color = (FIN?.companies?.[code]?.color) || '#003087';
+    return `
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title" style="color:${color}">${esc(co.name || code)}</div>
+        <div class="iresg-grid">
+          ${listBlock('ESG · 지속가능경영보고서', co.esg, color)}
+          ${listBlock('IR 자료', co.ir, color)}
+        </div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="margin-bottom:12px;color:var(--text-sub);font-size:12px">
+      각 사 홈페이지 IR/ESG 자료실에서 수집한 목록입니다. 항목 클릭 시 원본 페이지로 이동합니다.
+      ${IRESG.updated_at ? ` · 수집일: ${esc(IRESG.updated_at)}` : ''}
+    </div>
+    ${cards}`;
 }
 
 function toggleTheme() {
