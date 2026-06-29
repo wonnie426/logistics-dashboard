@@ -119,6 +119,16 @@
     .fin-table tr:last-child td { border-bottom: none; }
     .fin-table tr:hover td { background: var(--bg); }
     .fin-table-wrap { overflow-x: auto; }
+    .fin-table tr.fin-sec td { background: var(--bg); font-weight: 700; font-size: 11px;
+                    color: var(--text-sub); text-align: left; letter-spacing: 0.5px; }
+    .fin-table td.fin-sub:first-child { font-weight: 400; color: var(--text-sub); padding-left: 22px; }
+    /* 재무제표 뷰어 탭 */
+    .stmt-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .stmt-tab { padding: 7px 14px; border: none; background: none; cursor: pointer; font-size: 13px;
+                color: var(--text-sub); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .stmt-tab:hover { color: var(--text); }
+    .stmt-tab.active { color: #1e40af; font-weight: 600; border-bottom-color: #1e40af; }
+    .fin-table td.stmt-sub:first-child { font-weight: 400; color: var(--text-sub); padding-left: 26px; }
     .ratio-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .ratio-table th { text-align: left; padding: 8px 12px; background: var(--bg);
                       font-weight: 600; color: var(--text-sub); border-bottom: 1px solid var(--border); }
@@ -774,19 +784,29 @@ function renderCompanyTab(code) {
 
   // 재무요약 테이블 (네이버금융 스타일)
   const periodKeys = keys.slice(-8);
-  // isPct: 'pct' | 'x' | false(won)
+  // 계산 헬퍼 (DART 저장값 기반)
+  const sumBorrow = d => { const b=[d?.bs?.short_term_borrowings,d?.bs?.current_portion_lt_debt,d?.bs?.long_term_borrowings,d?.bs?.bonds_payable]; return b.some(x=>x!=null) ? b.reduce((s,x)=>s+(x||0),0) : null; };
+  const ebitdaOf = d => (d?.pl?.operating_income!=null && d?.pl?.depreciation!=null) ? d.pl.operating_income + d.pl.depreciation : null;
+  const borrowDepExLease = d => { const td=sumBorrow(d), ta=d?.bs?.total_assets; return (td!=null && ta) ? td/ta*100 : null; };
+  const arDays = d => { const ar=d?.bs?.trade_receivables, rev=d?.pl?.revenue; return (ar!=null && rev) ? 365*ar/rev : null; };
+  // valType: 'pct' | 'x' | 'days' | false(억원)
   function finRow(label, getter, valType, metric) {
     const cells = periodKeys.map(k => {
       const v = getter(dataMap[k]);
       const rag = metric ? ragDot(metric, v) : '';
       let txt;
       if (v == null) txt = '<span style="color:var(--text-sub)">—</span>';
-      else if (valType === 'pct') txt = fmt.pct(v);
-      else if (valType === 'x')   txt = fmt.x(v);
-      else                        txt = fmt.won(v);
+      else if (valType === 'pct')  txt = fmt.pct(v);
+      else if (valType === 'x')    txt = fmt.x(v);
+      else if (valType === 'days')  txt = v.toFixed(1) + '일';
+      else                          txt = fmt.won(v);
       return `<td>${txt}${rag}</td>`;
     }).join('');
-    return `<tr><td>${label}</td>${cells}</tr>`;
+    const sub = label.startsWith('·');
+    return `<tr><td class="${sub?'fin-sub':''}">${label}</td>${cells}</tr>`;
+  }
+  function finSec(label) {
+    return `<tr class="fin-sec"><td colspan="${periodKeys.length+1}">${label}</td></tr>`;
   }
   const wu = fmt.wonUnit();
   const finTableHtml = `
@@ -799,13 +819,28 @@ function renderCompanyTab(code) {
             ${periodKeys.map(k => `<th>${k}</th>`).join('')}
           </tr></thead>
           <tbody>
+            ${finSec('손익 (PL)')}
             ${finRow(`매출액 ${wu}`,     d => d?.pl?.revenue,           false)}
             ${finRow(`영업이익 ${wu}`,   d => d?.pl?.operating_income,  false)}
-            ${finRow(`당기순이익 ${wu}`, d => d?.pl?.net_income,        false)}
             ${finRow('영업이익률(%)',    d => d?.ratios?.operating_margin, 'pct', 'operating_margin')}
-            ${finRow('ROE(%)',          d => d?.ratios?.roe,            'pct', 'roe')}
+            ${finRow(`당기순이익 ${wu}`, d => d?.pl?.net_income,        false)}
+            ${finRow('당기순이익률(%)',  d => d?.ratios?.net_margin,     'pct', 'net_margin')}
+            ${finRow(`EBITDA ${wu}`,    ebitdaOf,                      false)}
+            ${finRow('ROA(%)',          d => d?.ratios?.roa,            'pct', 'roa')}
+            ${finRow('ROE(지배)(%)',     d => d?.ratios?.roe,            'pct', 'roe')}
+            ${finRow('이자보상배율(배)', d => d?.ratios?.interest_coverage ?? null, 'x')}
+            ${finSec('재무상태 (BS)')}
+            ${finRow(`자산총계 ${wu}`,   d => d?.bs?.total_assets,      false)}
+            ${finRow(`·현금및현금성자산 ${wu}`, d => d?.bs?.cash_and_equivalents, false)}
+            ${finRow(`부채총계 ${wu}`,   d => d?.bs?.total_liabilities, false)}
+            ${finRow(`·차입금 ${wu}`,    sumBorrow,                     false)}
+            ${finRow(`·리스부채 ${wu}`,  d => d?.bs?.lease_liabilities, false)}
+            ${finRow(`자본총계 ${wu}`,   d => d?.bs?.total_equity,      false)}
             ${finRow('부채비율(%)',      d => d?.ratios?.debt_ratio,     'pct', 'debt_ratio')}
-            ${finRow('이자보상비율(배)', d => d?.ratios?.interest_coverage ?? null, 'x')}
+            ${finRow('·부채비율(리스제외)(%)', d => d?.ratios?.debt_ratio_ex_lease, 'pct')}
+            ${finRow('차입금의존도(%)',  d => d?.ratios?.borrowing_dependency, 'pct', 'borrowing_dependency')}
+            ${finRow('·차입금의존도(리스제외)(%)', borrowDepExLease, 'pct')}
+            ${finRow('매출채권회전일수', arDays, 'days')}
           </tbody>
         </table>
       </div>
@@ -876,6 +911,7 @@ function renderCompanyTab(code) {
       ${sc('이자보상비율', fmt.x(r.interest_coverage), '', 'interest_coverage', r.interest_coverage, 'interest_coverage', ld)}
     </div>
     ${finTableHtml}
+    ${stmtViewer(code, dataMap, periodKeys, wu)}
     ${stockHtml}
     <div class="chart-grid">
       <div class="card">
@@ -1097,6 +1133,60 @@ function ratioTable(code, fs, pMode, latest) {
     });
   }
   return html + '</tbody></table></div>';
+}
+
+// ── 재무제표 뷰어 (재무상태표/손익/포괄손익/자본변동/현금흐름) ──
+// [라벨, 필드, 그룹(bs/pl/cf), 들여쓰기레벨]
+const STMT_DEFS = [
+  ['BS','재무상태표',[
+    ['자산총계','total_assets','bs',0], ['유동자산','current_assets','bs',1], ['비유동자산','non_current_assets','bs',1],
+    ['현금및현금성자산','cash_and_equivalents','bs',1], ['매출채권','trade_receivables','bs',1], ['재고자산','inventory','bs',1],
+    ['부채총계','total_liabilities','bs',0], ['유동부채','current_liabilities','bs',1], ['비유동부채','non_current_liabilities','bs',1],
+    ['단기차입금','short_term_borrowings','bs',1], ['유동성장기부채','current_portion_lt_debt','bs',1], ['장기차입금','long_term_borrowings','bs',1],
+    ['사채','bonds_payable','bs',1], ['리스부채','lease_liabilities','bs',1],
+    ['자본총계','total_equity','bs',0], ['지배주주지분','controlling_equity','bs',1],
+  ]],
+  ['IS','손익계산서',[
+    ['매출액','revenue','pl',0], ['매출원가','cost_of_revenue','pl',1], ['매출총이익','gross_profit','pl',0],
+    ['판매비와관리비','sga','pl',1], ['영업이익','operating_income','pl',0], ['이자비용(금융원가)','interest_expense','pl',1],
+    ['당기순이익','net_income','pl',0], ['지배주주순이익','controlling_net_income','pl',1],
+  ]],
+  ['CIS','포괄손익계산서',[
+    ['당기순이익','net_income','pl',0],
+  ],'기타포괄손익·총포괄손익 등 상세 항목은 DART 전체재무제표 수집 후 표시됩니다.'],
+  ['SCE','자본변동표',[
+    ['자본총계(기말)','total_equity','bs',0], ['지배주주지분(기말)','controlling_equity','bs',1],
+  ],'자본의 변동내역(유상증자·배당·이익잉여금 등) 상세는 DART 전체재무제표 수집 후 표시됩니다.'],
+  ['CF','현금흐름표',[
+    ['영업활동현금흐름','operating_cf','cf',0], ['투자활동현금흐름','investing_cf','cf',0],
+    ['재무활동현금흐름','financing_cf','cf',0], ['이자지급','interest_paid','cf',1],
+  ]],
+];
+function stmtSwitch(code, sj, btn) {
+  document.querySelectorAll('#stmt-' + code + ' .stmt-panel').forEach(p => { p.style.display = (p.dataset.sj === sj) ? 'block' : 'none'; });
+  btn.parentElement.querySelectorAll('.stmt-tab').forEach(b => b.classList.toggle('active', b === btn));
+}
+function stmtViewer(code, dataMap, periodKeys, wu) {
+  const miss = '<span style="color:var(--text-sub)">—</span>';
+  const panels = STMT_DEFS.map(([sj, title, rows, note], pi) => {
+    const body = rows.map(([lbl, field, grp, lvl]) => {
+      const cells = periodKeys.map(k => { const v = dataMap[k]?.[grp]?.[field]; return `<td>${v != null ? fmt.won(v) : miss}</td>`; }).join('');
+      return `<tr><td class="${lvl ? 'stmt-sub' : ''}">${lbl}</td>${cells}</tr>`;
+    }).join('');
+    return `<div class="stmt-panel" data-sj="${sj}" style="display:${pi === 0 ? 'block' : 'none'}">
+      <div class="fin-table-wrap"><table class="fin-table">
+        <thead><tr><th>항목 (${wu})</th>${periodKeys.map(k => `<th>${k}</th>`).join('')}</tr></thead>
+        <tbody>${body}</tbody></table></div>
+      ${note ? `<div class="source-label" style="margin-top:8px">※ ${note}</div>` : ''}
+    </div>`;
+  }).join('');
+  return `<div class="card" id="stmt-${code}" style="margin-bottom:24px">
+    <div class="card-title">재무제표 (연도/분기별)</div>
+    <div class="stmt-tabs">
+      ${STMT_DEFS.map(([sj, title], i) => `<button class="stmt-tab ${i === 0 ? 'active' : ''}" onclick="stmtSwitch('${code}','${sj}',this)">${title}</button>`).join('')}
+    </div>
+    ${panels}
+  </div>`;
 }
 
 function downloadRatioExcel(code, period) {
