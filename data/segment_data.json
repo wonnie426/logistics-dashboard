@@ -69,30 +69,40 @@
       }
     },
     "HJ": {
-      "segments": ["택배", "글로벌", "물류"],
+      "segments": ["물류", "택배", "글로벌", "에너지"],
       "annual": {
         "2023": {
           "CFS": {
             "source": "2023년 사업보고서",
+            "물류": { "revenue": null, "operating_income": null, "note": null },
             "택배": { "revenue": null, "operating_income": null, "note": null },
             "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "물류": { "revenue": null, "operating_income": null, "note": null }
+            "에너지": { "revenue": null, "operating_income": null, "note": null }
           }
         },
         "2024": {
           "CFS": {
             "source": "2024년 사업보고서",
+            "물류": { "revenue": null, "operating_income": null, "note": null },
             "택배": { "revenue": null, "operating_income": null, "note": null },
             "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "물류": { "revenue": null, "operating_income": null, "note": null }
+            "에너지": { "revenue": null, "operating_income": null, "note": null }
           }
         },
         "2025": {
           "CFS": {
-            "source": "2025년 사업보고서",
-            "택배": { "revenue": null, "operating_income": null, "note": null },
-            "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "물류": { "revenue": null, "operating_income": null, "note": null }
+            "source": "2025년 사업보고서 (연결재무제표 주석 5-1 영업부문정보, 2026.03.16 제출)",
+            "물류": { "revenue": 833413000000,  "operating_income": 85585000000, "note": "연결 주석 5-1 · 수익 854,387 − 부문간제거 20,974 = 833,413 (영업이익 94,545 − 미분류 제거 8,960 = 85,585, 백만원)" },
+            "택배": { "revenue": 1351238000000, "operating_income": 10843000000, "note": "연결 주석 5-1 영업부문정보 · 부문간 제거 없음 (백만원)" },
+            "글로벌": { "revenue": 663585000000,  "operating_income": 16022000000, "note": "연결 주석 5-1 · 수익 767,644 − 부문간제거 104,059 = 663,585 (백만원)" },
+            "에너지": { "revenue": 216689000000,  "operating_income": -254000000,  "note": "연결 주석 5-1 영업부문정보 · 부문간 제거 없음 (백만원)" }
+          },
+          "SFS": {
+            "source": "2025년 사업보고서 (별도 재무제표 주석 5-1 영업부문정보, 2026.03.16 제출)",
+            "물류": { "revenue": 544210000000,  "operating_income": 11557000000, "note": "재무제표 주석 5-1 영업부문정보 (별도) · 수익(매출액)/영업이익 (백만원)" },
+            "택배": { "revenue": 1351238000000, "operating_income": 10844000000, "note": "재무제표 주석 5-1 영업부문정보 (별도) · 수익(매출액)/영업이익 (백만원)" },
+            "글로벌": { "revenue": 277444000000,  "operating_income": 6683000000,  "note": "재무제표 주석 5-1 영업부문정보 (별도) · 수익(매출액)/영업이익 (백만원)" },
+            "에너지": { "revenue": 216689000000,  "operating_income": -254000000,  "note": "재무제표 주석 5-1 영업부문정보 (별도) · 수익(매출액)/영업이익 (백만원)" }
           }
         }
       }
