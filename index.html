@@ -1230,6 +1230,23 @@ function stmtSwitch(code, sj, btn) {
   document.querySelectorAll('#stmt-' + code + ' .stmt-panel').forEach(p => { p.style.display = (p.dataset.sj === sj) ? 'block' : 'none'; });
   btn.parentElement.querySelectorAll('.stmt-tab').forEach(b => b.classList.toggle('active', b === btn));
 }
+// 재무제표 표준 표시 순서 (DART의 ord가 부정확해 항목명 prefix로 재정렬)
+const STMT_ORDER = {
+  IS: ['매출액','매출원가','매출총이익','판매비와관리비','기타의대손','대손상각비','영업이익','기타수익','기타비용','금융수익','금융비용','지분법','종속기업','관계기업','법인세비용차감전','법인세비용','당기순이익','지배기업','비지배','기본주당','희석주당'],
+  CIS: ['당기순이익','당기 세후','세후 기타포괄','당기손익으로 재분류되지 않','확정급여','기타포괄손익-공정가치','당기손익으로 재분류 될 수','지분법자본변동','파생상품','해외사업환산손익','비지배지분 해외사업','당기 총포괄','총포괄','지배기업','비지배지분'],
+  BS: ['유동자산','현금및현금성자산','매출채권','리스채권','당기법인세자산','재고자산','기타금융자산','기타유동자산','비유동자산','유형자산','사용권자산','무형자산','투자부동산','관계기업투자','순확정급여자산','이연법인세자산','장기기타금융자산','기타비유동자산','자산총계','유동부채','매입채무','단기차입금','유동성장기부채','리스부채','당기법인세부채','기타금융부채','기타유동부채','비유동부채','장기차입금','사채','순확정급여부채','이연법인세부채','장기기타금융부채','기타비유동부채','부채총계','자본금','주식발행초과금','이익잉여금','기타자본구성요소','지배기업','비지배지분','자본총계','부채와자본총계'],
+  CF: ['영업활동','영업에서 창출','이자의 수취','이자의 지급','배당금의 수취','법인세의 납부','투자활동','당기손익-공정가치측정금융자산','기타포괄손익-공정가치측정금융자산','종속기업투자주식의 처분','매각예정자산','유형자산','무형자산','사용권자산','기타금융자산','장기기타금융자산','리스채권','연결대상 범위변동','재무활동','단기차입금','장기차입금','사채','유동성장기부채','비유동성금융부채','리스부채','예수보증금','종속기업 유상증자','배당금의 지급','현금및현금성자산의 증가','현금및현금성자산의 환율','기초 현금','기말 현금'],
+};
+function orderStmtRows(sj, rows) {
+  const tpl = STMT_ORDER[sj];
+  if (!tpl) return rows;
+  return rows.map((it, oi) => {
+    let idx = tpl.findIndex(k => String(it.l).startsWith(k));
+    if (idx < 0) idx = 9000;
+    return { it, idx, oi };
+  }).sort((a, b) => a.idx - b.idx || a.oi - b.oi).map(x => x.it);
+}
+
 // 자본변동표 등 XBRL 라벨 정리 ([member]/[구성요소] 태그 제거, 차원은 최종 구성요소만)
 function cleanStmtLabel(l) {
   let s = String(l).replace(/\s*\[(member|구성요소)\]/gi, '');
@@ -1256,6 +1273,7 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
     let body, srcNote = note;
     if (canon) {
       srcNote = null;
+      canon = orderStmtRows(sj, canon);
       body = canon.map(item => {
         const cells = periodKeys.map(k => {
           const arr = stmtMap[k]?.[sj];
