@@ -257,6 +257,7 @@
     .yoy-up   { color: #16a34a; }
     .yoy-down { color: #dc2626; }
     .yoy-flat { color: var(--text-sub); }
+    .ratio-table-v2 td.desc-col { font-size: 11.5px; color: var(--text-sub); }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -1030,6 +1031,15 @@ const RATIO_GROUPS = [
   ]],
 ];
 const GROWTH_KEYS = { revenue_growth:['pl','revenue'], op_growth:['pl','operating_income'], ni_growth:['pl','net_income'], asset_growth:['bs','total_assets'], equity_growth:['bs','total_equity'] };
+// 항목별 한 줄 의미 (설명 컬럼)
+const SHORT_DESC = {
+  operating_margin:'본업 수익성', ebitda_margin:'현금 영업창출력', net_margin:'최종 이익률', roa:'자산 활용 효율', roe:'주주자본 수익률',
+  revenue_growth:'매출 성장률', op_growth:'영업이익 성장률', ni_growth:'순이익 성장률', asset_growth:'자산 성장률', equity_growth:'자본 성장률',
+  debt_ratio:'부채 부담(낮을수록 안정)', debt_ratio_ex_lease:'리스 제외 부채부담', current_ratio:'단기 상환력', equity_ratio:'자본 안정성',
+  interest_coverage:'이자 감당력(배)', borrowing_dependency:'차입 의존도',
+  asset_turnover:'자산 회전 효율', receivable_turnover:'매출채권 회수속도', inventory_turnover:'재고 회전속도', equity_turnover:'자본 회전 효율',
+  operating_cf_margin:'현금창출 질',
+};
 
 function ratioTable(code, fs, pMode, latest) {
   const co = FIN.companies[code];
@@ -1055,7 +1065,7 @@ function ratioTable(code, fs, pMode, latest) {
     : (curr.source ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${curr.source}</div>` : '');
 
   let html = srcLink + `<table class="ratio-table-v2">
-    <thead><tr><th style="width:60px">구분</th><th>항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 설명)</span></th><th class="num" style="width:90px">값</th><th class="yoy">${yoyLabel}</th></tr></thead><tbody>`;
+    <thead><tr><th style="width:56px">구분</th><th style="width:130px">항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 상세)</span></th><th>설명</th><th class="num" style="width:84px">값</th><th class="yoy">${yoyLabel}</th></tr></thead><tbody>`;
   for (const [sec, items] of RATIO_GROUPS) {
     items.forEach(([key, lbl, type, ragMetric], i) => {
       const v = mc[key], pv = mp[key];
@@ -1063,6 +1073,7 @@ function ratioTable(code, fs, pMode, latest) {
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
         <td class="lbl">${lbl}${icon}</td>
+        <td class="desc-col">${SHORT_DESC[key] || ''}</td>
         <td class="num">${fmtVal(v, type)} ${ragMetric ? ragDot(ragMetric, v) : ''}</td>
         <td class="yoy">${fmtYoY(v, pv, type)}</td>
       </tr>`;
@@ -1292,13 +1303,15 @@ function tipRender(p) {
 
 function tipPosition(el) {
   const tt = document.getElementById('ratio-tt');
-  const rect = el.getBoundingClientRect();
+  const rect = el.getBoundingClientRect();         // 뷰포트 기준 좌표
   const ttW = tt.offsetWidth || 280;
-  let left = rect.left + window.scrollX;
-  let top  = rect.top  + window.scrollY - tt.offsetHeight - 12;
+  const ttH = tt.offsetHeight || 160;
+  // position:fixed 이므로 scrollX/Y를 더하지 않는다 (뷰포트 기준)
+  let left = rect.left;
+  let top  = rect.top - ttH - 12;                  // 아이콘 위쪽
   if (left + ttW > window.innerWidth - 10) left = window.innerWidth - ttW - 10;
   if (left < 8) left = 8;
-  if (top < window.scrollY + 8) top = rect.bottom + window.scrollY + 8;
+  if (top < 8) top = rect.bottom + 12;             // 위 공간 부족하면 아래로
   tt.style.left = left + 'px';
   tt.style.top  = top + 'px';
 }
