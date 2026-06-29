@@ -848,11 +848,11 @@ function renderCompanyTab(code) {
           <canvas id="c-${code}-seg-o"></canvas>
         </div>
       </div>
-      ${segTable(code)}
+      ${segTable(code, fs)}
     </div>
   `;
 
-  renderCompanyCharts(code, dataMap, keys, color, seg);
+  renderCompanyCharts(code, dataMap, keys, color, seg, fs);
 }
 
 function sc(label, value, chgHtml, metric, val) {
@@ -959,14 +959,17 @@ function downloadRatioExcel(code, period) {
   XLSX.writeFile(wb, `재무비율_${co.name}_${period}_${fs}.xlsx`);
 }
 
-function segTable(code) {
+function segTable(code, fs) {
+  fs = fs || 'CFS';
+  const fsLabel = fs === 'SFS' ? '별도기준' : '연결기준';
   const seg = SEG.companies[code];
   if (!seg) return '<p style="color:var(--text-sub);font-size:13px">사업부문 데이터 없음</p>';
-  const years = Object.keys(seg.annual || {}).sort();
-  if (!years.length) return '<p style="color:var(--text-sub);font-size:13px">사업부문 데이터 없음</p>';
+  // 해당 기준(fs) 데이터가 있는 연도만
+  const years = Object.keys(seg.annual || {}).filter(y => seg.annual[y]?.[fs]).sort();
+  if (!years.length) return `<p style="color:var(--text-sub);font-size:13px">${fsLabel} 사업부문 데이터 없음</p>`;
   const latest = years[years.length - 1];
-  const data   = seg.annual[latest] || {};
-  let html = `<div class="source-label" style="margin:12px 0 8px">${data.source || ''}</div>`;
+  const data   = seg.annual[latest]?.[fs] || {};
+  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}]</b> ${data.source || ''}</div>`;
   html += `<table class="ratio-table"><thead><tr><th>부문</th><th class="num">매출액</th><th class="num">영업이익</th><th>주석</th></tr></thead><tbody>`;
   for (const name of seg.segments) {
     const d = data[name] || {};
@@ -981,7 +984,8 @@ function segTable(code) {
   return html + '</tbody></table>';
 }
 
-function renderCompanyCharts(code, dataMap, keys, color, seg) {
+function renderCompanyCharts(code, dataMap, keys, color, seg, fs) {
+  fs = fs || 'CFS';
   const alpha = color + '33';
   const avail = Object.keys(IND_AVG).filter(k => k !== 'note' && k !== 'source');
 
@@ -1008,16 +1012,16 @@ function renderCompanyCharts(code, dataMap, keys, color, seg) {
   ]);
 
   if (seg?.annual) {
-    const segYears = Object.keys(seg.annual).sort();
+    const segYears = Object.keys(seg.annual).filter(y => seg.annual[y]?.[fs]).sort();
     const palette  = segPalette(color, (seg.segments||[]).length);
     makeBarChart(`c-${code}-seg-r`, segYears, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segYears.map(y => seg.annual[y]?.[n]?.revenue ?? null),
+      data: segYears.map(y => seg.annual[y]?.[fs]?.[n]?.revenue ?? null),
       backgroundColor: palette[i % palette.length],
     })));
     makeBarChart(`c-${code}-seg-o`, segYears, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segYears.map(y => seg.annual[y]?.[n]?.operating_income ?? null),
+      data: segYears.map(y => seg.annual[y]?.[fs]?.[n]?.operating_income ?? null),
       backgroundColor: palette[i % palette.length],
     })));
   }
