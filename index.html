@@ -586,10 +586,12 @@ function toggleUnit() {
 
 let FIN = null, SEG = null, THRESH = null, IND_AVG = null, IRESG = null, STMT = null;
 let activeTab = 'compare';
-let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual' };
-let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS' };
-let yearSel = { LGL: null, CJ: null, HJ: null }; // null = 최신연도
-let segQMode = { LGL:'cumulative', CJ:'cumulative', HJ:'cumulative' }; // 분기 부문: cumulative(누적)/single(단일분기)
+let periodMode = { LGL:'annual', CJ:'annual', HJ:'annual', HGL:'annual' };
+let fsMode  = { LGL:'CFS', CJ:'CFS', HJ:'CFS', HGL:'CFS' };
+let yearSel = { LGL: null, CJ: null, HJ: null, HGL: null }; // null = 최신연도
+let segQMode = { LGL:'cumulative', CJ:'cumulative', HJ:'cumulative', HGL:'cumulative' }; // 분기 부문: cumulative(누적)/single(단일분기)
+let cmpPeriodMode = 'annual'; // 'annual' | 'quarterly'
+let cmpFsMode = 'CFS';
 const charts = {};
 
 function setYear(code, year) {
@@ -1526,7 +1528,7 @@ const customBuilderState = {
   CJ:      { metrics:['pl.revenue'], chartType:'bar'  },
   HJ:      { metrics:['pl.revenue'], chartType:'bar'  },
   HGL:     { metrics:['pl.revenue'], chartType:'bar'  },
-  compare: { metric:'pl.revenue',   chartType:'line' },
+  compare: { metrics:['pl.revenue'], chartType:'line' },
 };
 
 function getMetricValue(d, key) {
@@ -1621,6 +1623,7 @@ function customBuilderHtml(code) {
 }
 
 function buildCustomChart(code) {
+  if (code === 'compare') { buildCustomChartCompare(); return; }
   const state = customBuilderState[code];
   const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
   if (!ms.length) return;
@@ -1643,10 +1646,10 @@ function buildCustomChart(code) {
     const c = ms.length === 1 ? color : PALETTE[i % PALETTE.length];
     if (dual) {
       if (m.type === 'won') {
-        return { type: 'bar', label: m.label, data, backgroundColor: c, maxBarThickness: 48, yAxisID: 'y' };
+        return { type: 'bar', label: m.label, data, backgroundColor: c, maxBarThickness: 48, yAxisID: 'y', order: 2 };
       } else {
         return { type: 'line', label: m.label, data, borderColor: c, backgroundColor: c+'22',
-                 yAxisID: 'y1', tension: 0.3, pointRadius: 4, spanGaps: false };
+                 yAxisID: 'y1', tension: 0.3, pointRadius: 4, spanGaps: false, order: 1 };
       }
     }
     const yAxisID = 'y';
@@ -1712,7 +1715,7 @@ function buildCustomChart(code) {
     },
     plugins: pluginList
   });
-  charts[canvasId].$showValues = true;
+  charts[canvasId].$showValues = !dual;
   charts[canvasId].$labelFmt = primaryFmt;
 
   // 등간격 테이블
@@ -1907,95 +1910,154 @@ const CMP_NAMES  = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'�
 
 function cmpBuilderHtml() {
   const state = customBuilderState.compare;
-  const legendHtml = ['LGL','CJ','HJ'].map(c =>
+  const legendHtml = ['LGL','CJ','HJ','HGL'].map(c =>
     `<span class="builder-legend-item"><span class="builder-dot" style="background:${CMP_COLORS[c]}"></span>${CMP_NAMES[c]}</span>`
   ).join('');
   return `<div class="card" style="margin-top:20px;margin-bottom:24px">
-    <div class="card-title">3사 커스텀 비교 차트
-      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목 선택 시 즉시 3사 비교</span>
+    <div class="card-title">4사 커스텀 비교 차트
+      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
     </div>
     <div class="builder-controls">
-      <label>항목 선택:
-        ${buildMetricSelectHtml('cmp-builder-metric', state.metric, 'onBuilderCompareChange()')}
-      </label>
-      <div class="fs-selector" style="margin-bottom:0">
+      <div class="metric-picker">
+        <button class="metric-dropdown-btn" onclick="toggleMetricPanel(event,'compare')">항목 선택 ▾</button>
+        <div id="compare-metric-panel" class="metric-panel" style="display:none">
+          ${buildMetricPanelHtml('compare')}
+        </div>
+      </div>
+      <div id="compare-metric-chips" class="metric-chips">${buildChipsHtml('compare')}</div>
+      <div class="fs-selector" style="margin-bottom:0;margin-left:auto">
         <button class="fs-btn${state.chartType==='bar' ?' active':''}" data-code="compare" data-type="bar"
-          onclick="setBuilderChartTypeCompare('bar')">막대</button>
+          onclick="setBuilderChartType('compare','bar')">막대</button>
         <button class="fs-btn${state.chartType==='line'?' active':''}" data-code="compare" data-type="line"
-          onclick="setBuilderChartTypeCompare('line')">꺾은선</button>
+          onclick="setBuilderChartType('compare','line')">꺾은선</button>
       </div>
       <div class="builder-legend">${legendHtml}</div>
     </div>
-    <canvas id="c-cmp-custom" style="max-height:320px"></canvas>
+    <canvas id="c-cmp-custom" style="max-height:340px"></canvas>
     <div id="cmp-custom-table" style="margin-top:14px;overflow-x:auto"></div>
   </div>`;
 }
 
 function buildCustomChartCompare() {
   const state = customBuilderState.compare;
-  const m = CUSTOM_METRICS.find(x => x.key === state.metric);
-  if (!m) return;
-  const CODES = ['LGL','CJ','HJ','HGL'];
-  const YEARS = ['2021','2022','2023','2024','2025'];
-  const isPct = m.type === 'pct';
-  const isX   = m.type === 'x';
-  const labelFmt = isPct ? (v => (typeof v==='number' ? v.toFixed(1)+'%' : v))
-                 : isX   ? (v => (typeof v==='number' ? v.toFixed(2)+'배' : v))
-                 : null;
-  const yTick = isPct ? (v => v.toFixed(1)+'%')
-              : isX   ? (v => v.toFixed(2)+'배')
-              : wonTick;
+  const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
+  if (!ms.length) return;
 
-  const datasets = CODES.map(code => ({
-    label: CMP_NAMES[code],
-    data: YEARS.map(y => getMetricValue(getYearData(FIN.companies[code], y), m.key)),
-    borderColor: CMP_COLORS[code],
-    backgroundColor: CMP_COLORS[code] + (state.chartType === 'bar' ? '99' : '33'),
-    tension: 0.3, pointRadius: 4, spanGaps: false,
-  }));
+  const CODES = ['LGL','CJ','HJ','HGL'];
+  const periods = getCmpPeriods();
+
+  const hasWon = ms.some(m => m.type === 'won');
+  const hasPct = ms.some(m => m.type === 'pct' || m.type === 'x');
+  const dual   = hasWon && hasPct;
+
+  const datasets = [];
+  if (dual) {
+    ms.filter(m => m.type === 'won').forEach(m => {
+      CODES.forEach(code => {
+        datasets.push({
+          type: 'bar', label: `${CMP_NAMES[code]}·${m.label}`,
+          data: periods.map(p => getMetricValue(getCmpData(code, p), m.key)),
+          backgroundColor: CMP_COLORS[code] + '99', maxBarThickness: 36,
+          yAxisID: 'y', order: 2
+        });
+      });
+    });
+    ms.filter(m => m.type !== 'won').forEach(m => {
+      CODES.forEach(code => {
+        datasets.push({
+          type: 'line', label: `${CMP_NAMES[code]}·${m.label}`,
+          data: periods.map(p => getMetricValue(getCmpData(code, p), m.key)),
+          borderColor: CMP_COLORS[code], backgroundColor: CMP_COLORS[code] + '22',
+          borderDash: [5,3], yAxisID: 'y1',
+          tension: 0.3, pointRadius: 4, spanGaps: false, order: 1
+        });
+      });
+    });
+  } else {
+    ms.forEach(m => {
+      CODES.forEach(code => {
+        const c = CMP_COLORS[code];
+        const data = periods.map(p => getMetricValue(getCmpData(code, p), m.key));
+        const lbl = ms.length > 1 ? `${CMP_NAMES[code]}·${m.label}` : CMP_NAMES[code];
+        if (state.chartType === 'bar' || m.type === 'won') {
+          datasets.push({ type:'bar', label:lbl, data,
+            backgroundColor: c+'99', maxBarThickness:36, yAxisID:'y' });
+        } else {
+          datasets.push({ type:'line', label:lbl, data,
+            borderColor:c, backgroundColor:c+'33',
+            tension:0.3, pointRadius:4, spanGaps:false, yAxisID:'y' });
+        }
+      });
+    });
+  }
 
   const canvasId = 'c-cmp-custom';
-  if (state.chartType === 'bar') {
-    makeBarChart(canvasId, YEARS, datasets, true, labelFmt);
-  } else {
-    makeLineChart(canvasId, YEARS, datasets, isPct, labelFmt);
+  destroyChart(canvasId);
+  const ctx = document.getElementById(canvasId)?.getContext('2d');
+  if (!ctx) return;
+
+  const scales = {
+    y: {
+      position: 'left',
+      ticks: { callback: hasWon ? wonTick : (hasPct ? v => v.toFixed(1)+'%' : v => v.toFixed(2)+'배') },
+      grid: { color: 'rgba(0,0,0,0.05)' },
+      title: dual ? { display:true, text:`(${fmt.wonUnit()})`, font:{size:11}, color:'var(--text-sub)' } : undefined
+    }
+  };
+  if (dual) {
+    scales.y1 = {
+      position: 'right', grid: { drawOnChartArea: false },
+      ticks: { callback: v => ms.find(m => m.type!=='won')?.type==='x' ? v.toFixed(2)+'배' : v.toFixed(1)+'%' },
+      title: { display:true, text:'(%)', font:{size:11}, color:'var(--text-sub)' }
+    };
   }
-  if (charts[canvasId]) {
-    charts[canvasId].options.plugins.tooltip.callbacks.label = c =>
-      `${c.dataset.label}: ${c.raw==null?'미공시':(isPct?c.raw.toFixed(1)+'%':isX?c.raw.toFixed(2)+'배':wonTooltip(c.raw))}`;
-    charts[canvasId].options.scales.y.ticks.callback = yTick;
-    charts[canvasId].$labelFmt = labelFmt || wonTick;
-    charts[canvasId].update();
-  }
+
+  charts[canvasId] = new Chart(ctx, {
+    type: (state.chartType==='bar' || dual) ? 'bar' : 'line',
+    data: { labels: periods, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      layout: { padding: { top: 8 } },
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          mode: 'index', intersect: false,
+          callbacks: {
+            label: c => {
+              const v = c.raw;
+              if (v == null) return `${c.dataset.label}: 미공시`;
+              if (c.dataset.yAxisID === 'y1') {
+                const pm = ms.find(m => m.type !== 'won');
+                return `${c.dataset.label}: ${pm?.type==='x' ? v.toFixed(2)+'배' : v.toFixed(1)+'%'}`;
+              }
+              return hasWon ? `${c.dataset.label}: ${wonTooltip(v)}` : `${c.dataset.label}: ${v.toFixed(1)}%`;
+            }
+          }
+        }
+      },
+      scales
+    },
+    plugins: []
+  });
+  charts[canvasId].$showValues = false;
 
   const tableWrap = document.getElementById('cmp-custom-table');
   if (!tableWrap) return;
-  const wu = m.type === 'won' ? ' '+fmt.wonUnit() : '';
-  const headerCols = YEARS.map(y => `<th>${y}</th>`).join('');
-  const dataRows = CODES.map(code => {
-    const cells = YEARS.map(y =>
-      `<td>${fmtBuilderVal(getMetricValue(getYearData(FIN.companies[code], y), m.key), m.type)}</td>`
-    ).join('');
-    return `<tr><td style="color:${CMP_COLORS[code]}">${CMP_NAMES[code]}</td>${cells}</tr>`;
-  }).join('');
+  const headerCols = periods.map(p => `<th>${p}</th>`).join('');
+  const dataRows = CODES.map(code =>
+    ms.map(m => {
+      const wu = m.type==='won' ? ' '+fmt.wonUnit() : (m.type==='pct'?' (%)':' (배)');
+      const lbl = ms.length>1 ? `${CMP_NAMES[code]} ${m.label}` : CMP_NAMES[code];
+      const cells = periods.map(p =>
+        `<td>${fmtBuilderVal(getMetricValue(getCmpData(code, p), m.key), m.type)}</td>`
+      ).join('');
+      return `<tr><td style="color:${CMP_COLORS[code]}">${lbl}${wu}</td>${cells}</tr>`;
+    }).join('')
+  ).join('');
   tableWrap.innerHTML = `<table class="builder-table">
-    <thead><tr><th>${m.label}${wu}</th>${headerCols}</tr></thead>
+    <thead><tr><th>구분</th>${headerCols}</tr></thead>
     <tbody>${dataRows}</tbody>
   </table>`;
-}
-
-function onBuilderCompareChange() {
-  const sel = document.getElementById('cmp-builder-metric');
-  if (sel) customBuilderState.compare.metric = sel.value;
-  buildCustomChartCompare();
-}
-
-function setBuilderChartTypeCompare(type) {
-  customBuilderState.compare.chartType = type;
-  document.querySelectorAll('.fs-btn[data-code="compare"]').forEach(b => {
-    b.classList.toggle('active', b.dataset.type === type);
-  });
-  buildCustomChartCompare();
 }
 
 // ── 종합 비교 탭 ──────────────────────────────────────────────────────────
@@ -2320,139 +2382,95 @@ function renderDartTab() {
   </div>`;
 }
 
-function renderCompareTab() {
-  const YEARS = ['2021','2022','2023','2024','2025'];
-  const CODES = ['LGL','CJ','HJ','HGL'];
-  const NAMES = { LGL:'롯데글로벌로지스', CJ:'CJ대한통운', HJ:'한진' };
-  const COLORS = { LGL:'#C8102E', CJ:'#00A0DC', HJ:'#003087' };
+// ── 종합비교 탭 헬퍼 ────────────────────────────────────────────────────────
+function getCmpPeriods() {
+  if (cmpPeriodMode === 'annual') return ['2021','2022','2023','2024','2025'];
+  const set = new Set();
+  ['LGL','CJ','HJ','HGL'].forEach(c =>
+    Object.keys(FIN.companies[c]?.quarterly || {}).forEach(k => set.add(k)));
+  return [...set].sort();
+}
 
-  // 재렌더 전 현재 선택값 보존
-  const prevYear = $('cmp-year')?.value || '2025';
-  const prevNorm = $('cmp-norm')?.value || 'none';
+function getCmpData(code, pKey) {
+  const co = FIN.companies[code];
+  if (!co) return null;
+  if (cmpPeriodMode === 'annual') return getYearData(co, pKey, cmpFsMode);
+  const q = co.quarterly?.[pKey];
+  if (!q) return null;
+  return q[cmpFsMode] || q['CFS'] || null;
+}
+
+function setCmpPeriodMode(mode) {
+  cmpPeriodMode = mode;
+  renderCompareTab();
+}
+
+function setCmpFsMode(mode) {
+  cmpFsMode = mode;
+  renderCompareTab();
+}
+
+function renderCompareTab() {
+  const CODES = ['LGL','CJ','HJ','HGL'];
+  const periods = getCmpPeriods();
+
+  // 각 사별 상세 지표 행 정의
+  const TABLE_ROWS = [
+    { label:'매출액',        unit:'억원', get: d => d?.pl?.revenue,                         fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'영업이익',      unit:'억원', get: d => d?.pl?.operating_income,                 fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'영업이익률',    unit:'%',    get: d => d?.ratios?.operating_margin,              fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'당기순이익',    unit:'억원', get: d => d?.pl?.controlling_net_income ?? d?.pl?.net_income, fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'당기순이익률',  unit:'%',    get: d => d?.ratios?.net_margin,                   fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'총자산',        unit:'억원', get: d => d?.bs?.total_assets,                     fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'총부채',        unit:'억원', get: d => d?.bs?.total_liabilities,                fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'자본',          unit:'억원', get: d => d?.bs?.total_equity,                     fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'부채비율',      unit:'%',    get: d => d?.ratios?.debt_ratio,                   fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'EV/EBITDA',     unit:'배',   get: d => null,                                     fmt: () => '—' },
+  ];
+
+  const companyTablesHtml = CODES.map(code => {
+    const co = FIN.companies[code];
+    if (!co) return '';
+    const colsHtml = periods.map(p => `<th style="text-align:right;white-space:nowrap">${p}</th>`).join('');
+    const rowsHtml = TABLE_ROWS.map((row, ri) => {
+      const bg = ri % 2 === 0 ? '' : 'style="background:rgba(0,0,0,0.02)"';
+      const cells = periods.map(p => {
+        const d = getCmpData(code, p);
+        return `<td style="text-align:right;font-variant-numeric:tabular-nums">${row.fmt(row.get(d))}</td>`;
+      }).join('');
+      return `<tr ${bg}><td style="white-space:nowrap;color:var(--text-sub);font-size:12px">${row.label}<span style="font-size:10px;margin-left:3px">(${row.unit})</span></td>${cells}</tr>`;
+    }).join('');
+    return `
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:15px;font-weight:700;color:${co.color};margin-bottom:10px">${co.name}</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:${280 + periods.length*90}px">
+            <thead><tr style="border-bottom:2px solid var(--border)">
+              <th style="text-align:left;padding:5px 8px;font-size:12px;color:var(--text-sub)">구분</th>${colsHtml}
+            </tr></thead>
+            <tbody style="line-height:1.9">${rowsHtml}</tbody>
+          </table>
+        </div>
+        ${getCmpData(code, periods[periods.length-1])?.report_url
+          ? `<div style="margin-top:8px"><a href="${getCmpData(code, periods[periods.length-1]).report_url}" target="_blank" class="report-link">📄 최신 보고서</a></div>`
+          : ''}
+      </div>`;
+  }).join('');
 
   $('tab-compare').innerHTML = `
-    <div class="compare-controls">
-      <label>기준연도:
-        <select id="cmp-year" onchange="renderCompareTab()">
-          ${YEARS.map(y => `<option value="${y}" ${y===prevYear?'selected':''}>${y}</option>`).join('')}
-        </select>
-      </label>
-      <label style="display:inline-flex;align-items:center;gap:0">비교 기준 정규화:
-        <select id="cmp-norm" onchange="renderCompareTab()" style="margin-left:6px">
-          <option value="none" ${prevNorm==='none'?'selected':''}>정규화 없음</option>
-          <option value="LGL" ${prevNorm==='LGL'?'selected':''}>롯데글로벌로지스 = 1.0</option>
-          <option value="CJ"  ${prevNorm==='CJ'?'selected':''}>CJ대한통운 = 1.0</option>
-          <option value="HJ"  ${prevNorm==='HJ'?'selected':''}>한진 = 1.0</option>
-        </select>
-        <span class="norm-help-wrap">
-          <button class="norm-help-btn" id="norm-help-btn"
-            onmouseenter="normHelpShow()"
-            onmouseleave="normHelpHide()"
-            onclick="normHelpTogglePin(event)">?</button>
-          <div class="norm-help-popup" id="norm-help-popup">
-            <b>정규화란?</b><br>
-            특정 회사의 값을 <b>1.0 기준</b>으로 설정하고,<br>
-            다른 회사 값을 그에 대한 <b>상대 배수</b>로 표시합니다.<br><br>
-            회사 간 절대 규모 차이를 제거하고<br>
-            <b>성장률·변화 방향</b>을 직관적으로 비교할 때 유용합니다.
-            <div class="norm-ex">예) CJ=1.0 기준 시<br>
-LGL 매출 34,015 → 0.28배<br>
-한진 매출 30,649 → 0.25배</div>
-          </div>
-        </span>
-      </label>
-    </div>
-    <div class="three-col" id="cmp-cards"></div>
-    <div class="chart-grid">
-      <div class="card">
-        <div class="chart-title" id="cmp-rev-title">매출액 추이
-          <button class="chart-download" onclick="downloadChart('c-cmp-rev','3사_매출액.png')">💾</button>
-        </div>
-        <canvas id="c-cmp-rev"></canvas>
+    <div class="compare-controls" style="gap:8px">
+      <div class="fs-selector" style="margin-bottom:0">
+        <button class="fs-btn${cmpPeriodMode==='annual'?' active':''}" onclick="setCmpPeriodMode('annual')">연간</button>
+        <button class="fs-btn${cmpPeriodMode==='quarterly'?' active':''}" onclick="setCmpPeriodMode('quarterly')">분기별</button>
       </div>
-      <div class="card">
-        <div class="chart-title">영업이익률 추이 (%)
-          <button class="chart-download" onclick="downloadChart('c-cmp-margin','3사_영업이익률.png')">💾</button>
-        </div>
-        <canvas id="c-cmp-margin"></canvas>
-      </div>
-      <div class="card">
-        <div class="chart-title">부채비율 추이 (%)
-          <button class="chart-download" onclick="downloadChart('c-cmp-debt','3사_부채비율.png')">💾</button>
-        </div>
-        <canvas id="c-cmp-debt"></canvas>
-      </div>
-      <div class="card">
-        <div class="chart-title">ROE 추이 (%)
-          <button class="chart-download" onclick="downloadChart('c-cmp-roe','3사_ROE.png')">💾</button>
-        </div>
-        <canvas id="c-cmp-roe"></canvas>
+      <div class="fs-selector" style="margin-bottom:0">
+        <button class="fs-btn${cmpFsMode==='CFS'?' active':''}" onclick="setCmpFsMode('CFS')">연결</button>
+        <button class="fs-btn${cmpFsMode==='OFS'?' active':''}" onclick="setCmpFsMode('OFS')">별도</button>
       </div>
     </div>
+    ${companyTablesHtml}
   `;
 
-  const selYear = $('cmp-year')?.value || '2025';
-  const normCode = $('cmp-norm')?.value || 'none';
-  const normBase = normCode !== 'none' ? getYearData(FIN.companies[normCode], selYear) : null;
-
-  const cardsEl = $('cmp-cards');
-  CODES.forEach(code => {
-    const co = FIN.companies[code];
-    const d  = getYearData(co, selYear);
-    const r  = d?.ratios || {};
-    const p  = d?.pl || {};
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.innerHTML = `
-      <div style="font-size:15px;font-weight:700;color:${co.color};margin-bottom:12px">${co.name}</div>
-      <table class="ratio-table">
-        <tr><td>매출액 ${fmt.wonUnit()}${qmark('revenue', d)}</td><td class="num">${fmt.won(p.revenue)}</td></tr>
-        <tr><td>영업이익률${qmark('operating_margin', d)}</td><td class="num">${fmt.pct(r.operating_margin)} ${ragDot('operating_margin', r.operating_margin)}</td></tr>
-        <tr><td>ROE(지배)${qmark('roe', d)}</td><td class="num">${fmt.pct(r.roe)} ${ragDot('roe', r.roe)}</td></tr>
-        <tr><td>부채비율${qmark('debt_ratio', d)}</td><td class="num">${fmt.pct(r.debt_ratio)} ${ragDot('debt_ratio', r.debt_ratio)}</td></tr>
-        <tr><td>이자보상비율${qmark('interest_coverage', d)}</td><td class="num">${fmt.x(r.interest_coverage)} ${ragDot('interest_coverage', r.interest_coverage)}</td></tr>
-      </table>
-      ${d?.report_url ? `<div style="margin-top:8px"><a href="${d.report_url}" target="_blank" class="report-link">📄 ${d.source || ''}</a></div>` : ''}
-    `;
-    cardsEl.appendChild(div);
-  });
-
-  function normVal(code, metric, getter) {
-    const v = getter(code);
-    if (v == null) return null;
-    if (!normBase) return v;
-    const base = getter(normCode);
-    return (base && base !== 0) ? +(v / base).toFixed(3) : null;
-  }
-
-  const ds = (metric) => CODES.map(code => ({
-    label: NAMES[code],
-    data: YEARS.map(y => {
-      const v = getYearData(FIN.companies[code], y)?.ratios?.[metric] ?? null;
-      if (!normBase) return v;
-      const b = getYearData(FIN.companies[normCode], y)?.ratios?.[metric] ?? null;
-      return (v != null && b) ? +(v/b).toFixed(3) : null;
-    }),
-    borderColor: COLORS[code], backgroundColor: COLORS[code]+'33',
-    tension: 0.3, pointRadius: 4, spanGaps: false,
-  }));
-
-  const revDs = CODES.map(code => ({
-    label: NAMES[code],
-    data: YEARS.map(y => {
-      const v = getYearData(FIN.companies[code], y)?.pl?.revenue ?? null;
-      if (!normBase) return v;
-      const b = getYearData(FIN.companies[normCode], y)?.pl?.revenue ?? null;
-      return (v != null && b) ? +(v/b).toFixed(3) : null;
-    }),
-    borderColor: COLORS[code], backgroundColor: COLORS[code]+'33',
-    tension: 0.3, pointRadius: 4, spanGaps: false,
-  }));
-
-  makeLineChart('c-cmp-rev',    YEARS, revDs,            false, normBase ? (v => (typeof v === 'number' ? v.toFixed(2) + '배' : v)) : (v => wonTick(v)));
-  makeLineChart('c-cmp-margin', YEARS, ds('operating_margin'), true);
-  makeLineChart('c-cmp-debt',   YEARS, ds('debt_ratio'),  true);
-  makeLineChart('c-cmp-roe',    YEARS, ds('roe'),         true);
   $('tab-compare').insertAdjacentHTML('beforeend', cmpBuilderHtml());
   requestAnimationFrame(() => buildCustomChartCompare());
 }
