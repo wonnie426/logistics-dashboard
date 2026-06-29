@@ -675,7 +675,7 @@ function wonTooltip(v) {
   return Math.round(v / 1e8).toLocaleString('ko-KR') + '억';
 }
 
-function makeLineChart(id, labels, datasets, isPct) {
+function makeLineChart(id, labels, datasets, isPct, labelFmt) {
   destroyChart(id);
   const ctx = document.getElementById(id)?.getContext('2d');
   if (!ctx) return;
@@ -684,6 +684,7 @@ function makeLineChart(id, labels, datasets, isPct) {
     data: { labels, datasets: datasets.map(d => ({ tension: 0.3, pointRadius: 4, spanGaps: false, ...d })) },
     options: {
       responsive: true, maintainAspectRatio: true,
+      layout: { padding: { top: 16 + datasets.length * 11 } },
       plugins: {
         legend: { position: 'top' },
         tooltip: {
@@ -692,8 +693,11 @@ function makeLineChart(id, labels, datasets, isPct) {
         }
       },
       scales: { y: { ticks: { callback: v => isPct ? v.toFixed(1)+'%' : wonTick(v) }, grid: { color: 'rgba(0,0,0,0.05)' } } }
-    }
+    },
+    plugins: [lineValuePlugin]
   });
+  charts[id].$showValues = true;
+  charts[id].$labelFmt = labelFmt || (isPct ? (v => (typeof v === 'number' ? v.toFixed(1) + '%' : v)) : (v => wonTick(v)));
 }
 
 // 기준 색을 흰색 쪽으로 p(0~1)만큼 섞어 연한 톤 생성 (p=0 원색, p=1 흰색)
@@ -712,12 +716,12 @@ function segPalette(baseHex, n) {
 // 막대 위에 값 표시 플러그인
 const barValuePlugin = {
   id: 'barValues',
-  afterDatasetsDraw(chart, args, opts) {
+  afterDatasetsDraw(chart) {
     if (!chart.$showValues) return;
     const ctx = chart.ctx;
     const textColor = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#333';
     ctx.save();
-    ctx.font = '600 11px -apple-system, sans-serif';
+    ctx.font = '600 10px -apple-system, sans-serif';
     ctx.textAlign = 'center';
     chart.data.datasets.forEach((ds, di) => {
       const meta = chart.getDatasetMeta(di);
@@ -728,14 +732,39 @@ const barValuePlugin = {
         ctx.fillStyle = textColor;
         const neg = v < 0;
         ctx.textBaseline = neg ? 'top' : 'bottom';
-        ctx.fillText(wonTick(v), bar.x, bar.y + (neg ? 3 : -3));
+        ctx.fillText((chart.$labelFmt || wonTick)(v), bar.x, bar.y + (neg ? 3 : -3));
       });
     });
     ctx.restore();
   }
 };
 
-function makeBarChart(id, labels, datasets, showValues) {
+// 꺾은선 점 위에 값 표시 플러그인 (라인 색상으로, 데이터셋별 수직 간격)
+const lineValuePlugin = {
+  id: 'lineValues',
+  afterDatasetsDraw(chart) {
+    if (!chart.$showValues) return;
+    const ctx = chart.ctx;
+    const fmtFn = chart.$labelFmt || wonTick;
+    ctx.save();
+    ctx.font = '600 10px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    chart.data.datasets.forEach((ds, di) => {
+      const meta = chart.getDatasetMeta(di);
+      if (meta.hidden) return;
+      ctx.fillStyle = (typeof ds.borderColor === 'string' ? ds.borderColor : '#333');
+      meta.data.forEach((pt, i) => {
+        const v = ds.data[i];
+        if (v == null) return;
+        ctx.fillText(fmtFn(v), pt.x, pt.y - 6 - di * 11);  // 데이터셋별로 위로 띄워 겹침 완화
+      });
+    });
+    ctx.restore();
+  }
+};
+
+function makeBarChart(id, labels, datasets, showValues = true, labelFmt) {
   destroyChart(id);
   const ctx = document.getElementById(id)?.getContext('2d');
   if (!ctx) return;
@@ -744,7 +773,7 @@ function makeBarChart(id, labels, datasets, showValues) {
     data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: true,
-      layout: { padding: { top: showValues ? 22 : 0 } },
+      layout: { padding: { top: showValues ? 20 : 0 } },
       plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false,
         callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : wonTooltip(c.raw)}` }
       } },
@@ -753,6 +782,7 @@ function makeBarChart(id, labels, datasets, showValues) {
     plugins: [barValuePlugin]
   });
   charts[id].$showValues = !!showValues;
+  charts[id].$labelFmt = labelFmt;
 }
 
 // ── 개별 기업 탭 ──────────────────────────────────────────────────────────
@@ -1821,7 +1851,7 @@ LGL 매출 34,015 → 0.28배<br>
     tension: 0.3, pointRadius: 4, spanGaps: false,
   }));
 
-  makeLineChart('c-cmp-rev',    YEARS, revDs,            false);
+  makeLineChart('c-cmp-rev',    YEARS, revDs,            false, normBase ? (v => (typeof v === 'number' ? v.toFixed(2) + '배' : v)) : (v => wonTick(v)));
   makeLineChart('c-cmp-margin', YEARS, ds('operating_margin'), true);
   makeLineChart('c-cmp-debt',   YEARS, ds('debt_ratio'),  true);
   makeLineChart('c-cmp-roe',    YEARS, ds('roe'),         true);
