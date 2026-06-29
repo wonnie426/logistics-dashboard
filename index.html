@@ -2412,50 +2412,68 @@ function setCmpFsMode(mode) {
 
 function renderCompareTab() {
   const CODES = ['LGL','CJ','HJ','HGL'];
-  const periods = getCmpPeriods();
+  const allPeriods = getCmpPeriods();
+  // 연간: 최신 3개년, 분기: 최신 4분기
+  const displayPeriods = cmpPeriodMode === 'annual' ? allPeriods.slice(-3) : allPeriods.slice(-4);
 
-  // 각 사별 상세 지표 행 정의
   const TABLE_ROWS = [
-    { label:'매출액',        unit:'억원', get: d => d?.pl?.revenue,                         fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'영업이익',      unit:'억원', get: d => d?.pl?.operating_income,                 fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'영업이익률',    unit:'%',    get: d => d?.ratios?.operating_margin,              fmt: v => v==null?'—':v.toFixed(1)+'%' },
-    { label:'당기순이익',    unit:'억원', get: d => d?.pl?.controlling_net_income ?? d?.pl?.net_income, fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'당기순이익률',  unit:'%',    get: d => d?.ratios?.net_margin,                   fmt: v => v==null?'—':v.toFixed(1)+'%' },
-    { label:'총자산',        unit:'억원', get: d => d?.bs?.total_assets,                     fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'총부채',        unit:'억원', get: d => d?.bs?.total_liabilities,                fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'자본',          unit:'억원', get: d => d?.bs?.total_equity,                     fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
-    { label:'부채비율',      unit:'%',    get: d => d?.ratios?.debt_ratio,                   fmt: v => v==null?'—':v.toFixed(1)+'%' },
-    { label:'EV/EBITDA',     unit:'배',   get: d => null,                                     fmt: () => '—' },
+    { label:'매출액',       unit:'억원', get: d => d?.pl?.revenue,                                      fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'영업이익',     unit:'억원', get: d => d?.pl?.operating_income,                              fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'영업이익률',   unit:'%',    get: d => d?.ratios?.operating_margin,                          fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'당기순이익',   unit:'억원', get: d => d?.pl?.controlling_net_income ?? d?.pl?.net_income,   fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'당기순이익률', unit:'%',    get: d => d?.ratios?.net_margin,                                fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'총자산',       unit:'억원', get: d => d?.bs?.total_assets,                                  fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'총부채',       unit:'억원', get: d => d?.bs?.total_liabilities,                             fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'자본',         unit:'억원', get: d => d?.bs?.total_equity,                                  fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
+    { label:'부채비율',     unit:'%',    get: d => d?.ratios?.debt_ratio,                                fmt: v => v==null?'—':v.toFixed(1)+'%' },
+    { label:'ROE',          unit:'%',    get: d => d?.ratios?.roe,                                        fmt: v => v==null?'—':v.toFixed(1)+'%' },
   ];
 
-  const companyTablesHtml = CODES.map(code => {
+  // 헤더: 구분 + 4개사 (회사 이름 컬러 적용)
+  const thCos = CODES.map(code => {
     const co = FIN.companies[code];
-    if (!co) return '';
-    const colsHtml = periods.map(p => `<th style="text-align:right;white-space:nowrap">${p}</th>`).join('');
-    const rowsHtml = TABLE_ROWS.map((row, ri) => {
-      const bg = ri % 2 === 0 ? '' : 'style="background:rgba(0,0,0,0.02)"';
-      const cells = periods.map(p => {
-        const d = getCmpData(code, p);
-        return `<td style="text-align:right;font-variant-numeric:tabular-nums">${row.fmt(row.get(d))}</td>`;
-      }).join('');
-      return `<tr ${bg}><td style="white-space:nowrap;color:var(--text-sub);font-size:12px">${row.label}<span style="font-size:10px;margin-left:3px">(${row.unit})</span></td>${cells}</tr>`;
-    }).join('');
-    return `
-      <div class="card" style="margin-bottom:16px">
-        <div style="font-size:15px;font-weight:700;color:${co.color};margin-bottom:10px">${co.name}</div>
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:${280 + periods.length*90}px">
-            <thead><tr style="border-bottom:2px solid var(--border)">
-              <th style="text-align:left;padding:5px 8px;font-size:12px;color:var(--text-sub)">구분</th>${colsHtml}
-            </tr></thead>
-            <tbody style="line-height:1.9">${rowsHtml}</tbody>
-          </table>
-        </div>
-        ${getCmpData(code, periods[periods.length-1])?.report_url
-          ? `<div style="margin-top:8px"><a href="${getCmpData(code, periods[periods.length-1]).report_url}" target="_blank" class="report-link">📄 최신 보고서</a></div>`
-          : ''}
-      </div>`;
+    return `<th style="text-align:center;padding:7px 6px;color:${co.color};font-weight:700;white-space:nowrap;font-size:13px">${co.name}</th>`;
   }).join('');
+
+  // 바디: 기간 그룹 헤더 + 지표별 행
+  let tbodyHtml = '';
+  displayPeriods.forEach(p => {
+    tbodyHtml += `
+      <tr>
+        <td colspan="${CODES.length + 1}"
+            style="padding:6px 10px;font-weight:700;font-size:12px;
+                   background:var(--bg);color:var(--text-sub);
+                   border-top:2px solid var(--border);letter-spacing:0.03em">${p}</td>
+      </tr>`;
+    TABLE_ROWS.forEach((row, ri) => {
+      const rowBg = ri % 2 ? 'background:rgba(0,0,0,0.015)' : '';
+      const cells = CODES.map(code => {
+        const d = getCmpData(code, p);
+        return `<td style="text-align:right;padding:5px 10px;font-variant-numeric:tabular-nums;font-size:13px">${row.fmt(row.get(d))}</td>`;
+      }).join('');
+      tbodyHtml += `
+        <tr style="${rowBg}">
+          <td style="padding:5px 10px;font-size:12px;color:var(--text-sub);white-space:nowrap">
+            ${row.label}<span style="font-size:10px;margin-left:3px;opacity:.7">(${row.unit})</span>
+          </td>${cells}
+        </tr>`;
+    });
+  });
+
+  const unifiedTableHtml = `
+    <div class="card" style="margin-bottom:20px">
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;min-width:${160 + CODES.length * 130}px">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border)">
+              <th style="text-align:left;padding:7px 10px;font-size:12px;color:var(--text-sub)">구분</th>
+              ${thCos}
+            </tr>
+          </thead>
+          <tbody>${tbodyHtml}</tbody>
+        </table>
+      </div>
+    </div>`;
 
   $('tab-compare').innerHTML = `
     <div class="compare-controls" style="gap:8px">
@@ -2468,7 +2486,7 @@ function renderCompareTab() {
         <button class="fs-btn${cmpFsMode==='OFS'?' active':''}" onclick="setCmpFsMode('OFS')">별도</button>
       </div>
     </div>
-    ${companyTablesHtml}
+    ${unifiedTableHtml}
   `;
 
   $('tab-compare').insertAdjacentHTML('beforeend', cmpBuilderHtml());
