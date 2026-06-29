@@ -258,6 +258,11 @@
     .yoy-down { color: #dc2626; }
     .yoy-flat { color: var(--text-sub); }
     .ratio-table-v2 td.desc-col { font-size: 11.5px; color: var(--text-sub); }
+    /* 연도/분기 다중 컬럼 */
+    .ratio-table-multi { min-width: 100%; }
+    .ratio-table-multi th.pcol, .ratio-table-multi td.pcol {
+      text-align: right; white-space: nowrap; min-width: 72px; font-variant-numeric: tabular-nums; }
+    .ratio-table-multi th.pcol-last, .ratio-table-multi td.pcol-last { background: rgba(59,130,246,0.06); font-weight: 600; }
     /* 기간 레이블 */
     .period-badge { font-size: 11px; color: var(--text-sub); background: var(--bg);
                     border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
@@ -1045,41 +1050,53 @@ function ratioTable(code, fs, pMode, latest) {
   const co = FIN.companies[code];
   const map = getPeriodData(co, pMode === 'quarterly' ? 'quarterly' : 'annual', fs) || {};
   const keys = Object.keys(map).sort();
-  const idx = keys.indexOf(latest);
-  const curr = map[latest] || {};
-  const prev = idx > 0 ? map[keys[idx-1]] : null;
-  const prevPrev = idx > 1 ? map[keys[idx-2]] : null;
-  const mc = computeMetrics(curr, prev);
-  const mp = computeMetrics(prev, prevPrev);
+  if (!keys.length) return '<p style="color:var(--text-sub);font-size:13px">데이터 없음</p>';
+  // 기간별 파생지표 (이전 기간을 성장률 기준으로)
+  const M = {};
+  keys.forEach((k, i) => { M[k] = computeMetrics(map[k], i > 0 ? map[keys[i-1]] : null); });
+  const lastKey = keys[keys.length - 1];
+  const prevKey = keys.length > 1 ? keys[keys.length - 2] : null;
+  const curr = map[lastKey] || {};
+  const prev = prevKey ? map[prevKey] : null;
   const yoyLabel = pMode === 'quarterly' ? '전기대비' : '전년대비';
+  const colLabel = k => pMode === 'quarterly' ? k.replace('20', "'") : k;  // '2025Q3 -> '25Q3
 
   function growthDetail(key) {
     const m = GROWTH_KEYS[key]; if (!m || !prev) return '';
     const c = curr?.[m[0]]?.[m[1]], p = prev?.[m[0]]?.[m[1]];
     if (c == null || p == null) return '';
-    return `(당기 ${eok(c)} − 전기 ${eok(p)}) ÷ |전기| × 100 = ${fmt.pct(mc[key])}`;
+    return `(당기 ${eok(c)} − 전기 ${eok(p)}) ÷ |전기| × 100 = ${fmt.pct(M[lastKey][key])}`;
   }
 
   const srcLink = curr.report_url
     ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${curr.source || 'DART'} <a href="${curr.report_url}" target="_blank" class="report-link">📄 원본 보고서</a></div>`
     : (curr.source ? `<div style="font-size:11px;color:var(--text-sub);margin-bottom:10px">출처: ${curr.source}</div>` : '');
 
-  let html = srcLink + `<table class="ratio-table-v2">
-    <thead><tr><th style="width:56px">구분</th><th style="width:130px">항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 상세)</span></th><th>설명</th><th class="num" style="width:84px">값</th><th class="yoy">${yoyLabel}</th></tr></thead><tbody>`;
+  const periodTh = keys.map((k, i) =>
+    `<th class="num pcol${i === keys.length-1 ? ' pcol-last' : ''}">${colLabel(k)}</th>`).join('');
+
+  let html = srcLink + `<div style="overflow-x:auto"><table class="ratio-table-v2 ratio-table-multi">
+    <thead><tr><th style="width:54px">구분</th><th style="width:124px">항목 <span style="font-size:10px;font-weight:400;color:var(--text-sub)">(? 상세)</span></th><th style="width:120px">설명</th>${periodTh}<th class="yoy">${yoyLabel}</th></tr></thead><tbody>`;
   for (const [sec, items] of RATIO_GROUPS) {
     items.forEach(([key, lbl, type, ragMetric], i) => {
-      const v = mc[key], pv = mp[key];
       const icon = GROWTH_KEYS[key] ? qmark(key, curr, growthDetail(key)) : qmark(key, curr);
+      const cells = keys.map((k, ci) => {
+        const v = M[k][key];
+        const isLast = ci === keys.length - 1;
+        const dot = (isLast && ragMetric) ? ragDot(ragMetric, v) : '';
+        return `<td class="num pcol${isLast ? ' pcol-last' : ''}">${fmtVal(v, type)} ${dot}</td>`;
+      }).join('');
+      const yoy = fmtYoY(M[lastKey][key], prevKey ? M[prevKey][key] : null, type);
       html += `<tr class="tooltip-row">
         ${i === 0 ? `<td class="sec" rowspan="${items.length}">${sec}</td>` : ''}
         <td class="lbl">${lbl}${icon}</td>
         <td class="desc-col">${SHORT_DESC[key] || ''}</td>
-        <td class="num">${fmtVal(v, type)} ${ragMetric ? ragDot(ragMetric, v) : ''}</td>
-        <td class="yoy">${fmtYoY(v, pv, type)}</td>
+        ${cells}
+        <td class="yoy">${yoy}</td>
       </tr>`;
     });
   }
-  return html + '</tbody></table>';
+  return html + '</tbody></table></div>';
 }
 
 function downloadRatioExcel(code, period) {
