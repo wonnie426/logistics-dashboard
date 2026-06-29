@@ -125,6 +125,13 @@
     .ratio-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
     .ratio-table tr:last-child td { border-bottom: none; }
     .ratio-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    /* 사업부문 실적 표 — 컬럼 폭 고정, 좌측 정렬, 주석 텍스트 표시 */
+    .seg-table { width: 100%; max-width: 760px; table-layout: fixed; }
+    .seg-table col.c-seg  { width: 110px; }
+    .seg-table col.c-num  { width: 130px; }
+    .seg-table col.c-note { width: auto; }
+    .seg-table td.seg-name { font-weight: 600; }
+    .seg-table td.seg-note { font-size: 11px; color: var(--text-sub); white-space: normal; word-break: keep-all; }
     .source-label { font-size: 11px; color: var(--text-sub); }
     .report-link { color: var(--text-sub); text-decoration: none; font-size: 11px; margin-left: 4px; }
     .report-link:hover { color: var(--text); }
@@ -969,16 +976,19 @@ function segTable(code, fs) {
   if (!years.length) return `<p style="color:var(--text-sub);font-size:13px">${fsLabel} 사업부문 데이터 없음</p>`;
   const latest = years[years.length - 1];
   const data   = seg.annual[latest]?.[fs] || {};
-  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}]</b> ${data.source || ''}</div>`;
-  html += `<table class="ratio-table"><thead><tr><th>부문</th><th class="num">매출액</th><th class="num">영업이익</th><th>주석</th></tr></thead><tbody>`;
+  const u      = fmt.wonUnit();
+  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}] ${latest}년 기준</b> · 출처: ${data.source || '—'}</div>`;
+  html += `<table class="ratio-table seg-table">
+    <colgroup><col class="c-seg"><col class="c-num"><col class="c-num"><col class="c-note"></colgroup>
+    <thead><tr><th>부문</th><th class="num">매출액 ${u}</th><th class="num">영업이익 ${u}</th><th>주석 (출처)</th></tr></thead><tbody>`;
+  const miss = '<span style="color:var(--text-sub)">미공시</span>';
   for (const name of seg.segments) {
     const d = data[name] || {};
-    const noteIcon = d.note ? `<span title="${d.note}">📌</span>` : '';
     html += `<tr>
-      <td>${name}</td>
-      <td class="num">${d.revenue != null ? fmt.won(d.revenue) : '<span style="color:var(--text-sub)">미공시</span>'}</td>
-      <td class="num">${d.operating_income != null ? fmt.won(d.operating_income) : '<span style="color:var(--text-sub)">미공시</span>'}</td>
-      <td>${noteIcon}</td>
+      <td class="seg-name">${name}</td>
+      <td class="num">${d.revenue != null ? fmt.won(d.revenue) : miss}</td>
+      <td class="num">${d.operating_income != null ? fmt.won(d.operating_income) : miss}</td>
+      <td class="seg-note">${d.note || '—'}</td>
     </tr>`;
   }
   return html + '</tbody></table>';
