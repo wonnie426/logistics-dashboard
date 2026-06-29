@@ -347,6 +347,52 @@ def parse_cf(accounts: list) -> dict:
     }
 
 
+# ── 전체 재무제표 라인 항목 (DART 원문 그대로) ──────────────────────────────
+STMT_DIVS = ["BS", "IS", "CIS", "CF", "SCE"]
+
+def _amt_to_int(s):
+    if s is None:
+        return None
+    s = str(s).replace(",", "").strip()
+    if s in ("", "-", "－"):
+        return None
+    try:
+        return int(s)
+    except ValueError:
+        try:
+            return int(float(s))
+        except ValueError:
+            return None
+
+def parse_statements(accounts: list) -> dict:
+    """DART 전체계정을 재무제표(sj_div)별 라인 항목으로 묶는다. 값은 당기금액(원)."""
+    def ord_key(a):
+        try:
+            return int(str(a.get("ord", "0")).strip() or "0")
+        except ValueError:
+            return 0
+    out = {}
+    for div in STMT_DIVS:
+        rows = sorted([a for a in accounts if a.get("sj_div") == div], key=ord_key)
+        items = []
+        seen = set()
+        for a in rows:
+            nm = (a.get("account_nm") or "").strip()
+            if not nm:
+                continue
+            detail = (a.get("account_detail") or "").strip()
+            # 자본변동표(SCE)는 동일 계정명이 자본 구성요소별로 반복 → 구성요소를 라벨에 붙임
+            label = nm if (div != "SCE" or detail in ("", "-", "－")) else f"{nm} ({detail})"
+            key = (label,)
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append({"l": label, "v": _amt_to_int(a.get("thstrm_amount"))})
+        if items:
+            out[div] = items
+    return out
+
+
 # ── 재무비율 계산 ──────────────────────────────────────────────────────────
 def safe_div(a, b, pct=False, decimals=2):
     if a is None or b is None or b == 0:
@@ -425,7 +471,8 @@ def build_period_data(accounts: list, fs_div: str, year: str,
 
 
 def collect_period(corp_code: str, api_key: str, year: str,
-                   period_key: str, reprt_code: str) -> dict | None:
+                   period_key: str, reprt_code: str):
+    """(요약 result, 전체재무제표 stmts{fs:{sj:[...]}}) 반환. 데이터 없으면 (None, {})."""
     print(f"    수집 중: {year} {period_key} (reprt_code={reprt_code})")
 
     report_info = fetch_report_list(corp_code, api_key, year, reprt_code)
@@ -433,15 +480,17 @@ def collect_period(corp_code: str, api_key: str, year: str,
 
     if not both:
         print(f"    → 데이터 없음 (미공시)")
-        return None
+        return None, {}
 
     result = {}
+    stmts = {}
     for fs_div, accounts in both.items():
         result[fs_div] = build_period_data(accounts, fs_div, year, period_key, report_info)
+        stmts[fs_div] = parse_statements(accounts)
 
     # 기본(default) 기준: CFS 우선
     result["_default"] = "CFS" if "CFS" in result else "OFS"
-    return result
+    return result, stmts
 
 
 def main():
@@ -462,6 +511,14 @@ def main():
 
     output["last_updated"] = datetime.now(KST).isoformat()
     latest_report = {}
+    stmt_out = {}  # {code: {fs: {annual|quarterly: {period: {sj: [...]}}}}}
+
+    def store_stmts(code, period_kind, period_key, stmts):
+        for fs_div, sj_map in (stmts or {}).items():
+            if not sj_map:
+                continue
+            (stmt_out.setdefault(code, {}).setdefault(fs_div, {})
+                     .setdefault(period_kind, {})[period_key]) = sj_map
 
     for code, info in COMPANIES.items():
         corp_code = info["corp_code"]
@@ -489,9 +546,10 @@ def main():
         co_data["stock_prices"] = stock_prices
 
         for year in COLLECT_YEARS:
-            result = collect_period(corp_code, api_key, year, "annual", REPORT_CODES["annual"])
+            result, stmts = collect_period(corp_code, api_key, year, "annual", REPORT_CODES["annual"])
             if result:
                 co_data["annual"][year] = result
+                store_stmts(code, "annual", year, stmts)
                 if code not in latest_report or year > latest_report[code].get("year", ""):
                     ref = result.get("CFS") or result.get("OFS") or {}
                     latest_report[code] = {
@@ -509,15 +567,23 @@ def main():
         for year in ["2023", "2024", "2025", "2026"]:
             for q_key, reprt_code in quarters:
                 period_key = f"{year}{q_key}"
-                result = collect_period(corp_code, api_key, year, q_key, reprt_code)
+                result, stmts = collect_period(corp_code, api_key, year, q_key, reprt_code)
                 if result:
                     co_data["quarterly"][period_key] = result
+                    store_stmts(code, "quarterly", period_key, stmts)
 
     output["latest_report"] = latest_report
 
     with open(fin_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
     print(f"\n저장 완료: {fin_path}")
+
+    # 전체 재무제표 라인 항목 저장 (statements.json)
+    stmt_path = data_dir / "statements.json"
+    stmt_out["_note"] = "DART 전체 재무제표 라인 항목 (fnlttSinglAcntAll). 단위: 원. 당기금액 기준."
+    with open(stmt_path, "w", encoding="utf-8") as f:
+        json.dump(stmt_out, f, ensure_ascii=False, indent=2)
+    print(f"저장 완료: {stmt_path}")
 
 
 if __name__ == "__main__":

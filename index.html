@@ -1171,17 +1171,25 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
   const miss = '<span style="color:var(--text-sub)">—</span>';
   const fsKey = fs === 'OFS' ? 'OFS' : 'CFS';
   const pKey  = pMode === 'quarterly' ? 'quarterly' : 'annual';
+  const stmtMap = STMT?.[code]?.[fsKey]?.[pKey] || {};  // {period: {sj: [{l,v}]}}
   const panels = STMT_DEFS.map(([sj, title, rows, note], pi) => {
-    const custom = STMT?.[code]?.[fsKey]?.[pKey]?.[sj];
+    // DART 원문 라인이 있으면 우선 (최신 기간의 라인 순서를 기준 행으로, 컬럼값은 라벨 매칭)
+    let canon = null;
+    for (let i = periodKeys.length - 1; i >= 0; i--) {
+      const it = stmtMap[periodKeys[i]]?.[sj];
+      if (it && it.length) { canon = it; break; }
+    }
     let body, srcNote = note;
-    if (custom && custom.rows && custom.rows.length) {
-      // DART 원문 라인(캡처) 우선
-      srcNote = custom.source || null;
-      body = custom.rows.map((r, j) => {
-        const cells = periodKeys.map(k => { const arr = custom.values?.[k]; const v = (arr && arr[j] != null) ? arr[j] : null; return `<td>${v != null ? fmt.won(v) : miss}</td>`; }).join('');
-        const pad = 12 + (r.i || 0) * 16;
-        const style = `text-align:left;padding-left:${pad}px;${r.i ? 'color:var(--text-sub);font-weight:400' : 'font-weight:600'}`;
-        return `<tr><td style="${style}">${r.l}</td>${cells}</tr>`;
+    if (canon) {
+      srcNote = null;
+      body = canon.map(item => {
+        const cells = periodKeys.map(k => {
+          const arr = stmtMap[k]?.[sj];
+          let v = null;
+          if (arr) { const f = arr.find(x => x.l === item.l); if (f) v = f.v; }
+          return `<td>${v != null ? fmt.won(v) : miss}</td>`;
+        }).join('');
+        return `<tr><td style="text-align:left;font-weight:500">${item.l}</td>${cells}</tr>`;
       }).join('');
     } else {
       body = rows.map(([lbl, field, grp, lvl]) => {
@@ -1191,7 +1199,7 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
     }
     return `<div class="stmt-panel" data-sj="${sj}" style="display:${pi === 0 ? 'block' : 'none'}">
       <div class="fin-table-wrap"><table class="fin-table">
-        <thead><tr><th>항목 (${wu})</th>${periodKeys.map(k => `<th>${k}</th>`).join('')}</tr></thead>
+        <thead><tr><th>항목 ${wu}</th>${periodKeys.map(k => `<th>${k}</th>`).join('')}</tr></thead>
         <tbody>${body}</tbody></table></div>
       ${srcNote ? `<div class="source-label" style="margin-top:8px">※ ${srcNote}</div>` : ''}
     </div>`;
