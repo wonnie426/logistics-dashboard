@@ -2413,8 +2413,8 @@ function setCmpFsMode(mode) {
 function renderCompareTab() {
   const CODES = ['LGL','CJ','HJ','HGL'];
   const allPeriods = getCmpPeriods();
-  // 연간: 전체 연도, 분기: 최신 4분기
-  const displayPeriods = cmpPeriodMode === 'annual' ? allPeriods : allPeriods.slice(-4);
+  // 연간: 최신 3개년, 분기: 최신 4분기
+  const displayPeriods = cmpPeriodMode === 'annual' ? allPeriods.slice(-3) : allPeriods.slice(-4);
 
   const TABLE_ROWS = [
     { label:'매출액',       unit:'억원', get: d => d?.pl?.revenue,                                      fmt: v => v==null?'—':Math.round(v/1e8).toLocaleString('ko-KR') },
@@ -2429,56 +2429,58 @@ function renderCompareTab() {
     { label:'ROE',          unit:'%',    get: d => d?.ratios?.roe,                                        fmt: v => v==null?'—':v.toFixed(1)+'%' },
   ];
 
-  const nP = displayPeriods.length;
+  const nP = displayPeriods.length; // 연간=3, 분기=4
 
-  // 1행: 회사명 (colspan=nP)
+  // 1행: 회사명 (colspan=nP), 2행: 연도 서브헤더
   const thCos = CODES.map(code => {
     const co = FIN.companies[code];
-    return `<th colspan="${nP}" style="text-align:center;padding:7px 4px 3px;color:${co.color};font-weight:700;white-space:nowrap;font-size:13px;border-left:2px solid var(--border)">${co.name}</th>`;
+    return `<th colspan="${nP}" style="text-align:center;padding:6px 2px 2px;color:${co.color};font-weight:700;font-size:12px;border-left:2px solid var(--border)">${co.name}</th>`;
   }).join('');
 
-  // 2행: 연도/분기 서브헤더
   const thPeriods = CODES.map(() =>
-    displayPeriods.map((p, pi) =>
-      `<th style="text-align:center;padding:2px 4px 6px;font-size:11px;color:var(--text-sub);font-weight:600;white-space:nowrap${pi===0?';border-left:2px solid var(--border)':''}">${p}</th>`
-    ).join('')
+    displayPeriods.map((p, pi) => {
+      const label = cmpPeriodMode === 'annual' ? p.slice(2)+"년" : p; // 연간: '23년', 분기: 그대로
+      return `<th style="text-align:center;padding:1px 2px 5px;font-size:10px;color:var(--text-sub);font-weight:600;white-space:nowrap${pi===0?';border-left:2px solid var(--border)':''}">${label}</th>`;
+    }).join('')
   ).join('');
 
   // 바디: 지표별 행 (회사×기간 셀)
   let tbodyHtml = '';
   TABLE_ROWS.forEach((row, ri) => {
     const rowBg = ri % 2 ? 'background:rgba(0,0,0,0.018)' : '';
-    const cells = CODES.map((code, ci) => {
-      return displayPeriods.map((p, pi) => {
+    const cells = CODES.map((code) =>
+      displayPeriods.map((p, pi) => {
         const d = getCmpData(code, p);
-        const borderLeft = pi === 0 ? 'border-left:2px solid var(--border);' : '';
-        return `<td style="${borderLeft}text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums;font-size:12px">${row.fmt(row.get(d))}</td>`;
-      }).join('');
-    }).join('');
+        const bl = pi === 0 ? 'border-left:2px solid var(--border);' : '';
+        return `<td style="${bl}text-align:right;padding:4px 5px;font-variant-numeric:tabular-nums;font-size:11px">${row.fmt(row.get(d))}</td>`;
+      }).join('')
+    ).join('');
     tbodyHtml += `
       <tr style="${rowBg}">
-        <td style="padding:5px 10px;font-size:12px;color:var(--text-sub);white-space:nowrap;min-width:110px">
-          ${row.label}<span style="font-size:10px;margin-left:3px;opacity:.7">(${row.unit})</span>
+        <td style="padding:4px 8px;font-size:11px;color:var(--text-sub);white-space:nowrap">
+          ${row.label}<span style="font-size:9px;margin-left:2px;opacity:.7">(${row.unit})</span>
         </td>${cells}
       </tr>`;
   });
 
   const unifiedTableHtml = `
     <div class="card" style="margin-bottom:20px">
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;min-width:${120 + CODES.length * nP * 72}px">
-          <thead>
-            <tr style="border-bottom:1px solid var(--border)">
-              <th style="text-align:left;padding:7px 10px;font-size:12px;color:var(--text-sub)" rowspan="2">구분</th>
-              ${thCos}
-            </tr>
-            <tr style="border-bottom:2px solid var(--border)">
-              ${thPeriods}
-            </tr>
-          </thead>
-          <tbody>${tbodyHtml}</tbody>
-        </table>
-      </div>
+      <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+        <colgroup>
+          <col style="width:13%">
+          ${CODES.map(() => displayPeriods.map(() => `<col style="width:${87/CODES.length/nP}%">`).join('')).join('')}
+        </colgroup>
+        <thead>
+          <tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:6px 8px;font-size:11px;color:var(--text-sub)" rowspan="2">구분</th>
+            ${thCos}
+          </tr>
+          <tr style="border-bottom:2px solid var(--border)">
+            ${thPeriods}
+          </tr>
+        </thead>
+        <tbody>${tbodyHtml}</tbody>
+      </table>
     </div>`;
 
   $('tab-compare').innerHTML = `
