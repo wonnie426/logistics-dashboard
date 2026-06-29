@@ -135,12 +135,16 @@
     .ratio-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
     .ratio-table tr:last-child td { border-bottom: none; }
     .ratio-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
-    /* 사업부문 실적 표 — 전체 폭, 컬럼을 퍼센트로 고르게 분배 */
+    /* 사업부문 실적 표 — 열 정렬 일치, 간격 균일 */
     .seg-table { width: 100%; table-layout: fixed; }
-    .seg-table col.c-seg  { width: 18%; }
-    .seg-table col.c-num  { width: 19%; }
-    .seg-table col.c-note { width: 44%; }
+    .seg-table col.c-seg  { width: 14%; }
+    .seg-table col.c-num  { width: 18%; }
+    .seg-table col.c-note { width: 50%; }
+    .seg-table th, .seg-table td { padding: 10px 16px; vertical-align: middle; }
+    .seg-table th.num, .seg-table td.num { text-align: right; }   /* 숫자: 헤더·값 모두 우측 */
+    .seg-table th:first-child, .seg-table td.seg-name { text-align: left; }
     .seg-table td.seg-name { font-weight: 600; }
+    .seg-table th:last-child, .seg-table td.seg-note { text-align: left; }
     .seg-table td.seg-note { font-size: 11px; color: var(--text-sub); white-space: normal; word-break: keep-all; }
     .source-label { font-size: 11px; color: var(--text-sub); }
     /* IR/ESG 탭 */
@@ -705,7 +709,33 @@ function segPalette(baseHex, n) {
   return Array.from({length: n}, (_, i) => tint(baseHex, (i / (n - 1)) * maxTint));
 }
 
-function makeBarChart(id, labels, datasets) {
+// 막대 위에 값 표시 플러그인
+const barValuePlugin = {
+  id: 'barValues',
+  afterDatasetsDraw(chart, args, opts) {
+    if (!chart.$showValues) return;
+    const ctx = chart.ctx;
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text').trim() || '#333';
+    ctx.save();
+    ctx.font = '600 11px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    chart.data.datasets.forEach((ds, di) => {
+      const meta = chart.getDatasetMeta(di);
+      if (meta.hidden) return;
+      meta.data.forEach((bar, i) => {
+        const v = ds.data[i];
+        if (v == null) return;
+        ctx.fillStyle = textColor;
+        const neg = v < 0;
+        ctx.textBaseline = neg ? 'top' : 'bottom';
+        ctx.fillText(wonTick(v), bar.x, bar.y + (neg ? 3 : -3));
+      });
+    });
+    ctx.restore();
+  }
+};
+
+function makeBarChart(id, labels, datasets, showValues) {
   destroyChart(id);
   const ctx = document.getElementById(id)?.getContext('2d');
   if (!ctx) return;
@@ -714,12 +744,15 @@ function makeBarChart(id, labels, datasets) {
     data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: true,
+      layout: { padding: { top: showValues ? 22 : 0 } },
       plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false,
         callbacks: { label: c => `${c.dataset.label}: ${c.raw == null ? '미공시' : wonTooltip(c.raw)}` }
       } },
       scales: { y: { ticks: { callback: v => wonTick(v) }, grid: { color: 'rgba(0,0,0,0.05)' } } }
-    }
+    },
+    plugins: [barValuePlugin]
   });
+  charts[id].$showValues = !!showValues;
 }
 
 // ── 개별 기업 탭 ──────────────────────────────────────────────────────────
@@ -1323,12 +1356,12 @@ function renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode) {
       label: n,
       data: segPeriods.map(p => segQuarterVal(segSrc, fs, p, n, 'revenue', qMode)),
       backgroundColor: palette[i % palette.length],
-    })));
+    })), true);
     makeBarChart(`c-${code}-seg-o`, segPeriods, (seg.segments||[]).map((n,i) => ({
       label: n,
       data: segPeriods.map(p => segQuarterVal(segSrc, fs, p, n, 'operating_income', qMode)),
       backgroundColor: palette[i % palette.length],
-    })));
+    })), true);
   }
 }
 
