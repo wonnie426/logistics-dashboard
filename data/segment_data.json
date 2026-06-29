@@ -34,11 +34,11 @@
       "annual": {
         "2023": {
           "CFS": {
-            "source": "2023년 사업보고서",
-            "CL":   { "revenue": null, "operating_income": null, "note": null },
-            "택배": { "revenue": null, "operating_income": null, "note": null },
-            "글로벌": { "revenue": null, "operating_income": null, "note": null },
-            "건설": { "revenue": null, "operating_income": null, "note": null }
+            "source": "2023년 사업보고서 (연결재무제표 주석 4 영업부문정보, 2024.03.20 정정 제출)",
+            "CL":   { "revenue": 2853578857000, "operating_income": 144304003000, "note": "연결재무제표 주석 4 영업부문정보 · 순매출액/영업이익(손실) (천원)" },
+            "택배": { "revenue": 3722690370000, "operating_income": 246109770000, "note": "연결재무제표 주석 4 영업부문정보 · 순매출액/영업이익(손실) (천원)" },
+            "글로벌": { "revenue": 4205816167000, "operating_income": 77449072000,  "note": "연결재무제표 주석 4 영업부문정보 · 순매출액/영업이익(손실) (천원)" },
+            "건설": { "revenue": 985808269000,  "operating_income": 12372018000,  "note": "연결재무제표 주석 4 영업부문정보 · 순매출액/영업이익(손실) (천원)" }
           }
         },
         "2024": {
