@@ -855,11 +855,11 @@ function renderCompanyTab(code) {
           <canvas id="c-${code}-seg-o"></canvas>
         </div>
       </div>
-      ${segTable(code, fs)}
+      ${segTable(code, fs, pMode)}
     </div>
   `;
 
-  renderCompanyCharts(code, dataMap, keys, color, seg, fs);
+  renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode);
 }
 
 function sc(label, value, chgHtml, metric, val) {
@@ -966,18 +966,21 @@ function downloadRatioExcel(code, period) {
   XLSX.writeFile(wb, `재무비율_${co.name}_${period}_${fs}.xlsx`);
 }
 
-function segTable(code, fs) {
+function segTable(code, fs, pMode) {
   fs = fs || 'CFS';
+  const isQ = pMode === 'quarterly';
   const fsLabel = fs === 'SFS' ? '별도기준' : '연결기준';
   const seg = SEG.companies[code];
   if (!seg) return '<p style="color:var(--text-sub);font-size:13px">사업부문 데이터 없음</p>';
-  // 해당 기준(fs) 데이터가 있는 연도만
-  const years = Object.keys(seg.annual || {}).filter(y => seg.annual[y]?.[fs]).sort();
-  if (!years.length) return `<p style="color:var(--text-sub);font-size:13px">${fsLabel} 사업부문 데이터 없음</p>`;
-  const latest = years[years.length - 1];
-  const data   = seg.annual[latest]?.[fs] || {};
+  // 기간(연간/분기) + 기준(fs) 데이터가 있는 항목만
+  const segMap = isQ ? (seg.quarterly || {}) : (seg.annual || {});
+  const periods = Object.keys(segMap).filter(p => segMap[p]?.[fs]).sort();
+  if (!periods.length) return `<p style="color:var(--text-sub);font-size:13px">${fsLabel} ${isQ ? '분기 ' : ''}사업부문 데이터 없음${isQ ? ' (분기·반기보고서 영업부문정보 캡처 필요)' : ''}</p>`;
+  const latest = periods[periods.length - 1];
+  const data   = segMap[latest]?.[fs] || {};
   const u      = fmt.wonUnit();
-  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}] ${latest}년 기준</b> · 출처: ${data.source || '—'}</div>`;
+  const latestLbl = isQ ? latest : (latest + '년');
+  let html = `<div class="source-label" style="margin:12px 0 8px"><b>[${fsLabel}] ${latestLbl} 기준</b> · 출처: ${data.source || '—'}</div>`;
   html += `<table class="ratio-table seg-table">
     <colgroup><col class="c-seg"><col class="c-num"><col class="c-num"><col class="c-note"></colgroup>
     <thead><tr><th>부문</th><th class="num">매출액 ${u}</th><th class="num">영업이익 ${u}</th><th>주석 (출처)</th></tr></thead><tbody>`;
@@ -994,8 +997,9 @@ function segTable(code, fs) {
   return html + '</tbody></table>';
 }
 
-function renderCompanyCharts(code, dataMap, keys, color, seg, fs) {
+function renderCompanyCharts(code, dataMap, keys, color, seg, fs, pMode) {
   fs = fs || 'CFS';
+  const isQ = pMode === 'quarterly';
   const alpha = color + '33';
   const avail = Object.keys(IND_AVG).filter(k => k !== 'note' && k !== 'source');
 
@@ -1021,17 +1025,18 @@ function renderCompanyCharts(code, dataMap, keys, color, seg, fs) {
     { label: '자본', data: keys.map(k => dataMap[k]?.bs?.total_equity ?? null), backgroundColor: '#10b98188' },
   ]);
 
-  if (seg?.annual) {
-    const segYears = Object.keys(seg.annual).filter(y => seg.annual[y]?.[fs]).sort();
+  const segSrc = isQ ? (seg?.quarterly || {}) : (seg?.annual || {});
+  if (seg) {
+    const segPeriods = Object.keys(segSrc).filter(p => segSrc[p]?.[fs]).sort();
     const palette  = segPalette(color, (seg.segments||[]).length);
-    makeBarChart(`c-${code}-seg-r`, segYears, (seg.segments||[]).map((n,i) => ({
+    makeBarChart(`c-${code}-seg-r`, segPeriods, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segYears.map(y => seg.annual[y]?.[fs]?.[n]?.revenue ?? null),
+      data: segPeriods.map(p => segSrc[p]?.[fs]?.[n]?.revenue ?? null),
       backgroundColor: palette[i % palette.length],
     })));
-    makeBarChart(`c-${code}-seg-o`, segYears, (seg.segments||[]).map((n,i) => ({
+    makeBarChart(`c-${code}-seg-o`, segPeriods, (seg.segments||[]).map((n,i) => ({
       label: n,
-      data: segYears.map(y => seg.annual[y]?.[fs]?.[n]?.operating_income ?? null),
+      data: segPeriods.map(p => segSrc[p]?.[fs]?.[n]?.operating_income ?? null),
       backgroundColor: palette[i % palette.length],
     })));
   }
