@@ -478,11 +478,12 @@ function setFs(code, div) {
 
 async function loadData() {
   try {
+    const cb = '?v=' + Date.now();
     [FIN, SEG, THRESH, IND_AVG] = await Promise.all([
-      fetch('data/financial_data.json').then(r => r.json()),
-      fetch('data/segment_data.json').then(r => r.json()),
-      fetch('data/thresholds.json').then(r => r.json()),
-      fetch('data/industry_avg.json').then(r => r.json()),
+      fetch('data/financial_data.json' + cb).then(r => r.json()),
+      fetch('data/segment_data.json' + cb).then(r => r.json()),
+      fetch('data/thresholds.json' + cb).then(r => r.json()),
+      fetch('data/industry_avg.json' + cb).then(r => r.json()),
     ]);
     initUI();
   } catch (e) {
