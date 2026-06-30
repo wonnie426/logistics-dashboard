@@ -1919,8 +1919,15 @@ function cmpBuilderHtml() {
     </label>`;
   }).join('');
   return `<div class="card" style="margin-top:20px;margin-bottom:24px">
-    <div class="card-title">커스텀 비교 차트
-      <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>커스텀 비교 차트
+        <span style="font-size:11px;font-weight:400;color:var(--text-sub);margin-left:6px">항목을 복수 선택할 수 있습니다</span>
+      </span>
+      <div style="display:flex;gap:6px">
+        <button class="chart-download" onclick="downloadChart('c-cmp-custom','종합비교_커스텀차트.png')" title="PNG 이미지 저장">💾 PNG</button>
+        <button class="chart-download" onclick="downloadCmpChartExcel()" title="Excel로 저장">📋 Excel</button>
+        <button class="chart-download" onclick="downloadCmpChartPPT()" title="PowerPoint 편집 가능 차트로 저장">📊 PPT</button>
+      </div>
     </div>
     <div class="builder-controls">
       <div class="metric-picker">
@@ -1956,6 +1963,135 @@ function toggleCmpCompany(code, checked) {
   const wrap = document.getElementById('cmp-builder-wrap');
   if (wrap) wrap.innerHTML = cmpBuilderHtml();
   buildCustomChartCompare();
+}
+
+function downloadCmpChartExcel() {
+  const state = customBuilderState.compare;
+  const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
+  if (!ms.length) return;
+  const CODES = state.companies.length ? state.companies : ['LGL','CJ','HJ','HGL'];
+  const periods = getCmpPeriods();
+  const rows = [['구분', ...periods]];
+  CODES.forEach(code => {
+    ms.forEach(m => {
+      const unitSfx = m.type==='won' ? ' (억원)' : m.type==='pct' ? ' (%)' : ' (배)';
+      const lbl = ms.length > 1 ? `${CMP_NAMES[code]} ${m.label}` : CMP_NAMES[code];
+      const row = [lbl + unitSfx];
+      periods.forEach(p => {
+        const v = getMetricValue(getCmpData(code, p), m.key);
+        if (v == null) { row.push('—'); return; }
+        if (m.type === 'won') row.push(Math.round(v / 1e8));
+        else if (m.type === 'pct') row.push(parseFloat(v.toFixed(1)));
+        else row.push(parseFloat(v.toFixed(2)));
+      });
+      rows.push(row);
+    });
+  });
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, ws, '비교차트');
+  XLSX.writeFile(wb, '종합비교_커스텀차트.xlsx');
+}
+
+async function downloadCmpChartPPT() {
+  const state = customBuilderState.compare;
+  const ms = state.metrics.map(k => CUSTOM_METRICS.find(x => x.key === k)).filter(Boolean);
+  if (!ms.length) { alert('항목을 선택해주세요.'); return; }
+  const CODES = state.companies.length ? state.companies : ['LGL','CJ','HJ','HGL'];
+  const periods = getCmpPeriods();
+  const hasWon = ms.some(m => m.type === 'won');
+  const hasPct = ms.some(m => m.type !== 'won');
+  const dual   = hasWon && hasPct;
+  const wonMs  = ms.filter(m => m.type === 'won');
+  const pctMs  = ms.filter(m => m.type !== 'won');
+
+  function norm(v, m) {
+    if (v == null) return 0;
+    return m.type === 'won' ? Math.round(v / 1e8) : Math.round(v * 100) / 100;
+  }
+  function makeSeries(m, code) {
+    const unitSfx = m.type==='won' ? ' (억원)' : m.type==='pct' ? ' (%)' : ' (배)';
+    const lbl = ms.length > 1 ? `${CMP_NAMES[code]}·${m.label}` : CMP_NAMES[code];
+    return { name: lbl + unitSfx, labels: periods,
+      values: periods.map(p => norm(getMetricValue(getCmpData(code, p), m.key), m)) };
+  }
+
+  const prs = new PptxGenJS();
+  prs.layout = 'LAYOUT_WIDE';
+
+  const s1 = prs.addSlide();
+  s1.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:0.65, fill:{ color:'1E2D4F' } });
+  s1.addText('종합비교 — 커스텀 차트', { x:0.4, y:0.1, w:10, h:0.45, fontSize:18, bold:true, color:'FFFFFF' });
+  s1.addText(new Date().toLocaleDateString('ko-KR') + ' 기준', { x:0.4, y:0.52, w:12, h:0.25, fontSize:9, color:'AABBDD' });
+
+  const baseOpts = { x:0.4, y:0.85, w:12.5, h:5.6, showLegend:true, legendPos:'b', legendFontSize:9, showValue:true, dataLabelFontSize:8 };
+
+  if (dual) {
+    const barSeries  = wonMs.flatMap(m => CODES.map(code => makeSeries(m, code)));
+    const lineSeries = pctMs.flatMap(m => CODES.map(code => makeSeries(m, code)));
+    s1.addChart(
+      [
+        { type: prs.ChartType.bar,  data: barSeries,
+          options: { chartColors: barSeries.map((_, i) => CMP_COLORS[CODES[i % CODES.length]].replace('#','')), barGrouping:'clustered' } },
+        { type: prs.ChartType.line, data: lineSeries,
+          options: { chartColors: lineSeries.map((_, i) => CMP_COLORS[CODES[i % CODES.length]].replace('#','')), secondaryValAxis:true, secondaryCatAxis:true, lineSize:2 } },
+      ],
+      { ...baseOpts, valAxisTitle:'억원', valAxisTitleShow:true, val2AxisTitle:'(%)', val2AxisTitleShow:true }
+    );
+  } else if (state.chartType === 'bar') {
+    const allSeries = ms.flatMap(m => CODES.map(code => makeSeries(m, code)));
+    s1.addChart(prs.ChartType.bar, allSeries, {
+      ...baseOpts, barGrouping:'clustered',
+      chartColors: allSeries.map((_, i) => CMP_COLORS[CODES[i % CODES.length]].replace('#',''))
+    });
+  } else {
+    const allSeries = ms.flatMap(m => CODES.map(code => makeSeries(m, code)));
+    s1.addChart(prs.ChartType.line, allSeries, {
+      ...baseOpts, lineSize:2, lineDataSymbol:'circle',
+      chartColors: allSeries.map((_, i) => CMP_COLORS[CODES[i % CODES.length]].replace('#',''))
+    });
+  }
+  s1.addText('※ 차트 더블클릭 → [데이터 편집]으로 수치 수정 가능', { x:0.4, y:6.55, w:12, h:0.25, fontSize:8.5, color:'888888', italic:true });
+
+  // 슬라이드 2: 데이터 테이블
+  const s2 = prs.addSlide();
+  s2.addShape(prs.ShapeType.rect, { x:0, y:0, w:'100%', h:0.65, fill:{ color:'1E2D4F' } });
+  s2.addText('종합비교 — 차트 데이터', { x:0.4, y:0.1, w:12, h:0.45, fontSize:18, bold:true, color:'FFFFFF' });
+
+  const colW = 12.5 / (periods.length + 1);
+  const hdrRow = [
+    { text:'항목', options:{ bold:true, fill:'1E2D4F', color:'FFFFFF', align:'left', valign:'middle' } },
+    ...periods.map(p => ({ text:p, options:{ bold:true, fill:'1E2D4F', color:'FFFFFF', align:'center', valign:'middle' } }))
+  ];
+  let ri = 0;
+  const dataRows = CODES.flatMap(code =>
+    ms.map(m => {
+      const unitSfx = m.type==='won' ? ' (억원)' : m.type==='pct' ? ' (%)' : ' (배)';
+      const lbl = ms.length > 1 ? `${CMP_NAMES[code]} ${m.label}` : CMP_NAMES[code];
+      const rowFill = ri++ % 2 === 0 ? 'F4F7FB' : 'FFFFFF';
+      return [
+        { text: lbl + unitSfx, options:{ bold:true, fill:rowFill, color:CMP_COLORS[code].replace('#',''), align:'left', valign:'middle' } },
+        ...periods.map(p => {
+          const v = getMetricValue(getCmpData(code, p), m.key);
+          let txt = '—';
+          if (v != null) {
+            if (m.type==='won') txt = Math.round(v/1e8).toLocaleString('ko-KR');
+            else if (m.type==='pct') txt = v.toFixed(1);
+            else txt = v.toFixed(2);
+          }
+          return { text: txt, options:{ fill:rowFill, align:'center', valign:'middle' } };
+        })
+      ];
+    })
+  );
+  s2.addTable([hdrRow, ...dataRows], {
+    x:0.4, y:0.85, w:12.5, colW: Array(periods.length+1).fill(colW),
+    rowH:0.45, fontSize:10, border:{ type:'solid', pt:0.5, color:'CCCCCC' }
+  });
+
+  try {
+    await prs.writeFile({ fileName:'종합비교_커스텀차트.pptx' });
+  } catch(e) { alert('PPT 저장 오류: ' + e.message); }
 }
 
 function buildCustomChartCompare() {
