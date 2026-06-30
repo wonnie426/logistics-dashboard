@@ -76,7 +76,12 @@
               "operating_cf": 90361940946,
               "investing_cf": -237186829728,
               "financing_cf": 65387021111,
-              "interest_paid": 37109536161
+              "interest_paid": 37109536161,
+              "interest_received": 2649358568,
+              "tax_paid": 5696761069,
+              "capex": 285884269015,
+              "beginning_cash": 137942640469,
+              "ending_cash": 59048083012
             },
             "ratios": {
               "gross_margin": 5.85,
@@ -144,7 +149,12 @@
               "operating_cf": 212006738612,
               "investing_cf": -181436216008,
               "financing_cf": 18621175646,
-              "interest_paid": 39774954238
+              "interest_paid": 39774954238,
+              "interest_received": 4262398618,
+              "tax_paid": 3120791717,
+              "capex": 137751834119,
+              "beginning_cash": 59048083012,
+              "ending_cash": 110504811855
             },
             "ratios": {
               "gross_margin": 6.33,
