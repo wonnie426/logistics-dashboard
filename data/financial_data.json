@@ -108,7 +108,34 @@
               "pbr": null,
               "ev_ebitda": null
             }
-          }
+          },
+          "OFS": {
+            "bs": {
+              "total_assets": 2168465732266,
+              "current_assets": 384394810433,
+              "non_current_assets": 1784070921833,
+              "total_liabilities": 1655609869019,
+              "current_liabilities": 596266455630,
+              "non_current_liabilities": 1059343413389,
+              "total_equity": 512855863247,
+              "cash_and_equivalents": 26655099569,
+              "trade_receivables": 330863863775,
+              "inventory": 4315532936,
+              "long_term_borrowings": 172650993308,
+              "bonds_payable": 340153526998,
+              "lease_liabilities": 631557890092
+            },
+            "pl": {
+              "revenue": 2713239721559,
+              "cost_of_revenue": 2552623966249,
+              "gross_profit": 160615755310,
+              "sga": 134388806560,
+              "operating_income": 37739546835,
+              "interest_expense": 31611707745,
+              "net_income": 14931815896
+            }
+          },
+          "_default": "CFS"
         },
         "2022": {
           "CFS": {
@@ -181,7 +208,34 @@
               "pbr": null,
               "ev_ebitda": null
             }
-          }
+          },
+          "OFS": {
+            "bs": {
+              "total_assets": 2440311009274,
+              "current_assets": 513965029217,
+              "non_current_assets": 1926345980057,
+              "total_liabilities": 1905091557807,
+              "current_liabilities": 712685735930,
+              "non_current_liabilities": 1192405821877,
+              "total_equity": 535219451467,
+              "cash_and_equivalents": 83915811122,
+              "trade_receivables": 364616915276,
+              "inventory": 4386444966,
+              "long_term_borrowings": 194979133761,
+              "bonds_payable": 422424481229,
+              "lease_liabilities": 672183139707
+            },
+            "pl": {
+              "revenue": 3273538383867,
+              "cost_of_revenue": 3065224034345,
+              "gross_profit": 208314349522,
+              "sga": 155597915288,
+              "operating_income": 51795337807,
+              "interest_expense": 49554880713,
+              "net_income": 19899009700
+            }
+          },
+          "_default": "CFS"
         },
         "2023": {
           "CFS": {
