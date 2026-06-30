@@ -133,6 +133,17 @@
               "operating_income": 37739546835,
               "interest_expense": 31611707745,
               "net_income": 14931815896
+            },
+            "cf": {
+              "operating_cf": 90646075069,
+              "investing_cf": -237774223032,
+              "financing_cf": 72733621582,
+              "interest_paid": 34002049522,
+              "interest_received": 1642374075,
+              "tax_paid": 1588147752,
+              "capex": 283787456605,
+              "beginning_cash": 101216659967,
+              "ending_cash": 26655099569
             }
           },
           "_default": "CFS"
@@ -233,6 +244,17 @@
               "operating_income": 51795337807,
               "interest_expense": 49554880713,
               "net_income": 19899009700
+            },
+            "cf": {
+              "operating_cf": 207218812883,
+              "investing_cf": -174493344037,
+              "financing_cf": 23584261526,
+              "interest_paid": 34121225847,
+              "interest_received": 2795353204,
+              "tax_paid": 950193786,
+              "capex": 135368373471,
+              "beginning_cash": 26655099569,
+              "ending_cash": 83915811122
             }
           },
           "_default": "CFS"
