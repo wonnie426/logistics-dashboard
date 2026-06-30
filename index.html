@@ -1321,6 +1321,19 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
   const fsKey = fs === 'OFS' ? 'OFS' : 'CFS';
   const pKey  = pMode === 'quarterly' ? 'quarterly' : 'annual';
   const stmtMap = STMT?.[code]?.[fsKey]?.[pKey] || {};  // {period: {sj: [{l,v}]}}
+
+  // STMT_DEFS 한글라벨 → [group, field] 매핑 (DART 미공시 연도 fallback용)
+  const simpleFb = {};
+  STMT_DEFS.forEach(([, , rows]) => rows.forEach(([lbl, field, grp]) => { simpleFb[lbl] = [grp, field]; }));
+  function fbVal(dartLabel, k) {
+    let fb = simpleFb[dartLabel];
+    if (!fb) {
+      const entry = Object.entries(simpleFb).find(([lbl]) => dartLabel.startsWith(lbl) || lbl.startsWith(dartLabel.split('(')[0].trim()));
+      if (entry) fb = entry[1];
+    }
+    return fb ? (dataMap[k]?.[fb[0]]?.[fb[1]] ?? null) : null;
+  }
+
   const panels = STMT_DEFS.map(([sj, title, rows, note], pi) => {
     // DART 원문 라인이 있으면 우선 (최신 기간의 라인 순서를 기준 행으로, 컬럼값은 라벨 매칭)
     let canon = null;
@@ -1335,9 +1348,17 @@ function stmtViewer(code, fs, pMode, dataMap, periodKeys, wu) {
       body = canon.map(item => {
         const cells = periodKeys.map(k => {
           const arr = stmtMap[k]?.[sj];
-          let v = null;
-          if (arr) { const f = arr.find(x => x.l === item.l); if (f) v = f.v; }
-          return `<td>${v != null ? fmt.won(v) : miss}</td>`;
+          let v = null, isFb = false;
+          if (arr) {
+            const f = arr.find(x => x.l === item.l);
+            if (f) v = f.v;
+          } else {
+            // DART 미공시 연도: financial_data.json 요약치로 대체
+            v = fbVal(item.l, k);
+            isFb = (v != null);
+          }
+          const style = isFb ? ' style="color:var(--text-sub);font-style:italic"' : '';
+          return `<td${style}>${v != null ? fmt.won(v) : miss}</td>`;
         }).join('');
         return `<tr><td style="text-align:left;font-weight:500">${cleanStmtLabel(item.l)}</td>${cells}</tr>`;
       }).join('');
