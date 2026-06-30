@@ -59,7 +59,7 @@
               "current_portion_lt_debt": 198292858850,
               "long_term_borrowings": 172650993308,
               "bonds_payable": 340153526998,
-              "lease_liabilities": 102115281921
+              "lease_liabilities": 673719530137
             },
             "pl": {
               "revenue": 3282449186281,
@@ -80,10 +80,10 @@
             },
             "ratios": {
               "gross_margin": 5.85,
-              "operating_margin": 1.30,
+              "operating_margin": 1.3,
               "ebitda_margin": null,
               "net_margin": 0.57,
-              "roa": 0.90,
+              "roa": 0.9,
               "roe": 3.53,
               "debt_ratio": 321.01,
               "debt_ratio_ex_lease": null,
@@ -117,7 +117,7 @@
               "non_current_assets": 2030334105437,
               "total_liabilities": 2078054419780,
               "current_liabilities": 777164561525,
-              "non_current_liabilities": 1300889858255,
+              "non_current_liabilities": 1500889858255,
               "total_equity": 575913532948,
               "controlling_equity": 566790220115,
               "cash_and_equivalents": 110504811855,
@@ -127,7 +127,7 @@
               "current_portion_lt_debt": 236567490708,
               "long_term_borrowings": 195660133761,
               "bonds_payable": 422424481229,
-              "lease_liabilities": 121030606219
+              "lease_liabilities": 788620003589
             },
             "pl": {
               "revenue": 3998308692556,
@@ -156,10 +156,10 @@
               "debt_ratio": 360.83,
               "debt_ratio_ex_lease": null,
               "current_ratio": 80.25,
-              "equity_ratio": 21.70,
+              "equity_ratio": 21.7,
               "borrowing_dependency": null,
-              "interest_coverage": 1.10,
-              "operating_cf_margin": 5.30
+              "interest_coverage": 1.1,
+              "operating_cf_margin": 5.3
             },
             "market": {
               "stock_price": null,
@@ -226,7 +226,7 @@
               "current_ratio": 65.08,
               "equity_ratio": 22.03,
               "borrowing_dependency": 36.8,
-              "interest_coverage": 1.0,
+              "interest_coverage": 1,
               "operating_cf_margin": 6.07
             },
             "market": {
@@ -766,7 +766,7 @@
               "debt_ratio": 354.55,
               "debt_ratio_ex_lease": 327.92,
               "current_ratio": 82.49,
-              "equity_ratio": 22.0,
+              "equity_ratio": 22,
               "borrowing_dependency": 36.64,
               "interest_coverage": 1.12,
               "operating_cf_margin": 6.42
@@ -1633,7 +1633,7 @@
               "interest_paid": 16419491009
             },
             "ratios": {
-              "gross_margin": 8.0,
+              "gross_margin": 8,
               "operating_margin": 1.93,
               "ebitda_margin": null,
               "net_margin": null,
@@ -2253,7 +2253,7 @@
               "equity_ratio": 43.37,
               "borrowing_dependency": 36.62,
               "interest_coverage": 2.32,
-              "operating_cf_margin": 5.0
+              "operating_cf_margin": 5
             },
             "market": {
               "stock_price": null,
@@ -2376,7 +2376,7 @@
               "interest_paid": 155039693714
             },
             "ratios": {
-              "gross_margin": 11.0,
+              "gross_margin": 11,
               "operating_margin": 4.14,
               "ebitda_margin": null,
               "net_margin": 2.11,
@@ -3260,7 +3260,7 @@
               "net_margin": null,
               "roa": null,
               "roe": null,
-              "debt_ratio": 122.0,
+              "debt_ratio": 122,
               "debt_ratio_ex_lease": 114.37,
               "current_ratio": 74.7,
               "equity_ratio": 45.04,
@@ -3467,7 +3467,7 @@
               "debt_ratio": 132.57,
               "debt_ratio_ex_lease": 124.25,
               "current_ratio": 91.85,
-              "equity_ratio": 43.0,
+              "equity_ratio": 43,
               "borrowing_dependency": 40.72,
               "interest_coverage": 1.45,
               "operating_cf_margin": 11.49
@@ -6126,7 +6126,7 @@
               "roe": 0.36,
               "debt_ratio": 168.91,
               "debt_ratio_ex_lease": 162.11,
-              "current_ratio": 63.0,
+              "current_ratio": 63,
               "equity_ratio": 37.19,
               "borrowing_dependency": 19.44,
               "interest_coverage": 1.33,
@@ -7412,23 +7412,50 @@
             "filing_date": null,
             "report_url": null,
             "bs": {
-              "total_assets": null, "current_assets": null, "non_current_assets": null,
-              "total_liabilities": null, "current_liabilities": null, "non_current_liabilities": null,
-              "total_equity": null, "controlling_equity": null,
-              "cash_and_equivalents": null, "trade_receivables": null, "inventory": null,
-              "short_term_borrowings": null, "current_portion_lt_debt": null,
-              "long_term_borrowings": null, "bonds_payable": null, "lease_liabilities": null
+              "total_assets": null,
+              "current_assets": null,
+              "non_current_assets": null,
+              "total_liabilities": null,
+              "current_liabilities": null,
+              "non_current_liabilities": null,
+              "total_equity": null,
+              "controlling_equity": null,
+              "cash_and_equivalents": null,
+              "trade_receivables": null,
+              "inventory": null,
+              "short_term_borrowings": null,
+              "current_portion_lt_debt": null,
+              "long_term_borrowings": null,
+              "bonds_payable": null,
+              "lease_liabilities": null
             },
             "pl": {
-              "revenue": null, "cost_of_revenue": null, "gross_profit": null,
-              "sga": null, "operating_income": null, "interest_expense": null,
-              "net_income": null, "controlling_net_income": null, "depreciation": null
+              "revenue": null,
+              "cost_of_revenue": null,
+              "gross_profit": null,
+              "sga": null,
+              "operating_income": null,
+              "interest_expense": null,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
             },
-            "cf": { "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null },
+            "cf": {
+              "operating_cf": null,
+              "investing_cf": null,
+              "financing_cf": null,
+              "interest_paid": null
+            },
             "ratios": {
-              "gross_margin": null, "operating_margin": null, "ebitda_margin": null,
-              "net_margin": null, "roa": null, "roe": null,
-              "debt_ratio": null, "current_ratio": null, "interest_coverage": null
+              "gross_margin": null,
+              "operating_margin": null,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": null,
+              "current_ratio": null,
+              "interest_coverage": null
             }
           }
         },
@@ -7439,44 +7466,49 @@
             "filing_date": "20230317",
             "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20230317004467",
             "bs": {
-              "total_assets":           13877784500296,
-              "current_assets":          8181858080896,
-              "non_current_assets":      5695926419400,
-              "total_liabilities":       6998172212338,
-              "current_liabilities":     4343758217774,
+              "total_assets": 13877784500296,
+              "current_assets": 8181858080896,
+              "non_current_assets": 5695926419400,
+              "total_liabilities": 6998172212338,
+              "current_liabilities": 4343758217774,
               "non_current_liabilities": 2654413994564,
-              "total_equity":            6879612287958,
-              "controlling_equity":      null,
-              "cash_and_equivalents":    null,
-              "trade_receivables":       null,
-              "inventory":               null,
-              "short_term_borrowings":   null,
+              "total_equity": 6879612287958,
+              "controlling_equity": null,
+              "cash_and_equivalents": null,
+              "trade_receivables": null,
+              "inventory": null,
+              "short_term_borrowings": null,
               "current_portion_lt_debt": null,
-              "long_term_borrowings":    null,
-              "bonds_payable":           null,
-              "lease_liabilities":       null
+              "long_term_borrowings": null,
+              "bonds_payable": null,
+              "lease_liabilities": null
             },
             "pl": {
-              "revenue":               26981880971123,
-              "cost_of_revenue":       null,
-              "gross_profit":          null,
-              "sga":                   null,
-              "operating_income":       1798516596130,
-              "interest_expense":       null,
-              "net_income":             1189821184515,
+              "revenue": 26981880971123,
+              "cost_of_revenue": null,
+              "gross_profit": null,
+              "sga": null,
+              "operating_income": 1798516596130,
+              "interest_expense": null,
+              "net_income": 1189821184515,
               "controlling_net_income": 1189821184515,
-              "depreciation":           null
+              "depreciation": null
             },
-            "cf": { "operating_cf": null, "investing_cf": null, "financing_cf": null, "interest_paid": null },
+            "cf": {
+              "operating_cf": null,
+              "investing_cf": null,
+              "financing_cf": null,
+              "interest_paid": null
+            },
             "ratios": {
-              "gross_margin":      null,
-              "operating_margin":  6.67,
-              "ebitda_margin":     null,
-              "net_margin":        4.41,
-              "roa":               8.57,
-              "roe":               17.29,
-              "debt_ratio":       101.72,
-              "current_ratio":    188.34,
+              "gross_margin": null,
+              "operating_margin": 6.67,
+              "ebitda_margin": null,
+              "net_margin": 4.41,
+              "roa": 8.57,
+              "roe": 17.29,
+              "debt_ratio": 101.72,
+              "current_ratio": 188.34,
               "interest_coverage": null
             }
           }
@@ -7488,49 +7520,49 @@
             "filing_date": "20240315",
             "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240315001419",
             "bs": {
-              "total_assets":           14725019903938,
-              "current_assets":          8771518130998,
-              "non_current_assets":      5953501772940,
-              "total_liabilities":       6941096283685,
-              "current_liabilities":     4467588471380,
+              "total_assets": 14725019903938,
+              "current_assets": 8771518130998,
+              "non_current_assets": 5953501772940,
+              "total_liabilities": 6941096283685,
+              "current_liabilities": 4467588471380,
               "non_current_liabilities": 2473507812305,
-              "total_equity":            7783923620253,
-              "controlling_equity":      null,
-              "cash_and_equivalents":    null,
-              "trade_receivables":       3039600000000,
-              "inventory":               1347600000000,
-              "short_term_borrowings":   1047200000000,
+              "total_equity": 7783923620253,
+              "controlling_equity": null,
+              "cash_and_equivalents": null,
+              "trade_receivables": 3039600000000,
+              "inventory": 1347600000000,
+              "short_term_borrowings": 1047200000000,
               "current_portion_lt_debt": null,
-              "long_term_borrowings":     559400000000,
-              "bonds_payable":            299600000000,
-              "lease_liabilities":       null
+              "long_term_borrowings": 559400000000,
+              "bonds_payable": 299600000000,
+              "lease_liabilities": null
             },
             "pl": {
-              "revenue":               25683197164064,
-              "cost_of_revenue":       null,
-              "gross_profit":          null,
-              "sga":                   null,
-              "operating_income":       1554032510087,
-              "interest_expense":        169700000000,
-              "net_income":             1061133294855,
+              "revenue": 25683197164064,
+              "cost_of_revenue": null,
+              "gross_profit": null,
+              "sga": null,
+              "operating_income": 1554032510087,
+              "interest_expense": 169700000000,
+              "net_income": 1061133294855,
               "controlling_net_income": 1061133294855,
-              "depreciation":            538200000000
+              "depreciation": 538200000000
             },
             "cf": {
-              "operating_cf":  2242300000000,
+              "operating_cf": 2242300000000,
               "investing_cf": -1007200000000,
-              "financing_cf":  -700900000000,
+              "financing_cf": -700900000000,
               "interest_paid": null
             },
             "ratios": {
-              "gross_margin":      null,
-              "operating_margin":  6.05,
-              "ebitda_margin":     null,
-              "net_margin":        4.13,
-              "roa":               7.21,
-              "roe":              13.64,
-              "debt_ratio":       89.18,
-              "current_ratio":   196.36,
+              "gross_margin": null,
+              "operating_margin": 6.05,
+              "ebitda_margin": null,
+              "net_margin": 4.13,
+              "roa": 7.21,
+              "roe": 13.64,
+              "debt_ratio": 89.18,
+              "current_ratio": 196.36,
               "interest_coverage": 9.16
             }
           }
@@ -7542,49 +7574,49 @@
             "filing_date": "20250317",
             "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250317001419",
             "bs": {
-              "total_assets":           16849145438725,
-              "current_assets":          9861432178173,
-              "non_current_assets":      6987713260552,
-              "total_liabilities":       8039781176784,
-              "current_liabilities":     5310609012498,
+              "total_assets": 16849145438725,
+              "current_assets": 9861432178173,
+              "non_current_assets": 6987713260552,
+              "total_liabilities": 8039781176784,
+              "current_liabilities": 5310609012498,
               "non_current_liabilities": 2729172164286,
-              "total_equity":            8809364261941,
-              "controlling_equity":      null,
-              "cash_and_equivalents":    null,
-              "trade_receivables":       3261000000000,
-              "inventory":               1724300000000,
-              "short_term_borrowings":   1058600000000,
+              "total_equity": 8809364261941,
+              "controlling_equity": null,
+              "cash_and_equivalents": null,
+              "trade_receivables": 3261000000000,
+              "inventory": 1724300000000,
+              "short_term_borrowings": 1058600000000,
               "current_portion_lt_debt": null,
-              "long_term_borrowings":     583800000000,
-              "bonds_payable":            109900000000,
-              "lease_liabilities":       null
+              "long_term_borrowings": 583800000000,
+              "bonds_payable": 109900000000,
+              "lease_liabilities": null
             },
             "pl": {
-              "revenue":               28407374301315,
-              "cost_of_revenue":       null,
-              "gross_profit":          null,
-              "sga":                   null,
-              "operating_income":       1752867442226,
-              "interest_expense":        189200000000,
-              "net_income":             1093860048142,
+              "revenue": 28407374301315,
+              "cost_of_revenue": null,
+              "gross_profit": null,
+              "sga": null,
+              "operating_income": 1752867442226,
+              "interest_expense": 189200000000,
+              "net_income": 1093860048142,
               "controlling_net_income": 1093860048142,
-              "depreciation":            655000000000
+              "depreciation": 655000000000
             },
             "cf": {
-              "operating_cf":  2122400000000,
-              "investing_cf":  -489000000000,
-              "financing_cf":  -703500000000,
+              "operating_cf": 2122400000000,
+              "investing_cf": -489000000000,
+              "financing_cf": -703500000000,
               "interest_paid": null
             },
             "ratios": {
-              "gross_margin":      null,
-              "operating_margin":  6.17,
-              "ebitda_margin":     null,
-              "net_margin":        3.85,
-              "roa":               6.49,
-              "roe":              12.42,
-              "debt_ratio":       91.26,
-              "current_ratio":   185.70,
+              "gross_margin": null,
+              "operating_margin": 6.17,
+              "ebitda_margin": null,
+              "net_margin": 3.85,
+              "roa": 6.49,
+              "roe": 12.42,
+              "debt_ratio": 91.26,
+              "current_ratio": 185.7,
               "interest_coverage": 9.26
             }
           }
@@ -7596,49 +7628,49 @@
             "filing_date": "20260318",
             "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001695",
             "bs": {
-              "total_assets":           18587200000000,
-              "current_assets":         10338700000000,
-              "non_current_assets":      8248500000000,
-              "total_liabilities":       8198800000000,
-              "current_liabilities":     5158200000000,
+              "total_assets": 18587200000000,
+              "current_assets": 10338700000000,
+              "non_current_assets": 8248500000000,
+              "total_liabilities": 8198800000000,
+              "current_liabilities": 5158200000000,
               "non_current_liabilities": 3040600000000,
-              "total_equity":           10388500000000,
-              "controlling_equity":      null,
-              "cash_and_equivalents":    null,
-              "trade_receivables":       3800000000000,
-              "inventory":               1750300000000,
-              "short_term_borrowings":    703500000000,
+              "total_equity": 10388500000000,
+              "controlling_equity": null,
+              "cash_and_equivalents": null,
+              "trade_receivables": 3800000000000,
+              "inventory": 1750300000000,
+              "short_term_borrowings": 703500000000,
               "current_portion_lt_debt": null,
-              "long_term_borrowings":     189700000000,
-              "bonds_payable":            409100000000,
-              "lease_liabilities":       null
+              "long_term_borrowings": 189700000000,
+              "bonds_payable": 409100000000,
+              "lease_liabilities": null
             },
             "pl": {
-              "revenue":               29566400000000,
-              "cost_of_revenue":       null,
-              "gross_profit":          null,
-              "sga":                   null,
-              "operating_income":       2073000000000,
-              "interest_expense":        171800000000,
-              "net_income":             1734700000000,
+              "revenue": 29566400000000,
+              "cost_of_revenue": null,
+              "gross_profit": null,
+              "sga": null,
+              "operating_income": 2073000000000,
+              "interest_expense": 171800000000,
+              "net_income": 1734700000000,
               "controlling_net_income": 1734700000000,
-              "depreciation":            754500000000
+              "depreciation": 754500000000
             },
             "cf": {
-              "operating_cf":  2500800000000,
+              "operating_cf": 2500800000000,
               "investing_cf": -1543500000000,
               "financing_cf": -1625100000000,
               "interest_paid": null
             },
             "ratios": {
-              "gross_margin":      null,
-              "operating_margin":  7.01,
-              "ebitda_margin":     null,
-              "net_margin":        5.87,
-              "roa":               9.33,
-              "roe":              16.70,
-              "debt_ratio":       78.92,
-              "current_ratio":   200.43,
+              "gross_margin": null,
+              "operating_margin": 7.01,
+              "ebitda_margin": null,
+              "net_margin": 5.87,
+              "roa": 9.33,
+              "roe": 16.7,
+              "debt_ratio": 78.92,
+              "current_ratio": 200.43,
               "interest_coverage": 12.07
             }
           }
@@ -7648,19 +7680,25 @@
         "2025Q2": {
           "CFS": {
             "source": "2025년 반기보고서 (연결기준, FnGuide 단일분기 기준)",
-            "revenue": 7516000000000, "operating_income": 538900000000, "net_income": 503400000000
+            "revenue": 7516000000000,
+            "operating_income": 538900000000,
+            "net_income": 503400000000
           }
         },
         "2025Q3": {
           "CFS": {
             "source": "2025년 3분기보고서 (연결기준, FnGuide 단일분기 기준)",
-            "revenue": 7355100000000, "operating_income": 524000000000, "net_income": 392600000000
+            "revenue": 7355100000000,
+            "operating_income": 524000000000,
+            "net_income": 392600000000
           }
         },
         "2026Q1": {
           "CFS": {
             "source": "2026년 1분기보고서 (연결기준, FnGuide 단일분기 기준)",
-            "revenue": 7812700000000, "operating_income": 521500000000, "net_income": 341000000000
+            "revenue": 7812700000000,
+            "operating_income": 521500000000,
+            "net_income": 341000000000
           }
         }
       },
