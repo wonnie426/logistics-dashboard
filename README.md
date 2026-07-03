@@ -1,2 +1,2 @@
 # logistics-dashboard
-물류 3사 재무비율 대시보드
+물류기업 DART요약비교
