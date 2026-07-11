@@ -249,7 +249,7 @@ def download_document_html(rcept_no: str, api_key: str) -> list[tuple[str, str]]
             html_files = [
                 (name, zf.read(name).decode("utf-8", errors="replace"))
                 for name in zf.namelist()
-                if name.lower().endswith((".htm", ".html"))
+                if name.lower().endswith((".htm", ".html", ".xml"))
             ]
         # 크기 큰 파일(본문일 가능성 높음) 순서로
         html_files.sort(key=lambda x: len(x[1]), reverse=True)
@@ -283,7 +283,7 @@ class TableExtractor(HTMLParser):
         elif tag in ("tr",):
             if self._depth == 1:
                 self._current_row = []
-        elif tag in ("td", "th"):
+        elif tag in ("td", "th", "te"):
             if self._depth == 1:
                 self._in_cell = True
                 self._current_cell = ""
@@ -296,7 +296,7 @@ class TableExtractor(HTMLParser):
         elif tag == "tr":
             if self._depth == 1 and self._current_row:
                 self._current_table.append(self._current_row)
-        elif tag in ("td", "th"):
+        elif tag in ("td", "th", "te"):
             if self._depth == 1 and self._in_cell:
                 self._current_row.append(self._current_cell.strip())
                 self._in_cell = False
