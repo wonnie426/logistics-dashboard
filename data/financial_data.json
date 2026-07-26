@@ -831,26 +831,6 @@
           "rm": "",
           "pblntf_ty": "D",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250801000218"
-        },
-        {
-          "rcept_no": "20250725800701",
-          "rcept_dt": "20250725",
-          "report_nm": "결산실적공시예고(안내공시)              ",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "유",
-          "pblntf_ty": "I",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250725800701"
-        },
-        {
-          "rcept_no": "20250725800695",
-          "rcept_dt": "20250725",
-          "report_nm": "기업설명회(IR)개최(안내공시)              ",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "유",
-          "pblntf_ty": "I",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250725800695"
         }
       ],
       "info": {
@@ -6891,26 +6871,6 @@
           "rm": "",
           "pblntf_ty": "E",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250804000221"
-        },
-        {
-          "rcept_no": "20250725000673",
-          "rcept_dt": "20250725",
-          "report_nm": "특수관계인으로부터주식의취득",
-          "corp_name": "현대자동차",
-          "flr_nm": "현대자동차",
-          "rm": "공",
-          "pblntf_ty": "J",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250725000673"
-        },
-        {
-          "rcept_no": "20250725000574",
-          "rcept_dt": "20250725",
-          "report_nm": "특수관계인으로부터기타유가증권매수",
-          "corp_name": "현대자동차",
-          "flr_nm": "현대자동차",
-          "rm": "공",
-          "pblntf_ty": "J",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250725000574"
         }
       ],
       "info": {
@@ -10876,5 +10836,5 @@
       "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001394"
     }
   },
-  "last_updated": "2026-07-25T09:00:01.977779+09:00"
+  "last_updated": "2026-07-26T09:00:02.577495+09:00"
 }
