@@ -841,16 +841,6 @@
           "rm": "유",
           "pblntf_ty": "I",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250808800035"
-        },
-        {
-          "rcept_no": "20250801000218",
-          "rcept_dt": "20250801",
-          "report_nm": "임원ㆍ주요주주특정증권등소유상황보고서",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "국민연금공단",
-          "rm": "",
-          "pblntf_ty": "D",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250801000218"
         }
       ],
       "info": {
@@ -10866,5 +10856,5 @@
       "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001394"
     }
   },
-  "last_updated": "2026-08-01T09:00:01.836464+09:00"
+  "last_updated": "2026-08-02T09:00:02.075444+09:00"
 }
