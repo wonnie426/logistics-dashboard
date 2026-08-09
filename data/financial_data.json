@@ -831,16 +831,6 @@
           "rm": "공",
           "pblntf_ty": "J",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814000779"
-        },
-        {
-          "rcept_no": "20250808800035",
-          "rcept_dt": "20250808",
-          "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "유",
-          "pblntf_ty": "I",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250808800035"
         }
       ],
       "info": {
@@ -10846,5 +10836,5 @@
       "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001394"
     }
   },
-  "last_updated": "2026-08-08T09:00:01.849124+09:00"
+  "last_updated": "2026-08-09T09:00:02.068484+09:00"
 }
