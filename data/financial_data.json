@@ -3,6 +3,26 @@
     "CJ": {
       "disclosures": [
         {
+          "rcept_no": "20260814003838",
+          "rcept_dt": "20260814",
+          "report_nm": "반기보고서 (2026.06)",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003838"
+        },
+        {
+          "rcept_no": "20260814001382",
+          "rcept_dt": "20260814",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "CJ대한통운",
+          "flr_nm": "CJ대한통운",
+          "rm": "공",
+          "pblntf_ty": "J",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814001382"
+        },
+        {
           "rcept_no": "20260811800040",
           "rcept_dt": "20260811",
           "report_nm": "연결재무제표기준영업(잠정)실적(공정공시)              ",
@@ -801,46 +821,6 @@
           "rm": "유",
           "pblntf_ty": "I",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250821800185"
-        },
-        {
-          "rcept_no": "20250814004310",
-          "rcept_dt": "20250814",
-          "report_nm": "반기보고서 (2025.06)",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "",
-          "pblntf_ty": "A",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814004310"
-        },
-        {
-          "rcept_no": "20250814004399",
-          "rcept_dt": "20250814",
-          "report_nm": "[기재정정]독립이사의선임ㆍ해임또는중도퇴임에관한신고",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "",
-          "pblntf_ty": "E",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814004399"
-        },
-        {
-          "rcept_no": "20250814004248",
-          "rcept_dt": "20250814",
-          "report_nm": "독립이사의선임ㆍ해임또는중도퇴임에관한신고",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "정",
-          "pblntf_ty": "E",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814004248"
-        },
-        {
-          "rcept_no": "20250814000779",
-          "rcept_dt": "20250814",
-          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
-          "corp_name": "CJ대한통운",
-          "flr_nm": "CJ대한통운",
-          "rm": "공",
-          "pblntf_ty": "J",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814000779"
         }
       ],
       "info": {
@@ -864,7 +844,7 @@
         "annual_2023": 127200,
         "annual_2024": 84400,
         "annual_2025": 94600,
-        "annual_2026": 74800,
+        "annual_2026": 77200,
         "2023Q1": 79900,
         "2024Q1": 114900,
         "2025Q1": 86300,
@@ -876,7 +856,7 @@
         "2023Q3": 80800,
         "2024Q3": 93100,
         "2025Q3": 84200,
-        "2026Q3": 74800
+        "2026Q3": 77200
       },
       "color": "#00A0DC",
       "annual": {
@@ -2906,12 +2886,167 @@
             }
           },
           "_default": "CFS"
+        },
+        "2026Q2": {
+          "CFS": {
+            "source": "2026년 반기보고서 (연결기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003838",
+            "bs": {
+              "total_assets": 10717927198883,
+              "current_assets": null,
+              "non_current_assets": null,
+              "total_liabilities": 6292779008196,
+              "current_liabilities": 151733935477,
+              "non_current_liabilities": 49874261680,
+              "total_equity": 4425148190687,
+              "controlling_equity": null,
+              "cash_and_equivalents": 256669078700,
+              "trade_receivables": 1646344501433,
+              "inventory": 29299396842,
+              "short_term_borrowings": 851591756572,
+              "current_portion_lt_debt": 851591756572,
+              "long_term_borrowings": 851591756572,
+              "bonds_payable": null,
+              "lease_liabilities": 393379500279
+            },
+            "pl": {
+              "revenue": 3379978742005,
+              "cost_of_revenue": 3054561326969,
+              "gross_profit": 325417415036,
+              "sga": 223850973592,
+              "operating_income": 101566441444,
+              "interest_expense": 68432096506,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 244745767479,
+              "investing_cf": -235668016207,
+              "financing_cf": -68980475657,
+              "interest_paid": 86564795249
+            },
+            "ratios": {
+              "gross_margin": 9.63,
+              "operating_margin": 3.0,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": 142.2,
+              "debt_ratio_ex_lease": 133.32,
+              "current_ratio": null,
+              "equity_ratio": 41.29,
+              "borrowing_dependency": 27.51,
+              "interest_coverage": 1.48,
+              "operating_cf_margin": 7.24
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "OFS": {
+            "source": "2026년 반기보고서 (별도기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003838",
+            "bs": {
+              "total_assets": 8258080115525,
+              "current_assets": null,
+              "non_current_assets": null,
+              "total_liabilities": 4354283247769,
+              "current_liabilities": 101716285940,
+              "non_current_liabilities": 40350833252,
+              "total_equity": 3903796867756,
+              "controlling_equity": null,
+              "cash_and_equivalents": 22086620415,
+              "trade_receivables": 1133980809110,
+              "inventory": 21955050569,
+              "short_term_borrowings": 1258489881550,
+              "current_portion_lt_debt": 1258489881550,
+              "long_term_borrowings": 1258489881550,
+              "bonds_payable": 392736051355,
+              "lease_liabilities": 293842635774
+            },
+            "pl": {
+              "revenue": 2288604332979,
+              "cost_of_revenue": 2070224661150,
+              "gross_profit": 218379671829,
+              "sga": 157289768857,
+              "operating_income": 61089902972,
+              "interest_expense": 35585657040,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 195268527095,
+              "investing_cf": -224014714329,
+              "financing_cf": -16182606090,
+              "interest_paid": 51540842484
+            },
+            "ratios": {
+              "gross_margin": 9.54,
+              "operating_margin": 2.67,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": 111.54,
+              "debt_ratio_ex_lease": 104.01,
+              "current_ratio": null,
+              "equity_ratio": 47.27,
+              "borrowing_dependency": 54.03,
+              "interest_coverage": 1.72,
+              "operating_cf_margin": 8.53
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "_default": "CFS"
         }
       },
       "corp_code": "00113410"
     },
     "HJ": {
       "disclosures": [
+        {
+          "rcept_no": "20260814003522",
+          "rcept_dt": "20260814",
+          "report_nm": "반기보고서 (2026.06)",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003522"
+        },
+        {
+          "rcept_no": "20260814000327",
+          "rcept_dt": "20260814",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "한진",
+          "flr_nm": "한진",
+          "rm": "공",
+          "pblntf_ty": "J",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814000327"
+        },
         {
           "rcept_no": "20260727800410",
           "rcept_dt": "20260727",
@@ -3511,26 +3646,6 @@
           "rm": "공",
           "pblntf_ty": "J",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250829001404"
-        },
-        {
-          "rcept_no": "20250814003799",
-          "rcept_dt": "20250814",
-          "report_nm": "반기보고서 (2025.06)",
-          "corp_name": "한진",
-          "flr_nm": "한진",
-          "rm": "",
-          "pblntf_ty": "A",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814003799"
-        },
-        {
-          "rcept_no": "20250814003874",
-          "rcept_dt": "20250814",
-          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
-          "corp_name": "한진",
-          "flr_nm": "한진",
-          "rm": "공",
-          "pblntf_ty": "J",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814003874"
         }
       ],
       "info": {
@@ -3554,7 +3669,7 @@
         "annual_2023": 24850,
         "annual_2024": 19010,
         "annual_2025": 19710,
-        "annual_2026": 15210,
+        "annual_2026": 15500,
         "2023Q1": 20400,
         "2024Q1": 22250,
         "2025Q1": 19300,
@@ -3566,7 +3681,7 @@
         "2023Q3": 20450,
         "2024Q3": 19220,
         "2025Q3": 20250,
-        "2026Q3": 15210
+        "2026Q3": 15500
       },
       "color": "#003087",
       "annual": {
@@ -5603,6 +5718,26 @@
     "HGL": {
       "disclosures": [
         {
+          "rcept_no": "20260814003521",
+          "rcept_dt": "20260814",
+          "report_nm": "반기보고서 (2026.06)",
+          "corp_name": "현대자동차",
+          "flr_nm": "현대자동차",
+          "rm": "",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003521"
+        },
+        {
+          "rcept_no": "20260814000660",
+          "rcept_dt": "20260814",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "현대자동차",
+          "flr_nm": "현대자동차",
+          "rm": "공",
+          "pblntf_ty": "J",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814000660"
+        },
+        {
           "rcept_no": "20260812000874",
           "rcept_dt": "20260812",
           "report_nm": "특수관계인으로부터기타유가증권매수",
@@ -6871,26 +7006,6 @@
           "rm": "공",
           "pblntf_ty": "J",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250829000025"
-        },
-        {
-          "rcept_no": "20250814003906",
-          "rcept_dt": "20250814",
-          "report_nm": "반기보고서 (2025.06)",
-          "corp_name": "현대자동차",
-          "flr_nm": "현대자동차",
-          "rm": "",
-          "pblntf_ty": "A",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814003906"
-        },
-        {
-          "rcept_no": "20250814000241",
-          "rcept_dt": "20250814",
-          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
-          "corp_name": "현대자동차",
-          "flr_nm": "현대자동차",
-          "rm": "공",
-          "pblntf_ty": "J",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814000241"
         }
       ],
       "info": {
@@ -6936,7 +7051,7 @@
         "annual_2023": 95787,
         "annual_2024": 118100,
         "annual_2025": 180600,
-        "annual_2026": 209500,
+        "annual_2026": 211000,
         "2023Q1": 79281,
         "2024Q1": 87084,
         "2025Q1": 112400,
@@ -6948,7 +7063,7 @@
         "2023Q3": 92236,
         "2024Q3": 122100,
         "2025Q3": 165400,
-        "2026Q3": 209500
+        "2026Q3": 211000
       },
       "color": "#002C5F",
       "annual": {
@@ -8978,12 +9093,167 @@
             }
           },
           "_default": "CFS"
+        },
+        "2026Q2": {
+          "CFS": {
+            "source": "2026년 반기보고서 (연결기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003521",
+            "bs": {
+              "total_assets": 394512167000000,
+              "current_assets": 129045681000000,
+              "non_current_assets": 265466486000000,
+              "total_liabilities": 259095722000000,
+              "current_liabilities": 97136454000000,
+              "non_current_liabilities": 161959268000000,
+              "total_equity": 135416445000000,
+              "controlling_equity": 122327997000000,
+              "cash_and_equivalents": 20256150000000,
+              "trade_receivables": 6896989000000,
+              "inventory": 22503349000000,
+              "short_term_borrowings": 10838843000000,
+              "current_portion_lt_debt": 40357613000000,
+              "long_term_borrowings": 21564741000000,
+              "bonds_payable": 116043983000000,
+              "lease_liabilities": 393808000000
+            },
+            "pl": {
+              "revenue": 49215328000000,
+              "cost_of_revenue": 40478927000000,
+              "gross_profit": 8736401000000,
+              "sga": 5885513000000,
+              "operating_income": 2850888000000,
+              "interest_expense": 371540000000,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 4849653000000,
+              "investing_cf": -5658738000000,
+              "financing_cf": 2229570000000,
+              "interest_paid": 4229793000000
+            },
+            "ratios": {
+              "gross_margin": 17.75,
+              "operating_margin": 5.79,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": 191.33,
+              "debt_ratio_ex_lease": 191.04,
+              "current_ratio": 132.85,
+              "equity_ratio": 34.33,
+              "borrowing_dependency": 47.96,
+              "interest_coverage": 7.67,
+              "operating_cf_margin": 9.85
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "OFS": {
+            "source": "2026년 반기보고서 (별도기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003521",
+            "bs": {
+              "total_assets": 100707830000000,
+              "current_assets": 20707597000000,
+              "non_current_assets": 80000233000000,
+              "total_liabilities": 27684425000000,
+              "current_liabilities": 19535743000000,
+              "non_current_liabilities": 8148682000000,
+              "total_equity": 73023405000000,
+              "controlling_equity": null,
+              "cash_and_equivalents": 4555515000000,
+              "trade_receivables": 7485263000000,
+              "inventory": 5307810000000,
+              "short_term_borrowings": 188000000,
+              "current_portion_lt_debt": 696552000000,
+              "long_term_borrowings": 1040513000000,
+              "bonds_payable": 70013000000,
+              "lease_liabilities": 175324000000
+            },
+            "pl": {
+              "revenue": 20168305000000,
+              "cost_of_revenue": 16145812000000,
+              "gross_profit": 4022493000000,
+              "sga": 3005599000000,
+              "operating_income": 1016894000000,
+              "interest_expense": 75685000000,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 4780257000000,
+              "investing_cf": -3655680000000,
+              "financing_cf": -2967498000000,
+              "interest_paid": 37165000000
+            },
+            "ratios": {
+              "gross_margin": 19.94,
+              "operating_margin": 5.04,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": 37.91,
+              "debt_ratio_ex_lease": 37.67,
+              "current_ratio": 106.0,
+              "equity_ratio": 72.51,
+              "borrowing_dependency": 1.97,
+              "interest_coverage": 13.44,
+              "operating_cf_margin": 23.7
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "_default": "CFS"
         }
       },
       "corp_code": "00164742"
     },
     "LGL": {
       "disclosures": [
+        {
+          "rcept_no": "20260814003773",
+          "rcept_dt": "20260814",
+          "report_nm": "반기보고서 (2026.06)",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "",
+          "pblntf_ty": "A",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003773"
+        },
+        {
+          "rcept_no": "20260814000807",
+          "rcept_dt": "20260814",
+          "report_nm": "지급수단별ㆍ지급기간별지급금액및분쟁조정기구에관한사항",
+          "corp_name": "롯데글로벌로지스",
+          "flr_nm": "롯데글로벌로지스",
+          "rm": "공",
+          "pblntf_ty": "J",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814000807"
+        },
         {
           "rcept_no": "20260529001556",
           "rcept_dt": "20260529",
@@ -9073,16 +9343,6 @@
           "rm": "공",
           "pblntf_ty": "J",
           "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250829000882"
-        },
-        {
-          "rcept_no": "20250814003939",
-          "rcept_dt": "20250814",
-          "report_nm": "반기보고서 (2025.06)",
-          "corp_name": "롯데글로벌로지스",
-          "flr_nm": "롯데글로벌로지스",
-          "rm": "",
-          "pblntf_ty": "A",
-          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250814003939"
         }
       ],
       "info": {
@@ -10811,6 +11071,141 @@
             }
           },
           "_default": "CFS"
+        },
+        "2026Q2": {
+          "CFS": {
+            "source": "2026년 반기보고서 (연결기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003773",
+            "bs": {
+              "total_assets": 2759620855134,
+              "current_assets": 549310763918,
+              "non_current_assets": 2210310091216,
+              "total_liabilities": 2061339019293,
+              "current_liabilities": 814179218847,
+              "non_current_liabilities": 1247159800446,
+              "total_equity": 698281835841,
+              "controlling_equity": null,
+              "cash_and_equivalents": 58254556038,
+              "trade_receivables": 408823047344,
+              "inventory": null,
+              "short_term_borrowings": 58393021620,
+              "current_portion_lt_debt": 175977998139,
+              "long_term_borrowings": 275000000000,
+              "bonds_payable": 108966915070,
+              "lease_liabilities": 175035683829
+            },
+            "pl": {
+              "revenue": 927149395188,
+              "cost_of_revenue": 848274515711,
+              "gross_profit": 78874879477,
+              "sga": 60435683749,
+              "operating_income": 18439195728,
+              "interest_expense": 17087813856,
+              "net_income": null,
+              "controlling_net_income": 2602663644,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 124515235563,
+              "investing_cf": -30363170335,
+              "financing_cf": -131907815479,
+              "interest_paid": 32112282436
+            },
+            "ratios": {
+              "gross_margin": 8.51,
+              "operating_margin": 1.99,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": 0.37,
+              "debt_ratio": 295.2,
+              "debt_ratio_ex_lease": 270.13,
+              "current_ratio": 67.47,
+              "equity_ratio": 25.3,
+              "borrowing_dependency": 28.75,
+              "interest_coverage": 1.08,
+              "operating_cf_margin": 13.43
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "OFS": {
+            "source": "2026년 반기보고서 (별도기준)",
+            "report_type": "반기보고서",
+            "filing_date": "20260814",
+            "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003773",
+            "bs": {
+              "total_assets": 2516086033478,
+              "current_assets": 434154502291,
+              "non_current_assets": 2081931531187,
+              "total_liabilities": 1874731063391,
+              "current_liabilities": 735694330895,
+              "non_current_liabilities": 1139036732496,
+              "total_equity": 641354970087,
+              "controlling_equity": null,
+              "cash_and_equivalents": 31003769039,
+              "trade_receivables": 345285281731,
+              "inventory": null,
+              "short_term_borrowings": 40000000000,
+              "current_portion_lt_debt": 175977998139,
+              "long_term_borrowings": 275000000000,
+              "bonds_payable": 108966915070,
+              "lease_liabilities": 148886246859
+            },
+            "pl": {
+              "revenue": 810954260967,
+              "cost_of_revenue": 747439383760,
+              "gross_profit": 63514877207,
+              "sga": 49058433509,
+              "operating_income": 14456443698,
+              "interest_expense": 16470361046,
+              "net_income": null,
+              "controlling_net_income": null,
+              "depreciation": null
+            },
+            "cf": {
+              "operating_cf": 117007013108,
+              "investing_cf": -29002202836,
+              "financing_cf": -125513737497,
+              "interest_paid": 29232001166
+            },
+            "ratios": {
+              "gross_margin": 7.83,
+              "operating_margin": 1.78,
+              "ebitda_margin": null,
+              "net_margin": null,
+              "roa": null,
+              "roe": null,
+              "debt_ratio": 292.31,
+              "debt_ratio_ex_lease": 269.09,
+              "current_ratio": 59.01,
+              "equity_ratio": 25.49,
+              "borrowing_dependency": 29.76,
+              "interest_coverage": 0.88,
+              "operating_cf_margin": 14.43
+            },
+            "market": {
+              "stock_price": null,
+              "shares_outstanding": null,
+              "market_cap": null,
+              "eps": null,
+              "bps": null,
+              "per": null,
+              "pbr": null,
+              "ev_ebitda": null
+            }
+          },
+          "_default": "CFS"
         }
       },
       "corp_code": "00207676"
@@ -10846,5 +11241,5 @@
       "report_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260318001394"
     }
   },
-  "last_updated": "2026-08-14T09:00:01.725002+09:00"
+  "last_updated": "2026-08-15T09:00:01.725365+09:00"
 }
